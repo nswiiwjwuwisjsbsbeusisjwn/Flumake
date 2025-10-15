@@ -5970,7 +5970,9 @@ local Paragraph = {} do
 
     function Paragraph:New(Idx, Config)
         local Library = self.Library
-        assert(Config.Title or Config.Content or Config.Description, "Paragraph - Missing Title or Content/Description")
+        if not (Config.Title or Config.Content or Config.Description) then
+            return
+        end
 
         local Paragraph = {
             Value = Config.Content or Config.Description or "",
@@ -5982,8 +5984,8 @@ local Paragraph = {} do
             Paragraph.Title,
             Paragraph.Value,
             self.Container,
-            false,
             {
+                Hover = false,
                 TitleAlignment = Enum.TextXAlignment.Left,
                 DescriptionAlignment = Enum.TextXAlignment.Left,
             }
@@ -6005,7 +6007,6 @@ local Paragraph = {} do
         function Paragraph:SetValue(NewText)
             rawset(self, "Value", NewText or "")
             ParagraphFrame:SetDesc(NewText)
-
             if typeof(Paragraph.Changed) == "function" then
                 Library:SafeCallback(Paragraph.Changed, NewText)
             end
@@ -6044,7 +6045,6 @@ Elements.CreateParagraph = function(self, Idx, Config)
     Paragraph.Type = self.Type
     Paragraph.ScrollFrame = self.ScrollFrame
     Paragraph.Library = Library
-
     return Paragraph:New(Idx, Config)
 end
 
