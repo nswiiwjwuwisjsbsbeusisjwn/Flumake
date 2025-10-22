@@ -1508,16 +1508,16 @@ function obj:Window(cfw)
 	NamePlayer.TextWrapped = true
 	NamePlayer.TextXAlignment = Enum.TextXAlignment.Left
 	
-	UsernameLabel.Name = "UsernameLabel"
-	UsernameLabel.Parent = Info
-	UsernameLabel.BackgroundTransparency = 1
-	UsernameLabel.Position = UDim2.new(0, 46, 0, 24)
-	UsernameLabel.Size = UDim2.new(1, -50, 0, 10)
-	UsernameLabel.Font = Enum.Font.Arcade
-	UsernameLabel.Text = tostring(game:GetService("Players").LocalPlayer.Name)
-	UsernameLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
-	UsernameLabel.TextSize = 9.000
-	UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
+	IDLabel.Name = "IDLabel"
+	IDLabel.Parent = Info
+	IDLabel.BackgroundTransparency = 1
+	IDLabel.Position = UDim2.new(0, 46, 0, 24)
+	IDLabel.Size = UDim2.new(1, -50, 0, 10)
+	IDLabel.Font = Enum.Font.Arcade
+	IDLabel.Text = "ID: " .. tostring(game:GetService("Players").LocalPlayer.UserId)
+	IDLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
+	IDLabel.TextSize = 9.000
+	IDLabel.TextXAlignment = Enum.TextXAlignment.Left
 	
 	LogoFrame.Name = "LogoFrame"
 	LogoFrame.Parent = Info
@@ -1568,22 +1568,7 @@ function obj:Window(cfw)
 	StatusStroke.Color = Color3.fromRGB(20, 20, 20)
 	StatusStroke.Thickness = 2.000
 	
-	DescriptionPlayer.Name = "DescriptionPlayer"
-	DescriptionPlayer.Parent = Info
-	DescriptionPlayer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	DescriptionPlayer.BackgroundTransparency = 0.999
-	DescriptionPlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	DescriptionPlayer.BorderSizePixel = 0
-	DescriptionPlayer.Position = UDim2.new(0, 46, 0, 34)
-	DescriptionPlayer.Size = UDim2.new(1, -50, 0, 9)
-	DescriptionPlayer.Font = Enum.Font.Arcade
-	DescriptionPlayer.Text = "ID: " .. tostring(game:GetService("Players").LocalPlayer.UserId)
-	DescriptionPlayer.TextColor3 = Color3.fromRGB(120, 120, 120)
-	DescriptionPlayer.TextSize = 8.000
-	DescriptionPlayer.TextTransparency = 0.400
-	DescriptionPlayer.TextWrapped = true
-	DescriptionPlayer.TextXAlignment = Enum.TextXAlignment.Left
-	
+
 	InfoButton.Name = "InfoButton"
 	InfoButton.Parent = Info
 	InfoButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
