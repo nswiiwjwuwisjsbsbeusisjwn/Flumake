@@ -83,7 +83,7 @@ obj.Click = function(Obj, callback)
 end
 
 obj.Find = function(Object, Name)
-    for _, v in next, Object:GetChildren() do
+    for _, v in pairs(Object:GetChildren()) do
         if v.Name == Name then
             return v
         end
@@ -219,6 +219,11 @@ Crystal.Types = {
 }
 
 function Crystal:Notify(NotifyConfig)
+    -- Kiểm tra và xóa Crystal hub nếu đã tồn tại
+    if game:GetService("CoreGui"):FindFirstChild("Crystal hub") then
+        game:GetService("CoreGui"):FindFirstChild("Crystal hub"):Destroy()
+    end
+
     NotifyConfig = NotifyConfig or {}
     NotifyConfig.Title = NotifyConfig.Title or "Crystal Hub"
     NotifyConfig.Title1 = NotifyConfig.Title1 or "By Shinichi"
@@ -230,15 +235,15 @@ function Crystal:Notify(NotifyConfig)
 
     local NotifyFunc = {}
 
-    spawn(function()
-        if not obj.plrGUI:FindFirstChild("NotifyGui") then
+    task.spawn(function()
+        if not obj.plrGUI:FindFirstChild("Crystal hub") then
             local NotifyGui = Instance.new("ScreenGui")
             NotifyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-            NotifyGui.Name = "NotifyGui"
+            NotifyGui.Name = "Crystal hub"
             NotifyGui.Parent = obj.plrGUI
         end
 
-        if not obj.plrGUI.NotifyGui:FindFirstChild("NotifyLayout") then
+        if not obj.plrGUI["Crystal hub"]:FindFirstChild("NotifyLayout") then
             local NotifyLayout = Instance.new("Frame")
             NotifyLayout.AnchorPoint = Vector2.new(1, 0)
             NotifyLayout.BackgroundTransparency = 1
@@ -246,13 +251,13 @@ function Crystal:Notify(NotifyConfig)
             NotifyLayout.Position = UDim2.new(1, -10, 0, 10)
             NotifyLayout.Size = UDim2.new(0, 220, 1, -20)
             NotifyLayout.Name = "NotifyLayout"
-            NotifyLayout.Parent = obj.plrGUI.NotifyGui
+            NotifyLayout.Parent = obj.plrGUI["Crystal hub"]
 
             local Count = 0
-            obj.plrGUI.NotifyGui.NotifyLayout.ChildRemoved:Connect(function()
+            obj.plrGUI["Crystal hub"].NotifyLayout.ChildRemoved:Connect(function()
                 Count = 0
-                for _, v in pairs(obj.plrGUI.NotifyGui.NotifyLayout:GetChildren()) do
-                    if v:IsA("Frame") then
+                for _, v in pairs(obj.plrGUI["Crystal hub"].NotifyLayout:GetChildren()) do
+                    if v:IsA("Frame") and v:FindFirstChild("NotifyFrameReal") then
                         obj.TweenObject({
                             v,
                             0.3,
@@ -264,10 +269,10 @@ function Crystal:Notify(NotifyConfig)
                 end
             end)
 
-            obj.plrGUI.NotifyGui.NotifyLayout.ChildAdded:Connect(function(child)
+            obj.plrGUI["Crystal hub"].NotifyLayout.ChildAdded:Connect(function(child)
                 local Count2 = 1
-                for _, v in pairs(obj.plrGUI.NotifyGui.NotifyLayout:GetChildren()) do
-                    if v ~= child and v:IsA("Frame") then
+                for _, v in pairs(obj.plrGUI["Crystal hub"].NotifyLayout:GetChildren()) do
+                    if v ~= child and v:IsA("Frame") and v:FindFirstChild("NotifyFrameReal") then
                         obj.TweenObject({
                             v,
                             0.3,
@@ -303,7 +308,7 @@ function Crystal:Notify(NotifyConfig)
         NotifyFrame.BorderSizePixel = 0
         NotifyFrame.Size = UDim2.new(1, 0, 0, 60)
         NotifyFrame.Name = "NotifyFrame"
-        NotifyFrame.Parent = obj.plrGUI.NotifyGui.NotifyLayout
+        NotifyFrame.Parent = obj.plrGUI["Crystal hub"].NotifyLayout
         NotifyFrame.Position = UDim2.new(0, 0, 0, 0)
 
         NotifyFrameReal.BackgroundColor3 = Color3.fromRGB(30, 15, 50)
@@ -569,6 +574,11 @@ function Crystal:Notify(NotifyConfig)
 end
 
 function obj:Window(cfw)
+    -- Kiểm tra và xóa Crystal hub nếu đã tồn tại
+    if game:GetService("CoreGui"):FindFirstChild("Crystal hub") then
+        game:GetService("CoreGui"):FindFirstChild("Crystal hub"):Destroy()
+    end
+
     cfw = cfw or {}
     cfw.Title = cfw.Title or "Crystal Hub"
     cfw.Description = cfw.Description or "Premium Edition"
@@ -656,7 +666,7 @@ function obj:Window(cfw)
     local UIListLayout_2 = Instance.new("UIListLayout")
     local LayersPageLayout = Instance.new("UIPageLayout")
 
-    Window.Name = "Window"
+    Window.Name = "Crystal hub"
     Window.Parent = obj.plrGUI
     Window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -1319,7 +1329,7 @@ function obj:Window(cfw)
 
     BackButton_2.Name = "BackButton_2"
     BackButton_2.Parent = NameBack_2
-    BackButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton_2.BackgroundColor3 = Color3.fromRGB(255, 275, 255)
     BackButton_2.BackgroundTransparency = 0.999
     BackButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
     BackButton_2.BorderSizePixel = 0
@@ -1413,7 +1423,7 @@ function obj:Window(cfw)
     end)
 
     obj.UserInputService.InputBegan:Connect(function(v)
-        if v.KeyCode == Enum.KeyCode.LeftControl then
+        if v.KeyCode == cfw.KeyCode then
             if Window11.Visible then
                 Window11.Visible = false
             else
@@ -1422,7 +1432,7 @@ function obj:Window(cfw)
         end
     end)
 
-    function UITab:AddTab(cftab)
+        function UITab:AddTab(cftab)
         cftab = cftab or {}
         cftab.Title = cftab.Title or "Tab"
         cftab.Icon = cftab.Icon or ""
