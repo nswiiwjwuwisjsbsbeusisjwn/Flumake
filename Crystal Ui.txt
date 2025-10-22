@@ -1492,33 +1492,18 @@ function obj:Window(cfw)
 	
 	UICorner_2.CornerRadius = UDim.new(0, 6)
 	UICorner_2.Parent = Info
-	
-	NamePlayer.Name = "NamePlayer"
-	NamePlayer.Parent = Info
-	NamePlayer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	NamePlayer.BackgroundTransparency = 0.999
-	NamePlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	NamePlayer.BorderSizePixel = 0
-	NamePlayer.Position = UDim2.new(0, 46, 0, 10)
-	NamePlayer.Size = UDim2.new(1, -50, 0, 12)
-	NamePlayer.Font = Enum.Font.Arcade
-	NamePlayer.Text = tostring(game:GetService("Players").LocalPlayer.DisplayName)
-	NamePlayer.TextColor3 = Color3.fromRGB(255, 255, 255)
-	NamePlayer.TextSize = 12.000
-	NamePlayer.TextWrapped = true
-	NamePlayer.TextXAlignment = Enum.TextXAlignment.Left
-	
-	IDLabel.Name = "IDLabel"
-	IDLabel.Parent = Info
-	IDLabel.BackgroundTransparency = 1
-	IDLabel.Position = UDim2.new(0, 46, 0, 24)
-	IDLabel.Size = UDim2.new(1, -50, 0, 10)
-	IDLabel.Font = Enum.Font.Arcade
-	IDLabel.Text = "ID: " .. tostring(game:GetService("Players").LocalPlayer.UserId)
-	IDLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
-	IDLabel.TextSize = 9.000
-	IDLabel.TextXAlignment = Enum.TextXAlignment.Left
-	
+	UsernameLabel.Name = "UsernameLabel"
+UsernameLabel.Parent = Info
+UsernameLabel.BackgroundTransparency = 1
+UsernameLabel.Position = UDim2.new(0, 46, 0, 24)
+UsernameLabel.Size = UDim2.new(1, -50, 0, 10)
+UsernameLabel.Font = Enum.Font.Arcade
+UsernameLabel.Text = "ID: " .. tostring(game:GetService("Players").LocalPlayer.UserId)
+UsernameLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
+UsernameLabel.TextSize = 9.000
+UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+
 	LogoFrame.Name = "LogoFrame"
 	LogoFrame.Parent = Info
 	LogoFrame.AnchorPoint = Vector2.new(0, 0.5)
