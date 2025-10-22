@@ -1,4 +1,3 @@
-
 local player = game.Players.LocalPlayer
 local Crystal1 = Instance.new("ScreenGui")
 local Crystal2 = Instance.new("TextButton")
@@ -406,7 +405,8 @@ function obj:Window(cfw)
 	cfw.User = cfw.User 
 	cfw.IconUser = cfw.IconUser or ""
 	cfw.UseAcrylic = cfw.UseAcrylic or false
-	cfw.Size = cfw.Size or UDim2.new(0, 600, 0, 420)
+	-- SIZE OPTIMIZED FOR SMALL SCREENS (480x320 minimum)
+	cfw.Size = cfw.Size or UDim2.new(0, 450, 0, 320)
 	cfw.DiscordStatus = cfw.DiscordStatus or "love you hipp"
 	cfw.DisplayNameDiscord = cfw.DisplayNameDiscord or "@real_shinichi"
 	cfw.DiscordDescription = cfw.DiscordDescription or ""
@@ -421,6 +421,8 @@ function obj:Window(cfw)
 	local TopDescription = Instance.new("TextLabel")
 	local CloseButton = Instance.new("TextButton")
 	local CloseImage = Instance.new("ImageLabel")
+	local FrameBiNgu = Instance.new("Frame")
+	local FrameOc = Instance.new("Frame")
 	local MaxButton = Instance.new("TextButton")
 	local MaxImage = Instance.new("ImageLabel")
 	local HideButton = Instance.new("TextButton")
@@ -526,7 +528,7 @@ function obj:Window(cfw)
 	Top.BackgroundTransparency = 0.999
 	Top.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Top.BorderSizePixel = 0
-	Top.Size = UDim2.new(1, 0, 0, 48)
+	Top.Size = UDim2.new(1, 0, 0, 40)
 	Top.ZIndex = 2
 	
 	TopTitle.Name = "TopTitle"
@@ -535,12 +537,12 @@ function obj:Window(cfw)
 	TopTitle.BackgroundTransparency = 0.999
 	TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	TopTitle.BorderSizePixel = 0
-	TopTitle.Position = UDim2.new(0, 18, 0, 16)
+	TopTitle.Position = UDim2.new(0, 15, 0, 12)
 	TopTitle.Size = UDim2.new(0, 100, 0, 16)
 	TopTitle.Font = Enum.Font.GothamBold
 	TopTitle.Text = cfw.Title
 	TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-	TopTitle.TextSize = 15.000
+	TopTitle.TextSize = 14.000
 	TopTitle.TextXAlignment = Enum.TextXAlignment.Left
 	
 	TopDescription.Name = "TopDescription"
@@ -549,12 +551,12 @@ function obj:Window(cfw)
 	TopDescription.BackgroundTransparency = 0.999
 	TopDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	TopDescription.BorderSizePixel = 0
-	TopDescription.Position = UDim2.new(0, 0, 0, 16)
+	TopDescription.Position = UDim2.new(0, 0, 0, 12)
 	TopDescription.Size = UDim2.new(0, 80, 0, 16)
 	TopDescription.Font = Enum.Font.GothamMedium
 	TopDescription.Text = cfw.Description
 	TopDescription.TextColor3 = Color3.fromRGB(93, 197, 248)
-	TopDescription.TextSize = 13.000
+	TopDescription.TextSize = 12.000
 	TopDescription.TextTransparency = 0.300
 	TopDescription.TextXAlignment = Enum.TextXAlignment.Left
 	
@@ -566,7 +568,7 @@ function obj:Window(cfw)
 	CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	CloseButton.BorderSizePixel = 0
 	CloseButton.Position = UDim2.new(1, 0, 0, 0)
-	CloseButton.Size = UDim2.new(0, 48, 0, 48)
+	CloseButton.Size = UDim2.new(0, 40, 0, 40)
 	CloseButton.Font = Enum.Font.SourceSans
 	CloseButton.AutoButtonColor = false
 	CloseButton.Text = ""
@@ -575,8 +577,12 @@ function obj:Window(cfw)
 	
 	obj.Mouseto(CloseButton, function()
 		obj.TweenObject({CloseButton, 0.2, "BackgroundTransparency", 0.970})
+		obj.TweenObject({FrameBiNgu, 0.2, "BackgroundTransparency", 0.000})
+		obj.TweenObject({FrameOc, 0.2, "BackgroundTransparency", 0.000})
 	end, function()
 		obj.TweenObject({CloseButton, 0.2, "BackgroundTransparency", 1.000})
+		obj.TweenObject({FrameBiNgu, 0.2, "BackgroundTransparency", 1.000})
+		obj.TweenObject({FrameOc, 0.2, "BackgroundTransparency", 1.000})
 	end)
 	
 	obj.Click(CloseButton, function()
@@ -594,22 +600,39 @@ function obj:Window(cfw)
 	CloseImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	CloseImage.BorderSizePixel = 0
 	CloseImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	CloseImage.Size = UDim2.new(1, -26, 1, -26)
+	CloseImage.Size = UDim2.new(1, -22, 1, -22)
 	CloseImage.Image = "rbxassetid://18556800637"
 	CloseImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
 	
 	UICorner.Parent = CloseButton
 	
+	FrameBiNgu.Name = "FrameBiNgu"
+	FrameBiNgu.Parent = CloseButton
+	FrameBiNgu.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+	FrameBiNgu.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	FrameBiNgu.BorderSizePixel = 0
+	FrameBiNgu.Size = UDim2.new(0, 7, 1, 0)
+	FrameBiNgu.BackgroundTransparency = 1.000
+	
+	FrameOc.Name = "FrameOc"
+	FrameOc.Parent = CloseButton
+	FrameOc.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+	FrameOc.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	FrameOc.BorderSizePixel = 0
+	FrameOc.BackgroundTransparency = 1.000
+	FrameOc.Position = UDim2.new(0, 0, 1, -5)
+	FrameOc.Size = UDim2.new(1, 0, 0, 5)
+	
 	MaxButton.Name = "MaxButton"
 	MaxButton.Parent = Top
 	MaxButton.AutoButtonColor = false
 	MaxButton.AnchorPoint = Vector2.new(1, 0)
-	MaxButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	MaxButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	MaxButton.BackgroundTransparency = 0.999
 	MaxButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	MaxButton.BorderSizePixel = 0
-	MaxButton.Position = UDim2.new(1, -47, 0, 0)
-	MaxButton.Size = UDim2.new(0, 48, 0, 48)
+	MaxButton.Position = UDim2.new(1, -39, 0, 0)
+	MaxButton.Size = UDim2.new(0, 40, 0, 40)
 	MaxButton.Font = Enum.Font.SourceSans
 	MaxButton.Text = ""
 	MaxButton.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -619,16 +642,16 @@ function obj:Window(cfw)
 		if Window11.Size.Y.Scale < 1 then
 			OldPos = Window11.Position
 			OldSize = Window11.Size
-			obj.TweenObject({Window11, 0.4, "Size", UDim2.new(1, 0, 1, 0)})
-			obj.TweenObject({Window11, 0.4, "Position", UDim2.new(0, 0, 0, 0)})
+			obj.TweenObject({Window11, 0.5, "Size", UDim2.new(1, 0, 1, 0)})
+			obj.TweenObject({Window11, 0.5, "Position", UDim2.new(0, 0, 0, 0)})
 		else
-			obj.TweenObject({Window11, 0.4, "Size", OldSize})
-			obj.TweenObject({Window11, 0.4, "Position", OldPos})
+			obj.TweenObject({Window11, 0.5, "Size", OldSize})
+			obj.TweenObject({Window11, 0.5, "Position", OldPos})
 		end
 	end)
 	
 	obj.Mouseto(MaxButton, function()
-		MaxButton.BackgroundTransparency = 0.950
+		MaxButton.BackgroundTransparency = 0.970
 		obj.TweenObject({MaxImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
 	end, function()
 		MaxButton.BackgroundTransparency = 0.999
@@ -643,7 +666,7 @@ function obj:Window(cfw)
 	MaxImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	MaxImage.BorderSizePixel = 0
 	MaxImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	MaxImage.Size = UDim2.new(1, -27, 1, -27)
+	MaxImage.Size = UDim2.new(1, -24, 1, -24)
 	MaxImage.Image = "rbxassetid://9886659406"
 	MaxImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
 	
@@ -655,8 +678,8 @@ function obj:Window(cfw)
 	HideButton.BackgroundTransparency = 0.999
 	HideButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	HideButton.BorderSizePixel = 0
-	HideButton.Position = UDim2.new(1, -93, 0, 0)
-	HideButton.Size = UDim2.new(0, 48, 0, 48)
+	HideButton.Position = UDim2.new(1, -77, 0, 0)
+	HideButton.Size = UDim2.new(0, 40, 0, 40)
 	HideButton.Font = Enum.Font.SourceSans
 	HideButton.Text = ""
 	HideButton.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -682,7 +705,7 @@ function obj:Window(cfw)
 	HideImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	HideImage.BorderSizePixel = 0
 	HideImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	HideImage.Size = UDim2.new(1, -27, 1, -27)
+	HideImage.Size = UDim2.new(1, -24, 1, -24)
 	HideImage.Image = "rbxassetid://18556824827"
 	HideImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
 	
@@ -694,7 +717,7 @@ function obj:Window(cfw)
 	DecideFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	DecideFrame.BorderSizePixel = 0
 	DecideFrame.Position = UDim2.new(0.5, 0, 1, 2)
-	DecideFrame.Size = UDim2.new(1, -16, 0, 2)
+	DecideFrame.Size = UDim2.new(1, -14, 0, 2)
 	
 	UICorner.CornerRadius = UDim.new(0, 100)
 	UICorner.Parent = DecideFrame
@@ -705,8 +728,8 @@ function obj:Window(cfw)
 	LayersTab.BackgroundTransparency = 0.999
 	LayersTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	LayersTab.BorderSizePixel = 0
-	LayersTab.Position = UDim2.new(0, 14, 0, 58)
-	LayersTab.Size = UDim2.new(0, 190, 1, -70)
+	LayersTab.Position = UDim2.new(0, 10, 0, 48)
+	LayersTab.Size = UDim2.new(0, 140, 1, -58)
 	
 	Info.Name = "Info"
 	Info.Parent = LayersTab
@@ -714,7 +737,7 @@ function obj:Window(cfw)
 	Info.BackgroundTransparency = 1.000
 	Info.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Info.BorderSizePixel = 0
-	Info.Size = UDim2.new(1, 0, 0, 55)
+	Info.Size = UDim2.new(1, 0, 0, 48)
 	
 	obj.Mouseto(Info, function()
 		Info.BackgroundTransparency = 0.950
@@ -733,24 +756,24 @@ function obj:Window(cfw)
 	NamePlayer.BackgroundTransparency = 0.999
 	NamePlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	NamePlayer.BorderSizePixel = 0
-	NamePlayer.Position = UDim2.new(0, 56, 0, 12)
-	NamePlayer.Size = UDim2.new(1, -65, 0, 14)
+	NamePlayer.Position = UDim2.new(0, 46, 0, 10)
+	NamePlayer.Size = UDim2.new(1, -50, 0, 12)
 	NamePlayer.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 	NamePlayer.Text = tostring(game:GetService("Players").LocalPlayer.DisplayName)
 	NamePlayer.TextColor3 = Color3.fromRGB(255, 255, 255)
-	NamePlayer.TextSize = 14.000
+	NamePlayer.TextSize = 12.000
 	NamePlayer.TextWrapped = true
 	NamePlayer.TextXAlignment = Enum.TextXAlignment.Left
 	
 	UsernameLabel.Name = "UsernameLabel"
 	UsernameLabel.Parent = Info
 	UsernameLabel.BackgroundTransparency = 1
-	UsernameLabel.Position = UDim2.new(0, 56, 0, 27)
-	UsernameLabel.Size = UDim2.new(1, -65, 0, 11)
+	UsernameLabel.Position = UDim2.new(0, 46, 0, 24)
+	UsernameLabel.Size = UDim2.new(1, -50, 0, 10)
 	UsernameLabel.Font = Enum.Font.GothamMedium
 	UsernameLabel.Text = "@" .. tostring(game:GetService("Players").LocalPlayer.Name)
 	UsernameLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
-	UsernameLabel.TextSize = 11.000
+	UsernameLabel.TextSize = 9.000
 	UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
 	
 	LogoFrame.Name = "LogoFrame"
@@ -761,7 +784,7 @@ function obj:Window(cfw)
 	LogoFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	LogoFrame.BorderSizePixel = 0
 	LogoFrame.Position = UDim2.new(0, 4, 0.5, 0)
-	LogoFrame.Size = UDim2.new(0, 45, 0, 45)
+	LogoFrame.Size = UDim2.new(0, 38, 0, 38)
 	
 	LogoPlayer.Name = "LogoPlayer"
 	LogoPlayer.Parent = LogoFrame
@@ -783,7 +806,7 @@ function obj:Window(cfw)
 	UIStroke.Parent = LogoFrame
 	UIStroke.Color = Color3.fromRGB(93, 197, 248)
 	UIStroke.Transparency = 0.700
-	UIStroke.Thickness = 2.500
+	UIStroke.Thickness = 2.000
 	
 	StatusIndicator.Name = "StatusIndicator"
 	StatusIndicator.Parent = LogoFrame
@@ -791,7 +814,7 @@ function obj:Window(cfw)
 	StatusIndicator.BackgroundColor3 = Color3.fromRGB(67, 181, 129)
 	StatusIndicator.BorderSizePixel = 0
 	StatusIndicator.Position = UDim2.new(1, -1, 1, -1)
-	StatusIndicator.Size = UDim2.new(0, 13, 0, 13)
+	StatusIndicator.Size = UDim2.new(0, 11, 0, 11)
 	StatusIndicator.ZIndex = 5
 	
 	StatusCorner.CornerRadius = UDim.new(1, 0)
@@ -799,7 +822,7 @@ function obj:Window(cfw)
 	
 	StatusStroke.Parent = StatusIndicator
 	StatusStroke.Color = Color3.fromRGB(20, 20, 20)
-	StatusStroke.Thickness = 2.500
+	StatusStroke.Thickness = 2.000
 	
 	DescriptionPlayer.Name = "DescriptionPlayer"
 	DescriptionPlayer.Parent = Info
@@ -807,12 +830,12 @@ function obj:Window(cfw)
 	DescriptionPlayer.BackgroundTransparency = 0.999
 	DescriptionPlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	DescriptionPlayer.BorderSizePixel = 0
-	DescriptionPlayer.Position = UDim2.new(0, 56, 0, 39)
-	DescriptionPlayer.Size = UDim2.new(1, -65, 0, 10)
+	DescriptionPlayer.Position = UDim2.new(0, 46, 0, 34)
+	DescriptionPlayer.Size = UDim2.new(1, -50, 0, 9)
 	DescriptionPlayer.Font = Enum.Font.GothamMedium
 	DescriptionPlayer.Text = "ID: " .. tostring(game:GetService("Players").LocalPlayer.UserId)
 	DescriptionPlayer.TextColor3 = Color3.fromRGB(120, 120, 120)
-	DescriptionPlayer.TextSize = 10.000
+	DescriptionPlayer.TextSize = 8.000
 	DescriptionPlayer.TextTransparency = 0.400
 	DescriptionPlayer.TextWrapped = true
 	DescriptionPlayer.TextXAlignment = Enum.TextXAlignment.Left
@@ -836,8 +859,8 @@ function obj:Window(cfw)
 	SearchFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	SearchFrame.BorderSizePixel = 0
 	SearchFrame.ClipsDescendants = true
-	SearchFrame.Position = UDim2.new(0, 0, 0, 65)
-	SearchFrame.Size = UDim2.new(1, 0, 0, 30)
+	SearchFrame.Position = UDim2.new(0, 0, 0, 56)
+	SearchFrame.Size = UDim2.new(1, 0, 0, 26)
 	
 	UICorner_5.CornerRadius = UDim.new(0, 6)
 	UICorner_5.Parent = SearchFrame
@@ -849,7 +872,7 @@ function obj:Window(cfw)
 	SearchImage.BackgroundTransparency = 0.999
 	SearchImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	SearchImage.BorderSizePixel = 0
-	SearchImage.Position = UDim2.new(1, -8, 0, 8)
+	SearchImage.Position = UDim2.new(1, -6, 0, 6)
 	SearchImage.Size = UDim2.new(0, 14, 0, 14)
 	SearchImage.Image = "rbxassetid://18557078698"
 	SearchImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
@@ -897,8 +920,8 @@ function obj:Window(cfw)
 	SearchBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	SearchBoxFrame.BorderSizePixel = 0
 	SearchBoxFrame.ClipsDescendants = true
-	SearchBoxFrame.Position = UDim2.new(0, 10, 0, 0)
-	SearchBoxFrame.Size = UDim2.new(1, -35, 0, 30)
+	SearchBoxFrame.Position = UDim2.new(0, 8, 0, 0)
+	SearchBoxFrame.Size = UDim2.new(1, -30, 0, 26)
 	
 	SearchBox.Name = "SearchBox"
 	SearchBox.Parent = SearchBoxFrame
@@ -910,10 +933,10 @@ function obj:Window(cfw)
 	SearchBox.Size = UDim2.new(1, -2, 1, 0)
 	SearchBox.Font = Enum.Font.GothamMedium
 	SearchBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
-	SearchBox.PlaceholderText = "Search settings..."
+	SearchBox.PlaceholderText = "Search..."
 	SearchBox.Text = ""
 	SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-	SearchBox.TextSize = 12.000
+	SearchBox.TextSize = 11.000
 	SearchBox.TextXAlignment = Enum.TextXAlignment.Left
 	
 	SearchBox.Focused:Connect(function()
@@ -933,13 +956,13 @@ function obj:Window(cfw)
 	ScrollTab.BackgroundTransparency = 0.999
 	ScrollTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	ScrollTab.BorderSizePixel = 0
-	ScrollTab.Position = UDim2.new(0, 0, 0, 105)
-	ScrollTab.Size = UDim2.new(1, 0, 1, -105)
+	ScrollTab.Position = UDim2.new(0, 0, 0, 90)
+	ScrollTab.Size = UDim2.new(1, 0, 1, -90)
 	ScrollTab.ZIndex = 0
 	ScrollTab.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
 	ScrollTab.CanvasSize = UDim2.new(0, 0, 0, 220)
 	ScrollTab.ScrollBarImageTransparency = 0.700
-	ScrollTab.ScrollBarThickness = 4
+	ScrollTab.ScrollBarThickness = 3
 	
 	obj.Stepped:Connect(function()
 		ScrollTab.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y + 15)
@@ -988,7 +1011,7 @@ function obj:Window(cfw)
 	LogFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	LogFrame.BorderSizePixel = 0
 	LogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-	LogFrame.Size = UDim2.new(0, 240, 0, 130)
+	LogFrame.Size = UDim2.new(0, 220, 0, 120)
 	LogFrame.Visible = false
 	
 	UICorner_42.CornerRadius = UDim.new(0, 8)
@@ -1004,12 +1027,12 @@ function obj:Window(cfw)
 	LogTitle.BackgroundTransparency = 0.999
 	LogTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	LogTitle.BorderSizePixel = 0
-	LogTitle.Position = UDim2.new(0, 20, 0, 20)
-	LogTitle.Size = UDim2.new(0, 200, 0, 20)
+	LogTitle.Position = UDim2.new(0, 18, 0, 18)
+	LogTitle.Size = UDim2.new(0, 180, 0, 18)
 	LogTitle.Font = Enum.Font.GothamBold
 	LogTitle.Text = "Confirmation"
 	LogTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-	LogTitle.TextSize = 17.000
+	LogTitle.TextSize = 15.000
 	LogTitle.TextXAlignment = Enum.TextXAlignment.Left
 	
 	LogContent.Name = "LogContent"
@@ -1018,12 +1041,12 @@ function obj:Window(cfw)
 	LogContent.BackgroundTransparency = 0.999
 	LogContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	LogContent.BorderSizePixel = 0
-	LogContent.Position = UDim2.new(0, 20, 0, 42)
-	LogContent.Size = UDim2.new(0, 200, 0, 14)
+	LogContent.Position = UDim2.new(0, 18, 0, 38)
+	LogContent.Size = UDim2.new(0, 180, 0, 12)
 	LogContent.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 	LogContent.Text = "Are you sure about this action?"
 	LogContent.TextColor3 = Color3.fromRGB(200, 200, 200)
-	LogContent.TextSize = 13.000
+	LogContent.TextSize = 12.000
 	LogContent.TextTransparency = 0.400
 	LogContent.TextXAlignment = Enum.TextXAlignment.Left
 	
@@ -1034,7 +1057,7 @@ function obj:Window(cfw)
 	LogUnder.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	LogUnder.BorderSizePixel = 0
 	LogUnder.Position = UDim2.new(0, 0, 1, 0)
-	LogUnder.Size = UDim2.new(1, 0, 1, -70)
+	LogUnder.Size = UDim2.new(1, 0, 1, -62)
 	
 	UICorner_43.CornerRadius = UDim.new(0, 8)
 	UICorner_43.Parent = LogUnder
@@ -1044,8 +1067,8 @@ function obj:Window(cfw)
 	ConfirmFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
 	ConfirmFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	ConfirmFrame.BorderSizePixel = 0
-	ConfirmFrame.Position = UDim2.new(0, 18, 0, 15)
-	ConfirmFrame.Size = UDim2.new(0, 95, 0, 30)
+	ConfirmFrame.Position = UDim2.new(0, 15, 0, 12)
+	ConfirmFrame.Size = UDim2.new(0, 85, 0, 28)
 	
 	UICorner_44.CornerRadius = UDim.new(0, 5)
 	UICorner_44.Parent = ConfirmFrame
@@ -1060,7 +1083,7 @@ function obj:Window(cfw)
 	ConfirmButton.Font = Enum.Font.GothamBold
 	ConfirmButton.Text = "Confirm"
 	ConfirmButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-	ConfirmButton.TextSize = 13.000
+	ConfirmButton.TextSize = 12.000
 	
 	obj.Mouseto(ConfirmFrame, function()
 		obj.TweenObject({ConfirmFrame, 0.2, "BackgroundColor3", Color3.fromRGB(120, 210, 255)})
@@ -1074,8 +1097,8 @@ function obj:Window(cfw)
 	CancelFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 	CancelFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	CancelFrame.BorderSizePixel = 0
-	CancelFrame.Position = UDim2.new(1, -18, 0, 15)
-	CancelFrame.Size = UDim2.new(0, 95, 0, 30)
+	CancelFrame.Position = UDim2.new(1, -15, 0, 12)
+	CancelFrame.Size = UDim2.new(0, 85, 0, 28)
 	
 	UICorner_45.CornerRadius = UDim.new(0, 5)
 	UICorner_45.Parent = CancelFrame
@@ -1090,7 +1113,7 @@ function obj:Window(cfw)
 	CancelButton.Font = Enum.Font.GothamBold
 	CancelButton.Text = "Cancel"
 	CancelButton.TextColor3 = Color3.fromRGB(200, 200, 200)
-	CancelButton.TextSize = 13.000
+	CancelButton.TextSize = 12.000
 	
 	obj.Mouseto(CancelFrame, function()
 		obj.TweenObject({CancelFrame, 0.2, "BackgroundColor3", Color3.fromRGB(45, 45, 45)})
@@ -1114,8 +1137,8 @@ function obj:Window(cfw)
 	Layers.BackgroundTransparency = 0.999
 	Layers.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Layers.BorderSizePixel = 0
-	Layers.Position = UDim2.new(0, 216, 0, 58)
-	Layers.Size = UDim2.new(1, -228, 1, -70)
+	Layers.Position = UDim2.new(0, 158, 0, 48)
+	Layers.Size = UDim2.new(1, -168, 1, -58)
 	Layers.ZIndex = 3
 	
 	TopLayers.Name = "TopLayers"
@@ -1125,7 +1148,7 @@ function obj:Window(cfw)
 	TopLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	TopLayers.BorderSizePixel = 0
 	TopLayers.ClipsDescendants = true
-	TopLayers.Size = UDim2.new(1, 0, 0, 35)
+	TopLayers.Size = UDim2.new(1, 0, 0, 30)
 	
 	NameBack.Name = "NameBack"
 	NameBack.Parent = TopLayers
@@ -1146,7 +1169,7 @@ function obj:Window(cfw)
 	BackButton.Text = ""
 	BackButton.LayoutOrder = 0
 	BackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-	BackButton.TextSize = 16.000
+	BackButton.TextSize = 14.000
 	BackButton.TextTransparency = 0
 	BackButton.TextXAlignment = Enum.TextXAlignment.Left
 	
@@ -1156,8 +1179,8 @@ function obj:Window(cfw)
 	NameBack_2.BackgroundTransparency = 0.999
 	NameBack_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	NameBack_2.BorderSizePixel = 0
-	NameBack_2.Position = UDim2.new(0, 100, 0, 0)
-	NameBack_2.Size = UDim2.new(0, 100, 1, 0)
+	NameBack_2.Position = UDim2.new(0, 90, 0, 0)
+	NameBack_2.Size = UDim2.new(0, 90, 1, 0)
 	
 	ForwardImage.Name = "ForwardImage"
 	ForwardImage.Parent = NameBack_2
@@ -1166,8 +1189,8 @@ function obj:Window(cfw)
 	ForwardImage.BackgroundTransparency = 0.999
 	ForwardImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	ForwardImage.BorderSizePixel = 0
-	ForwardImage.Position = UDim2.new(0, 10, 0.54, 0)
-	ForwardImage.Size = UDim2.new(0, 17, 0, 17)
+	ForwardImage.Position = UDim2.new(0, 8, 0.54, 0)
+	ForwardImage.Size = UDim2.new(0, 15, 0, 15)
 	ForwardImage.Image = "rbxassetid://18558566660"
 	ForwardImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
 	ForwardImage.ImageTransparency = 1.000
@@ -1178,12 +1201,12 @@ function obj:Window(cfw)
 	BackButton_2.BackgroundTransparency = 0.999
 	BackButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	BackButton_2.BorderSizePixel = 0
-	BackButton_2.Position = UDim2.new(0, 32, 0, 0)
-	BackButton_2.Size = UDim2.new(0, 68, 1, 0)
+	BackButton_2.Position = UDim2.new(0, 28, 0, 0)
+	BackButton_2.Size = UDim2.new(0, 62, 1, 0)
 	BackButton_2.Font = Enum.Font.GothamBold
 	BackButton_2.Text = ""
 	BackButton_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-	BackButton_2.TextSize = 16.000
+	BackButton_2.TextSize = 14.000
 	BackButton_2.TextTransparency = 0.600
 	BackButton_2.TextXAlignment = Enum.TextXAlignment.Left
 	
@@ -1200,7 +1223,7 @@ function obj:Window(cfw)
 	RealLayers.BorderSizePixel = 0
 	RealLayers.ClipsDescendants = true
 	RealLayers.Position = UDim2.new(1, 0, 1, 0)
-	RealLayers.Size = UDim2.new(1, 0, 1, -35)
+	RealLayers.Size = UDim2.new(1, 0, 1, -30)
 	RealLayers.ZIndex = 2
 	
 	LayersFolder.Name = "LayersFolder"
@@ -1216,7 +1239,7 @@ function obj:Window(cfw)
 	LayersPageLayout.TouchInputEnabled = false
 	LayersPageLayout.TweenTime = 0.350
 	
-	TopDescription.Position = UDim2.new(0, TopTitle.TextBounds.X + 22, 0, 16)
+	TopDescription.Position = UDim2.new(0, TopTitle.TextBounds.X + 19, 0, 12)
 	
 	AnotherButton.Name = "AnotherButton"
 	AnotherButton.Parent = AnotherFrame
@@ -1299,7 +1322,7 @@ function obj:Window(cfw)
 		Tab.BackgroundTransparency = 0.999
 		Tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		Tab.BorderSizePixel = 0
-		Tab.Size = UDim2.new(1, 0, 0, 36)
+		Tab.Size = UDim2.new(1, 0, 0, 32)
 		
 		UICorner_8.CornerRadius = UDim.new(0, 6)
 		UICorner_8.Parent = Tab
@@ -1311,8 +1334,8 @@ function obj:Window(cfw)
 		TabImage.BackgroundTransparency = 0.999
 		TabImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		TabImage.BorderSizePixel = 0
-		TabImage.Position = UDim2.new(0, 11, 0.5, 0)
-		TabImage.Size = UDim2.new(0, 18, 0, 18)
+		TabImage.Position = UDim2.new(0, 9, 0.5, 0)
+		TabImage.Size = UDim2.new(0, 16, 0, 16)
 		TabImage.Image = cftab.Icon
 		TabImage.ImageTransparency = 0.600
 		TabImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
@@ -1336,12 +1359,12 @@ function obj:Window(cfw)
 		TabName.BackgroundTransparency = 0.999
 		TabName.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		TabName.BorderSizePixel = 0
-		TabName.Position = UDim2.new(0, 38, 0.5, 0)
-		TabName.Size = UDim2.new(1, -50, 0, 13)
+		TabName.Position = UDim2.new(0, 32, 0.5, 0)
+		TabName.Size = UDim2.new(1, -40, 0, 12)
 		TabName.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
 		TabName.Text = cftab.Title
 		TabName.TextColor3 = Color3.fromRGB(230, 230, 230)
-		TabName.TextSize = 13.000
+		TabName.TextSize = 12.000
 		TabName.TextTransparency = 0.600
 		TabName.TextXAlignment = Enum.TextXAlignment.Left
 		
@@ -1356,7 +1379,7 @@ function obj:Window(cfw)
 		ScrollLayers.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
 		ScrollLayers.CanvasSize = UDim2.new(0, 0, 1.4, 0)
 		ScrollLayers.ScrollBarImageTransparency = 0.700
-		ScrollLayers.ScrollBarThickness = 4
+		ScrollLayers.ScrollBarThickness = 3
 		ScrollLayers.LayoutOrder = Counts
 		
 		obj.Stepped:Connect(function()
@@ -1365,7 +1388,7 @@ function obj:Window(cfw)
 		
 		UIListLayout_5.Parent = ScrollLayers
 		UIListLayout_5.SortOrder = Enum.SortOrder.LayoutOrder
-		UIListLayout_5.Padding = UDim.new(0, 6)
+		UIListLayout_5.Padding = UDim.new(0, 5)
 		
 		if Counts == 0 then
 			local ChoosingFrame = Instance.new("Frame")
@@ -1377,8 +1400,8 @@ function obj:Window(cfw)
 			ChoosingFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
 			ChoosingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			ChoosingFrame.BorderSizePixel = 0
-			ChoosingFrame.Position = UDim2.new(0, 2, 0, 12)
-			ChoosingFrame.Size = UDim2.new(0, 3, 0, 13)
+			ChoosingFrame.Position = UDim2.new(0, 2, 0, 10)
+			ChoosingFrame.Size = UDim2.new(0, 3, 0, 12)
 			
 			UICorner_9.CornerRadius = UDim.new(0, 100)
 			UICorner_9.Parent = ChoosingFrame
@@ -1428,12 +1451,14 @@ function obj:Window(cfw)
 				obj.TweenObject({Tab, 0.4, "BackgroundTransparency", 0.950})
 				obj.TweenObject({TabImage, 0.4, "ImageTransparency", 0})
 				obj.TweenObject({TabName, 0.4, "TextTransparency", 0})
-				obj.TweenObject({RealChooseFrame, 0.4, "Position", UDim2.new(0, 2, 0, 13 + (38 * ScrollLayers.LayoutOrder))})
+				obj.TweenObject({RealChooseFrame, 0.4, "Position", UDim2.new(0, 2, 0, 11 + (34 * ScrollLayers.LayoutOrder))})
 				BackButton.Text = TabName.Text
 				JumpTo(ScrollLayers.LayoutOrder, TabName.Text)
 			end
 		end)
-		return Sec
+		
+		Counts = Counts + 1
+		return ScrollLayers
 	end
 	
 	return UITab
