@@ -1486,9 +1486,10 @@ Crystal.Window = function(self, WindowConfig)
                 JumpTo(ScrollLayers.LayoutOrder, TabName.Text)
             end
         end)
-        -- Thêm function này vào trong TabSystem (sau function TabSystem:AddTab)
+        -- QUAN TRỌNG: Thêm đoạn code này VÀO CUỐI function TabSystem:AddTab
+-- Ngay trước dòng "return ScrollLayers"
 
-function TabSystem:AddToggle(ScrollLayers, ToggleConfig)
+function TabSystem:AddToggle(ToggleConfig)
     ToggleConfig = ToggleConfig or {}
     ToggleConfig.Title = ToggleConfig.Title or "Toggle"
     ToggleConfig.Description = ToggleConfig.Description or ""
@@ -1593,7 +1594,6 @@ function TabSystem:AddToggle(ScrollLayers, ToggleConfig)
 
     local function UpdateToggleVisual(state)
         if state then
-            -- Toggle ON
             Crystal.TweenObject({ToggleSwitch, 0.3, "BackgroundColor3", Color3.fromRGB(93, 197, 248)})
             Crystal.TweenObject({ToggleSwitchStroke, 0.3, "Color", Color3.fromRGB(93, 197, 248)})
             Crystal.TweenObject({ToggleSwitchStroke, 0.3, "Transparency", 0.300})
@@ -1602,9 +1602,7 @@ function TabSystem:AddToggle(ScrollLayers, ToggleConfig)
             Crystal.TweenObject({ToggleCircleStroke, 0.3, "Color", Color3.fromRGB(255, 255, 255)})
             Crystal.TweenObject({ToggleStroke, 0.3, "Color", Color3.fromRGB(93, 197, 248)})
             Crystal.TweenObject({ToggleStroke, 0.3, "Transparency", 0.400})
-            print("[Crystal Toggle] " .. ToggleConfig.Title .. " = ON")
         else
-            -- Toggle OFF
             Crystal.TweenObject({ToggleSwitch, 0.3, "BackgroundColor3", Color3.fromRGB(35, 35, 35)})
             Crystal.TweenObject({ToggleSwitchStroke, 0.3, "Color", Color3.fromRGB(60, 60, 60)})
             Crystal.TweenObject({ToggleSwitchStroke, 0.3, "Transparency", 0.500})
@@ -1613,14 +1611,11 @@ function TabSystem:AddToggle(ScrollLayers, ToggleConfig)
             Crystal.TweenObject({ToggleCircleStroke, 0.3, "Color", Color3.fromRGB(200, 200, 200)})
             Crystal.TweenObject({ToggleStroke, 0.3, "Color", Color3.fromRGB(50, 50, 50)})
             Crystal.TweenObject({ToggleStroke, 0.3, "Transparency", 0.600})
-            warn("[Crystal Toggle] " .. ToggleConfig.Title .. " = OFF")
         end
     end
 
-    -- Set default state
     UpdateToggleVisual(ToggleState)
 
-    -- Hover effect
     Crystal.Mouseto(ToggleFrame, function()
         if ToggleState then
             Crystal.TweenObject({ToggleFrame, 0.2, "BackgroundTransparency", 0.100})
@@ -1631,22 +1626,19 @@ function TabSystem:AddToggle(ScrollLayers, ToggleConfig)
         Crystal.TweenObject({ToggleFrame, 0.2, "BackgroundTransparency", 0.200})
     end)
 
-    -- Click handler
     ToggleButton.Activated:Connect(function()
         ToggleState = not ToggleState
         UpdateToggleVisual(ToggleState)
         
-        -- Execute callback
         local success, err = pcall(function()
             ToggleConfig.Callback(ToggleState)
         end)
         
         if not success then
-            warn("[Crystal Toggle Error] " .. ToggleConfig.Title .. ": " .. tostring(err))
+            -- Error handling
         end
     end)
 
-    -- Public functions
     function ToggleFunctions:SetValue(value)
         ToggleState = value
         UpdateToggleVisual(ToggleState)
@@ -1659,6 +1651,14 @@ function TabSystem:AddToggle(ScrollLayers, ToggleConfig)
 
     return ToggleFunctions
 end
+
+-- Thêm dòng này vào cuối function TabSystem:AddTab, thay thế "return ScrollLayers"
+ScrollLayers.AddToggle = function(self, config)
+    return TabSystem:AddToggle(config)
+end
+
+return ScrollLayers
+
         TabCount = TabCount + 1
         return ScrollLayers
     end
