@@ -2453,345 +2453,6 @@ function TabObject:AddInput(ConfigInput)
 
     return InputFunc
 end
-function TabObject:AddParagraph(ConfigParagraph)
-    ConfigParagraph = ConfigParagraph or {}
-    ConfigParagraph.Title = ConfigParagraph.Title or "Paragraph"
-    ConfigParagraph.Content = ConfigParagraph.Content or ""
-    ConfigParagraph.IconLabel = ConfigParagraph.IconLabel or "rbxassetid://18558566660"
-
-    local Paragraph = Instance.new("Frame")
-    local UICorner_Para = Instance.new("UICorner")
-    local ParagraphTitle = Instance.new("TextLabel")
-    local ParagraphContent = Instance.new("TextLabel")
-    local ParagraphImage = Instance.new("ImageLabel")
-
-    Paragraph.Name = ConfigParagraph.Title
-    Paragraph.Parent = ScrollLayers
-    Paragraph.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    Paragraph.BackgroundTransparency = 0.970
-    Paragraph.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Paragraph.BorderSizePixel = 0
-    Paragraph.Size = UDim2.new(1, -8, 0, 45)
-
-    UICorner_Para.CornerRadius = UDim.new(0, 4)
-    UICorner_Para.Parent = Paragraph
-
-    ParagraphTitle.Name = "ParagraphTitle"
-    ParagraphTitle.Parent = Paragraph
-    ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ParagraphTitle.BackgroundTransparency = 0.999
-    ParagraphTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ParagraphTitle.BorderSizePixel = 0
-    ParagraphTitle.Position = UDim2.new(0, 40, 0, 11)
-    ParagraphTitle.Size = UDim2.new(1, -52, 0, 12)
-    ParagraphTitle.Font = Enum.Font.Arcade
-    ParagraphTitle.Text = ConfigParagraph.Title
-    ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ParagraphTitle.TextSize = 12.000
-    ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
-
-    ParagraphContent.Name = "ParagraphContent"
-    ParagraphContent.Parent = Paragraph
-    ParagraphContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ParagraphContent.BackgroundTransparency = 0.999
-    ParagraphContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ParagraphContent.BorderSizePixel = 0
-    ParagraphContent.Position = UDim2.new(0, 40, 0, 21)
-    ParagraphContent.Size = UDim2.new(1, -52, 0, 11)
-    ParagraphContent.Font = Enum.Font.Arcade
-    ParagraphContent.Text = ConfigParagraph.Content
-    ParagraphContent.TextColor3 = Color3.fromRGB(160, 160, 160)
-    ParagraphContent.TextSize = 11.000
-    ParagraphContent.TextTransparency = 0.600
-    ParagraphContent.TextWrapped = true
-    ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
-    ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
-
-    ParagraphImage.Name = "ParagraphImage"
-    ParagraphImage.Parent = Paragraph
-    ParagraphImage.AnchorPoint = Vector2.new(0, 0.5)
-    ParagraphImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ParagraphImage.BackgroundTransparency = 0.999
-    ParagraphImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ParagraphImage.BorderSizePixel = 0
-    ParagraphImage.Position = UDim2.new(0, 12, 0.5, 0)
-    ParagraphImage.Size = UDim2.new(0, 16, 0, 16)
-    ParagraphImage.Image = ConfigParagraph.IconLabel
-    ParagraphImage.ImageColor3 = Color3.fromRGB(160, 160, 160)
-
-    -- Auto resize
-    Crystal.Stepped:Connect(function()
-        local contentHeight = math.max(ParagraphContent.TextBounds.Y + 10, 30)
-        Paragraph.Size = UDim2.new(1, -8, 0, contentHeight + 18)
-        ParagraphContent.Size = UDim2.new(1, -52, 0, contentHeight + 10)
-    end)
-
-    -- Hide description if empty
-    if ParagraphContent.Text == "" then
-        ParagraphTitle.Size = UDim2.new(1, -52, 1, 0)
-        ParagraphTitle.Position = UDim2.new(0, 40, 0, 0)
-    end
-
-    local ParagraphFunc = {}
-
-    function ParagraphFunc:SetTitle(NewTitle)
-        ParagraphTitle.Text = NewTitle
-    end
-
-    function ParagraphFunc:SetDesc(NewDesc)
-        ParagraphContent.Text = NewDesc
-        -- Update size when description changes
-        local contentHeight = math.max(ParagraphContent.TextBounds.Y + 10, 30)
-        Paragraph.Size = UDim2.new(1, -8, 0, contentHeight + 18)
-        ParagraphContent.Size = UDim2.new(1, -52, 0, contentHeight + 10)
-        
-        if NewDesc == "" then
-            ParagraphTitle.Size = UDim2.new(1, -52, 1, 0)
-            ParagraphTitle.Position = UDim2.new(0, 40, 0, 0)
-        else
-            ParagraphTitle.Size = UDim2.new(1, -52, 0, 12)
-            ParagraphTitle.Position = UDim2.new(0, 40, 0, 11)
-        end
-    end
-
-    function ParagraphFunc:SetIcon(NewIcon)
-        ParagraphImage.Image = NewIcon
-    end
-
-    function ParagraphFunc:Destroy()
-        Paragraph:Destroy()
-    end
-
-    return ParagraphFunc
-end
-
-function TabObject:AddSeperator(Text)
-    Text = Text or ""
-
-    local Seperator = Instance.new("Frame")
-    local TopLine = Instance.new("Frame")
-    local BottomLine = Instance.new("Frame")
-    local SeperatorText = Instance.new("TextLabel")
-    local UICorner_Top = Instance.new("UICorner")
-    local UICorner_Bottom = Instance.new("UICorner")
-
-    Seperator.Name = "Seperator_" .. Text
-    Seperator.Parent = ScrollLayers
-    Seperator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Seperator.BackgroundTransparency = 0.999
-    Seperator.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Seperator.BorderSizePixel = 0
-    Seperator.Size = UDim2.new(1, -8, 0, 35)
-
-    if Text ~= "" and Text ~= " " then
-        -- Có text - layout với line trên dưới và text ở giữa
-        TopLine.Name = "TopLine"
-        TopLine.Parent = Seperator
-        TopLine.AnchorPoint = Vector2.new(0.5, 1)
-        TopLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-        TopLine.BackgroundTransparency = 0.700
-        TopLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        TopLine.BorderSizePixel = 0
-        TopLine.Position = UDim2.new(0.5, 0, 0.5, -10)
-        TopLine.Size = UDim2.new(1, -40, 0, 1)
-
-        UICorner_Top.CornerRadius = UDim.new(1, 0)
-        UICorner_Top.Parent = TopLine
-
-        SeperatorText.Name = "SeperatorText"
-        SeperatorText.Parent = Seperator
-        SeperatorText.AnchorPoint = Vector2.new(0.5, 0.5)
-        SeperatorText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        SeperatorText.BackgroundTransparency = 0.999
-        SeperatorText.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        SeperatorText.BorderSizePixel = 0
-        SeperatorText.Position = UDim2.new(0.5, 0, 0.5, 0)
-        SeperatorText.Size = UDim2.new(0, 0, 0, 14)
-        SeperatorText.Font = Enum.Font.Arcade
-        SeperatorText.Text = Text
-        SeperatorText.TextColor3 = Color3.fromRGB(140, 140, 140)
-        SeperatorText.TextSize = 11
-        SeperatorText.TextTransparency = 0.500
-
-        BottomLine.Name = "BottomLine"
-        BottomLine.Parent = Seperator
-        BottomLine.AnchorPoint = Vector2.new(0.5, 0)
-        BottomLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-        BottomLine.BackgroundTransparency = 0.700
-        BottomLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        BottomLine.BorderSizePixel = 0
-        BottomLine.Position = UDim2.new(0.5, 0, 0.5, 10)
-        BottomLine.Size = UDim2.new(1, -40, 0, 1)
-
-        UICorner_Bottom.CornerRadius = UDim.new(1, 0)
-        UICorner_Bottom.Parent = BottomLine
-
-        Crystal.Stepped:Connect(function()
-            local textWidth = SeperatorText.TextBounds.X + 20
-            SeperatorText.Size = UDim2.new(0, textWidth, 0, 14)
-        end)
-    else
-        TopLine.Name = "FullLine"
-        TopLine.Parent = Seperator
-        TopLine.AnchorPoint = Vector2.new(0.5, 0.5)
-        TopLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-        TopLine.BackgroundTransparency = 0.700
-        TopLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        TopLine.BorderSizePixel = 0
-        TopLine.Position = UDim2.new(0.5, 0, 0.5, 0)
-        TopLine.Size = UDim2.new(1, -20, 0, 1)
-
-        UICorner_Top.CornerRadius = UDim.new(1, 0)
-        UICorner_Top.Parent = TopLine
-    end
-
-    local SeperatorFunc = {}
-
-    function SeperatorFunc:SetText(NewText)
-        if SeperatorText then
-            SeperatorText.Text = NewText
-        end
-    end
-
-    function SeperatorFunc:SetColor(NewColor)
-        local color = NewColor or Color3.fromRGB(80, 80, 80)
-        if TopLine then
-            TopLine.BackgroundColor3 = color
-        end
-        if BottomLine then
-            BottomLine.BackgroundColor3 = color
-        end
-        if SeperatorText then
-            SeperatorText.TextColor3 = color
-        end
-    end
-
-    function SeperatorFunc:Destroy()
-        Seperator:Destroy()
-    end
-
-    return SeperatorFunc
-end
-function TabObject:AddImage(ConfigImage)
-    ConfigImage = ConfigImage or {}
-    ConfigImage.Title = ConfigImage.Title or "Image"
-    ConfigImage.Description = ConfigImage.Description or ""
-    ConfigImage.Icon = ConfigImage.Icon or ""
-    ConfigImage.Acreage = ConfigImage.Acreage or 100
-
-    local ImageElement = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local ImageTitle = Instance.new("TextLabel")
-    local ImageDesc = Instance.new("TextLabel")
-    local ImageLabel = Instance.new("ImageLabel")
-    local ImageButton = Instance.new("TextButton")
-
-    ImageElement.Name = ConfigImage.Title
-    ImageElement.Parent = ScrollLayers
-    ImageElement.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    ImageElement.BackgroundTransparency = 0.970
-    ImageElement.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ImageElement.BorderSizePixel = 0
-    ImageElement.Size = UDim2.new(1, -8, 0, 120)
-
-    UICorner.CornerRadius = UDim.new(0, 4)
-    UICorner.Parent = ImageElement
-
-    ImageTitle.Name = "ImageTitle"
-    ImageTitle.Parent = ImageElement
-    ImageTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ImageTitle.BackgroundTransparency = 0.999
-    ImageTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ImageTitle.BorderSizePixel = 0
-    ImageTitle.Position = UDim2.new(0, 0, 0, 10)
-    ImageTitle.Size = UDim2.new(1, 0, 0, 16)
-    ImageTitle.Font = Enum.Font.Arcade
-    ImageTitle.Text = ConfigImage.Title
-    ImageTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ImageTitle.TextSize = 14
-    ImageTitle.TextXAlignment = Enum.TextXAlignment.Center
-
-    ImageDesc.Name = "ImageDesc"
-    ImageDesc.Parent = ImageElement
-    ImageDesc.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ImageDesc.BackgroundTransparency = 0.999
-    ImageDesc.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ImageDesc.BorderSizePixel = 0
-    ImageDesc.Position = UDim2.new(0, 15, 0, 30)
-    ImageDesc.Size = UDim2.new(1, -30, 0, 14)
-    ImageDesc.Font = Enum.Font.Arcade
-    ImageDesc.Text = ConfigImage.Description
-    ImageDesc.TextColor3 = Color3.fromRGB(160, 160, 160)
-    ImageDesc.TextSize = 11
-    ImageDesc.TextTransparency = 0.600
-    ImageDesc.TextXAlignment = Enum.TextXAlignment.Center
-    ImageDesc.TextWrapped = true
-
-    ImageLabel.Name = "ImageLabel"
-    ImageLabel.Parent = ImageElement
-    ImageLabel.AnchorPoint = Vector2.new(0.5, 0)
-    ImageLabel.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    ImageLabel.BackgroundTransparency = 0.900
-    ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ImageLabel.BorderSizePixel = 0
-    ImageLabel.Position = UDim2.new(0.5, 0, 0, 50)
-    ImageLabel.Size = UDim2.new(0, ConfigImage.Acreage, 0, ConfigImage.Acreage)
-    ImageLabel.Image = ConfigImage.Icon
-    ImageLabel.ScaleType = Enum.ScaleType.Fit
-
-    ImageButton.Name = "ImageButton"
-    ImageButton.Parent = ImageElement
-    ImageButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ImageButton.BackgroundTransparency = 0.999
-    ImageButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ImageButton.BorderSizePixel = 0
-    ImageButton.Size = UDim2.new(1, 0, 1, 0)
-    ImageButton.Font = Enum.Font.SourceSans
-    ImageButton.Text = ""
-    ImageButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-    ImageButton.TextSize = 14
-
-    Crystal.Mouseto(ImageButton, function()
-        Crystal.TweenObject({ImageElement, 0.2, "BackgroundTransparency", 0.950})
-        Crystal.TweenObject({ImageLabel, 0.2, "BackgroundTransparency", 0.850})
-    end, function()
-        Crystal.TweenObject({ImageElement, 0.2, "BackgroundTransparency", 0.970})
-        Crystal.TweenObject({ImageLabel, 0.2, "BackgroundTransparency", 0.900})
-    end)
-
-    Crystal.Click(ImageButton, function()
-        Crystal.TweenObject({ImageLabel, 0.1, "Size", UDim2.new(0, ConfigImage.Acreage * 0.95, 0, ConfigImage.Acreage * 0.95)})
-        task.wait(0.1)
-        Crystal.TweenObject({ImageLabel, 0.1, "Size", UDim2.new(0, ConfigImage.Acreage, 0, ConfigImage.Acreage)})
-    end)
-
-    Crystal.Stepped:Connect(function()
-        local titleHeight = ImageTitle.TextBounds.Y
-        local descHeight = math.max(ImageDesc.TextBounds.Y, 14)
-        local totalHeight = titleHeight + descHeight + ConfigImage.Acreage + 60
-        ImageElement.Size = UDim2.new(1, -8, 0, totalHeight)
-        ImageDesc.Position = UDim2.new(0, 15, 0, titleHeight + 20)
-        ImageLabel.Position = UDim2.new(0.5, 0, 0, titleHeight + descHeight + 35)
-    end)
-
-    local ImageFunc = {}
-    function ImageFunc:SetImage(NewConfig)
-        NewConfig = NewConfig or {}
-        ImageTitle.Text = NewConfig.Title or ImageTitle.Text
-        ImageDesc.Text = NewConfig.Description or ImageDesc.Text
-        ImageLabel.Image = NewConfig.Icon or ImageLabel.Image
-        local newAcreage = NewConfig.Acreage or ConfigImage.Acreage
-        
-        Crystal.TweenObject({ImageLabel, 0.3, "Size", UDim2.new(0, newAcreage, 0, newAcreage)})
-        ConfigImage.Acreage = newAcreage
-    end
-
-    function ImageFunc:Destroy()
-        ImageElement:Destroy()
-    end
-
-    return ImageFunc
-end
 
 function TabObject:AddKeybind(ConfigKeybind)
     ConfigKeybind = ConfigKeybind or {}
@@ -2820,7 +2481,6 @@ function TabObject:AddKeybind(ConfigKeybind)
         Toggled = false
     }
 
-    -- Main Keybind Frame
     Keybind.Name = ConfigKeybind.Title
     Keybind.Parent = ScrollLayers
     Keybind.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -2875,7 +2535,6 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindImage.Image = ConfigKeybind.IconKeybind
     KeybindImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Toggle Label (if Toggle mode is enabled)
     if ConfigKeybind.Toggle then
         ToggleKeybind.Name = "ToggleKeybind"
         ToggleKeybind.Parent = Keybind
@@ -2884,8 +2543,8 @@ function TabObject:AddKeybind(ConfigKeybind)
         ToggleKeybind.BackgroundTransparency = 1
         ToggleKeybind.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ToggleKeybind.BorderSizePixel = 0
-        ToggleKeybind.Position = UDim2.new(1, -80, 0.5, 0)
-        ToggleKeybind.Size = UDim2.new(0, 40, 0, 12)
+        ToggleKeybind.Position = UDim2.new(1, -70, 0.5, 0)
+        ToggleKeybind.Size = UDim2.new(0, 35, 0, 12)
         ToggleKeybind.Font = Enum.Font.Arcade
         ToggleKeybind.Text = "False"
         ToggleKeybind.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -2894,7 +2553,6 @@ function TabObject:AddKeybind(ConfigKeybind)
         ToggleKeybind.TextXAlignment = Enum.TextXAlignment.Right
     end
 
-    -- Keybind Display Frame
     KeybindFrame.Name = "KeybindFrame"
     KeybindFrame.Parent = Keybind
     KeybindFrame.AnchorPoint = Vector2.new(1, 0.5)
@@ -2903,7 +2561,7 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     KeybindFrame.BorderSizePixel = 0
     KeybindFrame.Position = UDim2.new(1, -9, 0.5, 0)
-    KeybindFrame.Size = ConfigKeybind.Toggle and UDim2.new(0, 45, 0, 26) or UDim2.new(0, 65, 0, 26)
+    KeybindFrame.Size = ConfigKeybind.Toggle and UDim2.new(0, 50, 0, 26) or UDim2.new(0, 65, 0, 26)
 
     UICorner_13.CornerRadius = UDim.new(0, 4)
     UICorner_13.Parent = KeybindFrame
@@ -2935,7 +2593,6 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindText.TextSize = 11
     KeybindText.TextXAlignment = Enum.TextXAlignment.Center
 
-    -- Hover effect
     Crystal.Mouseto(KeybindFrame, function()
         if not waitingForKey then
             Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.920})
@@ -2946,7 +2603,6 @@ function TabObject:AddKeybind(ConfigKeybind)
         end
     end)
 
-    -- Auto-resize based on description
     if KeybindContent.Text == '' then
         KeybindTitle.Size = UDim2.new(1, -180, 1, 0)
         KeybindTitle.Position = UDim2.new(0, 40, 0.5, -6)
@@ -2958,15 +2614,14 @@ function TabObject:AddKeybind(ConfigKeybind)
         Keybind.Size = UDim2.new(1, -8, 0, contentHeight + 30)
         KeybindContent.Size = UDim2.new(1, -180, 0, contentHeight)
         
-        -- Auto-adjust positions based on Toggle mode
         if ConfigKeybind.Toggle and ToggleKeybind then
             local toggleTextWidth = ToggleKeybind.TextBounds.X
-            ToggleKeybind.Size = UDim2.new(0, math.max(toggleTextWidth + 4, 35), 0, 12)
-            ToggleKeybind.Position = UDim2.new(1, -(KeybindFrame.Size.X.Offset + 14 + ToggleKeybind.Size.X.Offset), 0.5, 0)
+            ToggleKeybind.Size = UDim2.new(0, math.max(toggleTextWidth + 2, 32), 0, 12)
+            local keybindWidth = KeybindFrame.Size.X.Offset
+            ToggleKeybind.Position = UDim2.new(1, -(keybindWidth + ToggleKeybind.Size.X.Offset + 16), 0.5, 0)
         end
     end)
 
-    -- Click to change keybind
     Crystal.Click(KeybindButton, function()
         if waitingForKey then return end
         
@@ -2976,16 +2631,13 @@ function TabObject:AddKeybind(ConfigKeybind)
         Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.880})
     end)
 
-    -- Input detection
     local inputConnection
     inputConnection = Crystal.UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
         if gameProcessedEvent then return end
         
-        -- Waiting for key assignment
         if waitingForKey and input.UserInputType == Enum.UserInputType.Keyboard then
             waitingForKey = false
             
-            -- Handle special keys
             if input.KeyCode == Enum.KeyCode.Escape or input.KeyCode == Enum.KeyCode.Backspace then
                 KeybindFunc.Value = Enum.KeyCode.Unknown
                 KeybindText.Text = "None"
@@ -2999,12 +2651,10 @@ function TabObject:AddKeybind(ConfigKeybind)
             return
         end
         
-        -- Key pressed to trigger callback
         if not waitingForKey and input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == KeybindFunc.Value then
             if KeybindFunc.Value == Enum.KeyCode.Unknown then return end
             
             if ConfigKeybind.Toggle then
-                -- Toggle mode
                 isToggled = not isToggled
                 KeybindFunc.Toggled = isToggled
                 
@@ -3018,14 +2668,12 @@ function TabObject:AddKeybind(ConfigKeybind)
                     ToggleKeybind.TextTransparency = 0.5
                 end
                 
-                -- Visual feedback
                 Crystal.TweenObject({KeybindFrame, 0.15, "BackgroundTransparency", 0.880})
                 task.wait(0.15)
                 Crystal.TweenObject({KeybindFrame, 0.15, "BackgroundTransparency", 0.960})
                 
                 ConfigKeybind.Callback(isToggled, input.KeyCode)
             else
-                -- Press mode
                 Crystal.TweenObject({KeybindFrame, 0.15, "BackgroundTransparency", 0.880})
                 task.wait(0.15)
                 Crystal.TweenObject({KeybindFrame, 0.15, "BackgroundTransparency", 0.960})
@@ -3035,7 +2683,6 @@ function TabObject:AddKeybind(ConfigKeybind)
         end
     end)
 
-    -- Functions
     function KeybindFunc:Set(NewKey)
         if typeof(NewKey) == "EnumItem" and NewKey.EnumType == Enum.KeyCode then
             KeybindFunc.Value = NewKey
@@ -3104,6 +2751,378 @@ function TabObject:AddKeybind(ConfigKeybind)
     end
 
     return KeybindFunc
+end
+
+function TabObject:AddParagraph(ConfigParagraph)
+    ConfigParagraph = ConfigParagraph or {}
+    ConfigParagraph.Title = ConfigParagraph.Title or "Paragraph"
+    ConfigParagraph.Content = ConfigParagraph.Content or ""
+    ConfigParagraph.IconLabel = ConfigParagraph.IconLabel or "rbxassetid://18558566660"
+
+    local Paragraph = Instance.new("Frame")
+    local UICorner_Para = Instance.new("UICorner")
+    local ParagraphTitle = Instance.new("TextLabel")
+    local ParagraphContent = Instance.new("TextLabel")
+    local ParagraphImage = Instance.new("ImageLabel")
+
+    Paragraph.Name = ConfigParagraph.Title
+    Paragraph.Parent = ScrollLayers
+    Paragraph.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Paragraph.BackgroundTransparency = 0.970
+    Paragraph.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Paragraph.BorderSizePixel = 0
+    Paragraph.Size = UDim2.new(1, -8, 0, 45)
+
+    UICorner_Para.CornerRadius = UDim.new(0, 4)
+    UICorner_Para.Parent = Paragraph
+
+    ParagraphTitle.Name = "ParagraphTitle"
+    ParagraphTitle.Parent = Paragraph
+    ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphTitle.BackgroundTransparency = 1
+    ParagraphTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphTitle.BorderSizePixel = 0
+    ParagraphTitle.Position = UDim2.new(0, 40, 0, 11)
+    ParagraphTitle.Size = UDim2.new(1, -52, 0, 12)
+    ParagraphTitle.Font = Enum.Font.Arcade
+    ParagraphTitle.Text = ConfigParagraph.Title
+    ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphTitle.TextSize = 12
+    ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    ParagraphContent.Name = "ParagraphContent"
+    ParagraphContent.Parent = Paragraph
+    ParagraphContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphContent.BackgroundTransparency = 1
+    ParagraphContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphContent.BorderSizePixel = 0
+    ParagraphContent.Position = UDim2.new(0, 40, 0, 21)
+    ParagraphContent.Size = UDim2.new(1, -52, 0, 11)
+    ParagraphContent.Font = Enum.Font.Arcade
+    ParagraphContent.Text = ConfigParagraph.Content
+    ParagraphContent.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphContent.TextSize = 11
+    ParagraphContent.TextTransparency = 0.600
+    ParagraphContent.TextWrapped = true
+    ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
+    ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    ParagraphImage.Name = "ParagraphImage"
+    ParagraphImage.Parent = Paragraph
+    ParagraphImage.AnchorPoint = Vector2.new(0, 0.5)
+    ParagraphImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphImage.BackgroundTransparency = 1
+    ParagraphImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphImage.BorderSizePixel = 0
+    ParagraphImage.Position = UDim2.new(0, 12, 0.5, 0)
+    ParagraphImage.Size = UDim2.new(0, 16, 0, 16)
+    ParagraphImage.Image = ConfigParagraph.IconLabel
+    ParagraphImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
+
+    Crystal.Stepped:Connect(function()
+        local contentHeight = math.max(ParagraphContent.TextBounds.Y + 10, 30)
+        Paragraph.Size = UDim2.new(1, -8, 0, contentHeight + 18)
+        ParagraphContent.Size = UDim2.new(1, -52, 0, contentHeight + 10)
+    end)
+
+    if ParagraphContent.Text == "" then
+        ParagraphTitle.Size = UDim2.new(1, -52, 1, 0)
+        ParagraphTitle.Position = UDim2.new(0, 40, 0.5, -6)
+        ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Center
+    end
+
+    local ParagraphFunc = {}
+
+    function ParagraphFunc:SetTitle(NewTitle)
+        ParagraphTitle.Text = NewTitle
+    end
+
+    function ParagraphFunc:SetDesc(NewDesc)
+        ParagraphContent.Text = NewDesc
+        
+        if NewDesc == "" then
+            ParagraphTitle.Size = UDim2.new(1, -52, 1, 0)
+            ParagraphTitle.Position = UDim2.new(0, 40, 0.5, -6)
+            ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Center
+        else
+            ParagraphTitle.Size = UDim2.new(1, -52, 0, 12)
+            ParagraphTitle.Position = UDim2.new(0, 40, 0, 11)
+            ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Top
+        end
+    end
+
+    function ParagraphFunc:SetIcon(NewIcon)
+        ParagraphImage.Image = NewIcon
+    end
+
+    function ParagraphFunc:SetVisibility(visible)
+        Paragraph.Visible = visible
+    end
+
+    function ParagraphFunc:Destroy()
+        Paragraph:Destroy()
+    end
+
+    return ParagraphFunc
+end
+
+function TabObject:AddSeperator(Text)
+    Text = Text or ""
+
+    local Seperator = Instance.new("Frame")
+    local TopLine = Instance.new("Frame")
+    local BottomLine = Instance.new("Frame")
+    local SeperatorText = Instance.new("TextLabel")
+    local UICorner_Top = Instance.new("UICorner")
+    local UICorner_Bottom = Instance.new("UICorner")
+
+    Seperator.Name = "Seperator_" .. Text
+    Seperator.Parent = ScrollLayers
+    Seperator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Seperator.BackgroundTransparency = 1
+    Seperator.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Seperator.BorderSizePixel = 0
+    Seperator.Size = UDim2.new(1, -8, 0, 35)
+
+    if Text ~= "" and Text ~= " " then
+        TopLine.Name = "TopLine"
+        TopLine.Parent = Seperator
+        TopLine.AnchorPoint = Vector2.new(0.5, 1)
+        TopLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        TopLine.BackgroundTransparency = 0.700
+        TopLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TopLine.BorderSizePixel = 0
+        TopLine.Position = UDim2.new(0.5, 0, 0.5, -10)
+        TopLine.Size = UDim2.new(1, -40, 0, 1)
+
+        UICorner_Top.CornerRadius = UDim.new(1, 0)
+        UICorner_Top.Parent = TopLine
+
+        SeperatorText.Name = "SeperatorText"
+        SeperatorText.Parent = Seperator
+        SeperatorText.AnchorPoint = Vector2.new(0.5, 0.5)
+        SeperatorText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        SeperatorText.BackgroundTransparency = 1
+        SeperatorText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        SeperatorText.BorderSizePixel = 0
+        SeperatorText.Position = UDim2.new(0.5, 0, 0.5, 0)
+        SeperatorText.Size = UDim2.new(0, 0, 0, 14)
+        SeperatorText.Font = Enum.Font.Arcade
+        SeperatorText.Text = Text
+        SeperatorText.TextColor3 = Color3.fromRGB(140, 140, 140)
+        SeperatorText.TextSize = 11
+        SeperatorText.TextTransparency = 0.500
+
+        BottomLine.Name = "BottomLine"
+        BottomLine.Parent = Seperator
+        BottomLine.AnchorPoint = Vector2.new(0.5, 0)
+        BottomLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        BottomLine.BackgroundTransparency = 0.700
+        BottomLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        BottomLine.BorderSizePixel = 0
+        BottomLine.Position = UDim2.new(0.5, 0, 0.5, 10)
+        BottomLine.Size = UDim2.new(1, -40, 0, 1)
+
+        UICorner_Bottom.CornerRadius = UDim.new(1, 0)
+        UICorner_Bottom.Parent = BottomLine
+
+        Crystal.Stepped:Connect(function()
+            local textWidth = SeperatorText.TextBounds.X + 20
+            SeperatorText.Size = UDim2.new(0, textWidth, 0, 14)
+        end)
+    else
+        TopLine.Name = "FullLine"
+        TopLine.Parent = Seperator
+        TopLine.AnchorPoint = Vector2.new(0.5, 0.5)
+        TopLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        TopLine.BackgroundTransparency = 0.700
+        TopLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TopLine.BorderSizePixel = 0
+        TopLine.Position = UDim2.new(0.5, 0, 0.5, 0)
+        TopLine.Size = UDim2.new(1, -20, 0, 1)
+
+        UICorner_Top.CornerRadius = UDim.new(1, 0)
+        UICorner_Top.Parent = TopLine
+    end
+
+    local SeperatorFunc = {}
+
+    function SeperatorFunc:SetText(NewText)
+        if SeperatorText then
+            SeperatorText.Text = NewText
+        end
+    end
+
+    function SeperatorFunc:SetColor(NewColor)
+        local color = NewColor or Color3.fromRGB(80, 80, 80)
+        if TopLine then
+            TopLine.BackgroundColor3 = color
+        end
+        if BottomLine then
+            BottomLine.BackgroundColor3 = color
+        end
+        if SeperatorText then
+            SeperatorText.TextColor3 = color
+        end
+    end
+
+    function SeperatorFunc:SetVisibility(visible)
+        Seperator.Visible = visible
+    end
+
+    function SeperatorFunc:Destroy()
+        Seperator:Destroy()
+    end
+
+    return SeperatorFunc
+end
+
+function TabObject:AddImage(ConfigImage)
+    ConfigImage = ConfigImage or {}
+    ConfigImage.Title = ConfigImage.Title or "Image"
+    ConfigImage.Description = ConfigImage.Description or ""
+    ConfigImage.Icon = ConfigImage.Icon or ""
+    ConfigImage.Acreage = ConfigImage.Acreage or 100
+
+    local ImageElement = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local ImageTitle = Instance.new("TextLabel")
+    local ImageDesc = Instance.new("TextLabel")
+    local ImageLabel = Instance.new("ImageLabel")
+    local ImageCorner = Instance.new("UICorner")
+    local ImageButton = Instance.new("TextButton")
+
+    ImageElement.Name = ConfigImage.Title
+    ImageElement.Parent = ScrollLayers
+    ImageElement.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    ImageElement.BackgroundTransparency = 0.970
+    ImageElement.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageElement.BorderSizePixel = 0
+    ImageElement.Size = UDim2.new(1, -8, 0, 120)
+
+    UICorner.CornerRadius = UDim.new(0, 4)
+    UICorner.Parent = ImageElement
+
+    ImageTitle.Name = "ImageTitle"
+    ImageTitle.Parent = ImageElement
+    ImageTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageTitle.BackgroundTransparency = 1
+    ImageTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageTitle.BorderSizePixel = 0
+    ImageTitle.Position = UDim2.new(0, 0, 0, 10)
+    ImageTitle.Size = UDim2.new(1, 0, 0, 16)
+    ImageTitle.Font = Enum.Font.Arcade
+    ImageTitle.Text = ConfigImage.Title
+    ImageTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ImageTitle.TextSize = 14
+    ImageTitle.TextXAlignment = Enum.TextXAlignment.Center
+
+    ImageDesc.Name = "ImageDesc"
+    ImageDesc.Parent = ImageElement
+    ImageDesc.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageDesc.BackgroundTransparency = 1
+    ImageDesc.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageDesc.BorderSizePixel = 0
+    ImageDesc.Position = UDim2.new(0, 15, 0, 30)
+    ImageDesc.Size = UDim2.new(1, -30, 0, 14)
+    ImageDesc.Font = Enum.Font.Arcade
+    ImageDesc.Text = ConfigImage.Description
+    ImageDesc.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ImageDesc.TextSize = 11
+    ImageDesc.TextTransparency = 0.600
+    ImageDesc.TextXAlignment = Enum.TextXAlignment.Center
+    ImageDesc.TextWrapped = true
+
+    ImageLabel.Name = "ImageLabel"
+    ImageLabel.Parent = ImageElement
+    ImageLabel.AnchorPoint = Vector2.new(0.5, 0)
+    ImageLabel.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    ImageLabel.BackgroundTransparency = 0.900
+    ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageLabel.BorderSizePixel = 0
+    ImageLabel.Position = UDim2.new(0.5, 0, 0, 50)
+    ImageLabel.Size = UDim2.new(0, ConfigImage.Acreage, 0, ConfigImage.Acreage)
+    ImageLabel.Image = ConfigImage.Icon
+    ImageLabel.ScaleType = Enum.ScaleType.Fit
+
+    ImageCorner.CornerRadius = UDim.new(0, 6)
+    ImageCorner.Parent = ImageLabel
+
+    ImageButton.Name = "ImageButton"
+    ImageButton.Parent = ImageElement
+    ImageButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageButton.BackgroundTransparency = 1
+    ImageButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageButton.BorderSizePixel = 0
+    ImageButton.Size = UDim2.new(1, 0, 1, 0)
+    ImageButton.Font = Enum.Font.SourceSans
+    ImageButton.Text = ""
+    ImageButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    ImageButton.TextSize = 14
+    ImageButton.AutoButtonColor = false
+
+    Crystal.Mouseto(ImageButton, function()
+        Crystal.TweenObject({ImageElement, 0.2, "BackgroundTransparency", 0.950})
+        Crystal.TweenObject({ImageLabel, 0.2, "BackgroundTransparency", 0.850})
+    end, function()
+        Crystal.TweenObject({ImageElement, 0.2, "BackgroundTransparency", 0.970})
+        Crystal.TweenObject({ImageLabel, 0.2, "BackgroundTransparency", 0.900})
+    end)
+
+    Crystal.Click(ImageButton, function()
+        Crystal.TweenObject({ImageLabel, 0.1, "Size", UDim2.new(0, ConfigImage.Acreage * 0.95, 0, ConfigImage.Acreage * 0.95)})
+        task.wait(0.1)
+        Crystal.TweenObject({ImageLabel, 0.1, "Size", UDim2.new(0, ConfigImage.Acreage, 0, ConfigImage.Acreage)})
+    end)
+
+    Crystal.Stepped:Connect(function()
+        local titleHeight = ImageTitle.TextBounds.Y
+        local descHeight = math.max(ImageDesc.TextBounds.Y, 14)
+        local totalHeight = titleHeight + descHeight + ConfigImage.Acreage + 60
+        ImageElement.Size = UDim2.new(1, -8, 0, totalHeight)
+        ImageDesc.Position = UDim2.new(0, 15, 0, titleHeight + 20)
+        ImageLabel.Position = UDim2.new(0.5, 0, 0, titleHeight + descHeight + 35)
+    end)
+
+    local ImageFunc = {}
+    
+    function ImageFunc:SetImage(NewConfig)
+        NewConfig = NewConfig or {}
+        ImageTitle.Text = NewConfig.Title or ImageTitle.Text
+        ImageDesc.Text = NewConfig.Description or ImageDesc.Text
+        ImageLabel.Image = NewConfig.Icon or ImageLabel.Image
+        local newAcreage = NewConfig.Acreage or ConfigImage.Acreage
+        
+        Crystal.TweenObject({ImageLabel, 0.3, "Size", UDim2.new(0, newAcreage, 0, newAcreage)})
+        ConfigImage.Acreage = newAcreage
+    end
+
+    function ImageFunc:SetTitle(NewTitle)
+        ImageTitle.Text = NewTitle
+    end
+
+    function ImageFunc:SetDescription(NewDescription)
+        ImageDesc.Text = NewDescription
+    end
+
+    function ImageFunc:SetIcon(NewIcon)
+        ImageLabel.Image = NewIcon
+    end
+
+    function ImageFunc:SetSize(NewSize)
+        ConfigImage.Acreage = NewSize
+        Crystal.TweenObject({ImageLabel, 0.3, "Size", UDim2.new(0, NewSize, 0, NewSize)})
+    end
+
+    function ImageFunc:SetVisibility(visible)
+        ImageElement.Visible = visible
+    end
+
+    function ImageFunc:Destroy()
+        ImageElement:Destroy()
+    end
+
+    return ImageFunc
 end
 TabCount = TabCount + 1
 return TabObject
