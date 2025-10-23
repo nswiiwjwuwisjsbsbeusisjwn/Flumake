@@ -2286,8 +2286,10 @@ function TabObject:AddDropdown(ConfigDropdown)
     return DropFunc
 end
 TabCount = TabCount + 1
-        return TabObject  
+return TabObject
     end
-    
-    return TabSystem  
+
+    return TabSystem
 end
+
+return Crystal
