@@ -1485,81 +1485,104 @@ function TabObject:AddButton(ButtonConfig)
     local ButtonClick = Instance.new("TextButton")
     local ButtonIcon = Instance.new("ImageLabel")
     local ButtonStroke = Instance.new("UIStroke")
+    local ButtonGradient = Instance.new("UIGradient")
 
     Button.Name = ButtonConfig.Title
     Button.Parent = ScrollLayers
-    Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    Button.BackgroundTransparency = 0.900
+    Button.BackgroundColor3 = Color3.fromRGB(25, 25, 28)
+    Button.BackgroundTransparency = 0.85
     Button.BorderSizePixel = 0
-    Button.Size = UDim2.new(1, 0, 0, 45)
+    Button.Size = UDim2.new(1, 0, 0, 50)
 
-    ButtonCorner.CornerRadius = UDim.new(0, 8)
+    ButtonCorner.CornerRadius = UDim.new(0, 10)
     ButtonCorner.Parent = Button
+
+    ButtonGradient.Parent = Button
+    ButtonGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(35, 35, 40)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 30))
+    }
+    ButtonGradient.Rotation = 90
+    ButtonGradient.Transparency = NumberSequence.new{
+        NumberSequenceKeypoint.new(0, 0.9),
+        NumberSequenceKeypoint.new(1, 0.95)
+    }
 
     ButtonStroke.Parent = Button
     ButtonStroke.Color = Color3.fromRGB(93, 197, 248)
-    ButtonStroke.Thickness = 1
-    ButtonStroke.Transparency = 0.5
+    ButtonStroke.Thickness = 1.5
+    ButtonStroke.Transparency = 0.7
     ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
     ButtonTitle.Name = "ButtonTitle"
     ButtonTitle.Parent = Button
     ButtonTitle.BackgroundTransparency = 1
-    ButtonTitle.Position = UDim2.new(0, 12, 0, 8)
-    ButtonTitle.Size = UDim2.new(1, -50, 0, 14)
-    ButtonTitle.Font = Enum.Font.Arcade
+    ButtonTitle.Position = UDim2.new(0, 15, 0, 10)
+    ButtonTitle.Size = UDim2.new(1, -60, 0, 15)
+    ButtonTitle.Font = Enum.Font.GothamBold
     ButtonTitle.Text = ButtonConfig.Title
     ButtonTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonTitle.TextSize = 13
+    ButtonTitle.TextSize = 14
     ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
 
     ButtonDescription.Name = "ButtonDescription"
     ButtonDescription.Parent = Button
     ButtonDescription.BackgroundTransparency = 1
-    ButtonDescription.Position = UDim2.new(0, 12, 0, 24)
-    ButtonDescription.Size = UDim2.new(1, -50, 0, 10)
-    ButtonDescription.Font = Enum.Font.Arcade
+    ButtonDescription.Position = UDim2.new(0, 15, 0, 28)
+    ButtonDescription.Size = UDim2.new(1, -60, 0, 12)
+    ButtonDescription.Font = Enum.Font.Gotham
     ButtonDescription.Text = ButtonConfig.Description
-    ButtonDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
-    ButtonDescription.TextSize = 9
-    ButtonDescription.TextTransparency = 0.4
+    ButtonDescription.TextColor3 = Color3.fromRGB(200, 200, 200)
+    ButtonDescription.TextSize = 10
+    ButtonDescription.TextTransparency = 0.3
     ButtonDescription.TextXAlignment = Enum.TextXAlignment.Left
 
     ButtonIcon.Name = "ButtonIcon"
     ButtonIcon.Parent = Button
     ButtonIcon.AnchorPoint = Vector2.new(1, 0.5)
     ButtonIcon.BackgroundTransparency = 1
-    ButtonIcon.Position = UDim2.new(1, -10, 0.5, 0)
-    ButtonIcon.Size = UDim2.new(0, 20, 0, 20)
+    ButtonIcon.Position = UDim2.new(1, -12, 0.5, 0)
+    ButtonIcon.Size = UDim2.new(0, 24, 0, 24)
     ButtonIcon.Image = "rbxassetid://18558566660"
     ButtonIcon.ImageColor3 = Color3.fromRGB(93, 197, 248)
+    ButtonIcon.ImageTransparency = 0.2
 
     ButtonClick.Name = "ButtonClick"
     ButtonClick.Parent = Button
     ButtonClick.BackgroundTransparency = 1
     ButtonClick.Size = UDim2.new(1, 0, 1, 0)
     ButtonClick.Text = ""
-    ButtonClick.Font = Enum.Font.SourceSans
+    ButtonClick.AutoButtonColor = false
 
     Crystal.Mouseto(Button, function()
-        Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.850})
-        Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(120, 210, 255)})
-        Crystal.TweenObject({ButtonStroke, 0.2, "Transparency", 0.3})
+        Crystal.TweenObject({Button, 0.25, "BackgroundTransparency", 0.75})
+        Crystal.TweenObject({ButtonIcon, 0.25, "ImageColor3", Color3.fromRGB(120, 220, 255)})
+        Crystal.TweenObject({ButtonIcon, 0.25, "ImageTransparency", 0})
+        Crystal.TweenObject({ButtonStroke, 0.25, "Transparency", 0.4})
+        Crystal.TweenObject({ButtonStroke, 0.25, "Thickness", 2})
+        Crystal.TweenObject({ButtonTitle, 0.25, "TextColor3", Color3.fromRGB(120, 220, 255)})
     end, function()
-        Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.900})
-        Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
-        Crystal.TweenObject({ButtonStroke, 0.2, "Transparency", 0.5})
+        Crystal.TweenObject({Button, 0.25, "BackgroundTransparency", 0.85})
+        Crystal.TweenObject({ButtonIcon, 0.25, "ImageColor3", Color3.fromRGB(93, 197, 248)})
+        Crystal.TweenObject({ButtonIcon, 0.25, "ImageTransparency", 0.2})
+        Crystal.TweenObject({ButtonStroke, 0.25, "Transparency", 0.7})
+        Crystal.TweenObject({ButtonStroke, 0.25, "Thickness", 1.5})
+        Crystal.TweenObject({ButtonTitle, 0.25, "TextColor3", Color3.fromRGB(255, 255, 255)})
     end)
 
     Crystal.Click(ButtonClick, function()
-        Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.800})
-        Crystal.TweenObject({ButtonStroke, 0.1, "Transparency", 0.2})
-        task.wait(0.1)
-        Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.900})
-        Crystal.TweenObject({ButtonStroke, 0.1, "Transparency", 0.5})
+        Crystal.TweenObject({Button, 0.08, "BackgroundTransparency", 0.65})
+        Crystal.TweenObject({ButtonStroke, 0.08, "Transparency", 0.2})
+        Crystal.TweenObject({ButtonIcon, 0.08, "Size", UDim2.new(0, 20, 0, 20)})
         
-        pcall(function()
-            ButtonConfig.Callback()
+        task.wait(0.08)
+        
+        Crystal.TweenObject({Button, 0.15, "BackgroundTransparency", 0.85})
+        Crystal.TweenObject({ButtonStroke, 0.15, "Transparency", 0.7})
+        Crystal.TweenObject({ButtonIcon, 0.15, "Size", UDim2.new(0, 24, 0, 24)})
+        
+        task.spawn(function()
+            pcall(ButtonConfig.Callback)
         end)
     end)
 
