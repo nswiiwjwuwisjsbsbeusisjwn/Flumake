@@ -2384,19 +2384,16 @@ function TabObject:AddInput(ConfigInput)
         end
     end)
 
-    -- Real-time validation for numeric input
     if ConfigInput.Numeric then
         InputBox:GetPropertyChangedSignal("Text"):Connect(function()
             local text = InputBox.Text
             if text == "" then return end
             
-            -- Chỉ cho phép số, dấu chấm và dấu trừ
             local cleaned = string.gsub(text, "[^%d%.%-]", "")
             if cleaned ~= text then
                 InputBox.Text = cleaned
             end
             
-            -- Đảm bảo chỉ có một dấu chấm
             local dotCount = 0
             for i = 1, #cleaned do
                 if string.sub(cleaned, i, i) == "." then
@@ -2410,27 +2407,23 @@ function TabObject:AddInput(ConfigInput)
         end)
     end
 
-    -- Auto resize
     Crystal.Stepped:Connect(function()
         local contentHeight = math.max(InputContent.TextBounds.Y + 10, 30)
         TextInput.Size = UDim2.new(1, -8, 0, contentHeight + 18)
         InputContent.Size = UDim2.new(1, -190, 0, contentHeight + 10)
     end)
 
-    -- Hide description if empty
     if InputContent.Text == "" then
         InputTitle.Size = UDim2.new(1, -190, 1, 0)
         InputTitle.Position = UDim2.new(0, 40, 0, 0)
     end
 
-    -- Hover effects
     Crystal.Mouseto(InputFrame, function()
         Crystal.TweenObject({InputFrame, 0.2, "BackgroundTransparency", 0.935})
     end, function()
         Crystal.TweenObject({InputFrame, 0.2, "BackgroundTransparency", 0.960})
     end)
 
-    -- Return functions
     local InputFunc = {}
 
     function InputFunc:SetValue(Value)
@@ -2459,6 +2452,224 @@ function TabObject:AddInput(ConfigInput)
     end
 
     return InputFunc
+end
+function TabObject:AddParagraph(ConfigParagraph)
+    ConfigParagraph = ConfigParagraph or {}
+    ConfigParagraph.Title = ConfigParagraph.Title or "Paragraph"
+    ConfigParagraph.Content = ConfigParagraph.Content or ""
+    ConfigParagraph.IconLabel = ConfigParagraph.IconLabel or "rbxassetid://18558566660"
+
+    local Paragraph = Instance.new("Frame")
+    local UICorner_Para = Instance.new("UICorner")
+    local UIStroke_Para = Instance.new("UIStroke")
+    local ParagraphGradient = Instance.new("UIGradient")
+    local ParagraphTitle = Instance.new("TextLabel")
+    local ParagraphContent = Instance.new("TextLabel")
+    local ParagraphIcon = Instance.new("ImageLabel")
+    local DecorativeLine = Instance.new("Frame")
+    local UICorner_Line = Instance.new("UICorner")
+
+    Paragraph.Name = ConfigParagraph.Title
+    Paragraph.Parent = ScrollLayers
+    Paragraph.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    Paragraph.BackgroundTransparency = 0.05
+    Paragraph.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Paragraph.BorderSizePixel = 0
+    Paragraph.Size = UDim2.new(1, -8, 0, 80)
+    Paragraph.ClipsDescendants = true
+
+    UICorner_Para.CornerRadius = UDim.new(0, 12)
+    UICorner_Para.Parent = Paragraph
+
+    UIStroke_Para.Parent = Paragraph
+    UIStroke_Para.Color = Color3.fromRGB(45, 45, 45)
+    UIStroke_Para.Thickness = 1.5
+    UIStroke_Para.Transparency = 0.3
+
+    ParagraphGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(93, 197, 248)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(138, 43, 226))
+    })
+    ParagraphGradient.Rotation = 45
+    ParagraphGradient.Parent = UIStroke_Para
+
+    ParagraphIcon.Name = "ParagraphIcon"
+    ParagraphIcon.Parent = Paragraph
+    ParagraphIcon.AnchorPoint = Vector2.new(0.5, 0)
+    ParagraphIcon.BackgroundTransparency = 1
+    ParagraphIcon.Position = UDim2.new(0.5, 0, 0, 15)
+    ParagraphIcon.Size = UDim2.new(0, 24, 0, 24)
+    ParagraphIcon.Image = ConfigParagraph.IconLabel
+    ParagraphIcon.ImageColor3 = Color3.fromRGB(93, 197, 248)
+
+    ParagraphTitle.Name = "ParagraphTitle"
+    ParagraphTitle.Parent = Paragraph
+    ParagraphTitle.BackgroundTransparency = 1
+    ParagraphTitle.Position = UDim2.new(0, 15, 0, 45)
+    ParagraphTitle.Size = UDim2.new(1, -30, 0, 18)
+    ParagraphTitle.Font = Enum.Font.Arcade
+    ParagraphTitle.Text = ConfigParagraph.Title
+    ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphTitle.TextSize = 14
+    ParagraphTitle.TextTransparency = 0.1
+    ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Center
+
+    DecorativeLine.Name = "DecorativeLine"
+    DecorativeLine.Parent = Paragraph
+    DecorativeLine.AnchorPoint = Vector2.new(0.5, 0)
+    DecorativeLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    DecorativeLine.BackgroundTransparency = 0.7
+    DecorativeLine.BorderSizePixel = 0
+    DecorativeLine.Position = UDim2.new(0.5, 0, 0, 40)
+    DecorativeLine.Size = UDim2.new(0, 30, 0, 2)
+
+    UICorner_Line.CornerRadius = UDim.new(1, 0)
+    UICorner_Line.Parent = DecorativeLine
+
+    ParagraphContent.Name = "ParagraphContent"
+    ParagraphContent.Parent = Paragraph
+    ParagraphContent.BackgroundTransparency = 1
+    ParagraphContent.Position = UDim2.new(0, 20, 0, 65)
+    ParagraphContent.Size = UDim2.new(1, -40, 0, 0)
+    ParagraphContent.Font = Enum.Font.Arcade
+    ParagraphContent.Text = ConfigParagraph.Content
+    ParagraphContent.TextColor3 = Color3.fromRGB(180, 180, 180)
+    ParagraphContent.TextSize = 11
+    ParagraphContent.TextTransparency = 0.3
+    ParagraphContent.TextWrapped = true
+    ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
+    ParagraphContent.TextXAlignment = Enum.TextXAlignment.Center
+
+    -- Auto resize
+    Crystal.Stepped:Connect(function()
+        local contentHeight = math.max(ParagraphContent.TextBounds.Y + 10, 20)
+        ParagraphContent.Size = UDim2.new(1, -40, 0, contentHeight)
+        Paragraph.Size = UDim2.new(1, -8, 0, 80 + contentHeight)
+    end)
+
+    local ParagraphFunc = {}
+
+    function ParagraphFunc:SetTitle(NewTitle)
+        ParagraphTitle.Text = NewTitle
+    end
+
+    function ParagraphFunc:SetDesc(NewDesc)
+        ParagraphContent.Text = NewDesc
+    end
+
+    function ParagraphFunc:SetIcon(NewIcon)
+        ParagraphIcon.Image = NewIcon
+    end
+
+    function ParagraphFunc:Destroy()
+        Paragraph:Destroy()
+    end
+
+    return ParagraphFunc
+end
+
+function TabObject:AddSeperator(Text)
+    Text = Text or ""
+
+    local Seperator = Instance.new("Frame")
+    local LeftLine = Instance.new("Frame")
+    local RightLine = Instance.new("Frame")
+    local SeperatorText = Instance.new("TextLabel")
+    local UICorner_Left = Instance.new("UICorner")
+    local UICorner_Right = Instance.new("UICorner")
+
+    Seperator.Name = "Seperator_" .. Text
+    Seperator.Parent = ScrollLayers
+    Seperator.BackgroundTransparency = 1
+    Seperator.BorderSizePixel = 0
+    Seperator.Size = UDim2.new(1, -8, 0, 30)
+
+    if Text ~= "" then
+        -- Có text - layout với text ở giữa
+        LeftLine.Name = "LeftLine"
+        LeftLine.Parent = Seperator
+        LeftLine.AnchorPoint = Vector2.new(1, 0.5)
+        LeftLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        LeftLine.BackgroundTransparency = 0.6
+        LeftLine.BorderSizePixel = 0
+        LeftLine.Position = UDim2.new(0.5, -5, 0.5, 0)
+        LeftLine.Size = UDim2.new(0, 40, 0, 1)
+
+        UICorner_Left.CornerRadius = UDim.new(1, 0)
+        UICorner_Left.Parent = LeftLine
+
+        SeperatorText.Name = "SeperatorText"
+        SeperatorText.Parent = Seperator
+        SeperatorText.AnchorPoint = Vector2.new(0.5, 0.5)
+        SeperatorText.BackgroundTransparency = 1
+        SeperatorText.Position = UDim2.new(0.5, 0, 0.5, 0)
+        SeperatorText.Size = UDim2.new(0, 0, 0, 16)
+        SeperatorText.Font = Enum.Font.Arcade
+        SeperatorText.Text = Text
+        SeperatorText.TextColor3 = Color3.fromRGB(93, 197, 248)
+        SeperatorText.TextSize = 12
+        SeperatorText.TextTransparency = 0.4
+
+        RightLine.Name = "RightLine"
+        RightLine.Parent = Seperator
+        RightLine.AnchorPoint = Vector2.new(0, 0.5)
+        RightLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        RightLine.BackgroundTransparency = 0.6
+        RightLine.BorderSizePixel = 0
+        RightLine.Position = UDim2.new(0.5, 5, 0.5, 0)
+        RightLine.Size = UDim2.new(0, 40, 0, 1)
+
+        UICorner_Right.CornerRadius = UDim.new(1, 0)
+        UICorner_Right.Parent = RightLine
+
+        -- Auto resize text width
+        Crystal.Stepped:Connect(function()
+            local textWidth = SeperatorText.TextBounds.X + 10
+            SeperatorText.Size = UDim2.new(0, textWidth, 0, 16)
+            LeftLine.Position = UDim2.new(0.5, -(textWidth/2 + 5), 0.5, 0)
+            RightLine.Position = UDim2.new(0.5, textWidth/2 + 5, 0.5, 0)
+        end)
+    else
+        -- Không có text - chỉ line đơn giản
+        LeftLine.Name = "FullLine"
+        LeftLine.Parent = Seperator
+        LeftLine.AnchorPoint = Vector2.new(0.5, 0.5)
+        LeftLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        LeftLine.BackgroundTransparency = 0.4
+        LeftLine.BorderSizePixel = 0
+        LeftLine.Position = UDim2.new(0.5, 0, 0.5, 0)
+        LeftLine.Size = UDim2.new(1, -20, 0, 1)
+
+        UICorner_Left.CornerRadius = UDim.new(1, 0)
+        UICorner_Left.Parent = LeftLine
+    end
+
+    local SeperatorFunc = {}
+
+    function SeperatorFunc:SetText(NewText)
+        if SeperatorText then
+            SeperatorText.Text = NewText
+        end
+    end
+
+    function SeperatorFunc:SetColor(NewColor)
+        local color = NewColor or Color3.fromRGB(93, 197, 248)
+        if LeftLine then
+            LeftLine.BackgroundColor3 = color
+        end
+        if RightLine then
+            RightLine.BackgroundColor3 = color
+        end
+        if SeperatorText then
+            SeperatorText.TextColor3 = color
+        end
+    end
+
+    function SeperatorFunc:Destroy()
+        Seperator:Destroy()
+    end
+
+    return SeperatorFunc
 end
 TabCount = TabCount + 1
 return TabObject
