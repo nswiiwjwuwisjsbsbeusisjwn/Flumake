@@ -1554,7 +1554,6 @@ function TabObject:AddButton(ButtonConfig)
 
     return Button
 end
-
 function TabObject:AddToggle(ConfigToggles)
     ConfigToggles = ConfigToggles or {}
     ConfigToggles.Title = ConfigToggles.Title or "Toggle"
@@ -1578,22 +1577,16 @@ function TabObject:AddToggle(ConfigToggles)
     local ToggleFunc = { Enabled = ConfigToggles.Default }
 
     Toggle.Name = ConfigToggles.Title
-    Toggle.Parent = ScrollLayers -- ScrollLayers must be defined in TabSystem:AddTab
+    Toggle.Parent = ScrollLayers
     Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Toggle.BackgroundTransparency = 0.970
     Toggle.BorderSizePixel = 0
     Toggle.Size = UDim2.new(1, -8, 0, 45)
 
-    -- Mouse hover effect using TweenService
-    Toggle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            TweenService:Create(Toggle, TweenInfo.new(0.2), {BackgroundTransparency = 0.950}):Play()
-        end
-    end)
-    Toggle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            TweenService:Create(Toggle, TweenInfo.new(0.2), {BackgroundTransparency = 0.970}):Play()
-        end
+    Crystal.Mouseto(Toggle, function()
+        Crystal.TweenObject({Object = Toggle, Time = 0.2, OldValue = "BackgroundTransparency", NewValue = 0.950})
+    end, function()
+        Crystal.TweenObject({Object = Toggle, Time = 0.2, OldValue = "BackgroundTransparency", NewValue = 0.970})
     end)
 
     ToggleTitle.Name = "ToggleTitle"
@@ -1667,7 +1660,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleButton.Text = ""
     ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
     ToggleButton.TextSize = 14
-    ToggleButton.ZIndex = 2 -- Ensure button is clickable
+    ToggleButton.ZIndex = 2
 
     ToggleOnOff.Name = "ToggleOnOff"
     ToggleOnOff.Parent = Toggle
@@ -1686,8 +1679,7 @@ function TabObject:AddToggle(ConfigToggles)
         ToggleTitle.Size = UDim2.new(1, -158, 1, 0)
     end
 
-    -- Dynamic sizing based on content
-    game:GetService("RunService").RenderStepped:Connect(function()
+    Crystal.Stepped:Connect(function()
         local contentHeight = math.max(ToggleContent.TextBounds.Y + 10, 30)
         Toggle.Size = UDim2.new(1, -8, 0, contentHeight + 18)
         ToggleContent.Size = UDim2.new(1, -158, 0, contentHeight + 10)
@@ -1696,38 +1688,37 @@ function TabObject:AddToggle(ConfigToggles)
     function ToggleFunc:SetValue(boolean)
         ToggleFunc.Enabled = boolean
         if boolean then
-            TweenService:Create(ToggleSwitch, TweenInfo.new(0.3), {BackgroundTransparency = 0}):Play()
-            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
-            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {Position = UDim2.new(0, 24, 0.5, 0)}):Play()
-            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {Size = UDim2.new(0, 16, 0, 16)}):Play()
-            TweenService:Create(UIStroke_6, TweenInfo.new(0.3), {Color = Color3.fromRGB(50, 150, 255)}):Play()
-            TweenService:Create(UIStroke_6, TweenInfo.new(0.3), {Transparency = 0}):Play()
-            TweenService:Create(ToggleOnOff, TweenInfo.new(0.3), {TextColor3 = Color3.fromRGB(50, 150, 255)}):Play()
+            Crystal.TweenObject({Object = ToggleSwitch, Time = 0.3, OldValue = "BackgroundTransparency", NewValue = 0})
+            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "BackgroundColor3", NewValue = Color3.fromRGB(255, 255, 255)})
+            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Position", NewValue = UDim2.new(0, 24, 0.5, 0)})
+            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Size", NewValue = UDim2.new(0, 16, 0, 16)})
+            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(50, 150, 255)})
+            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0})
+            Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(50, 150, 255)})
             ToggleOnOff.Text = "On"
         else
-            TweenService:Create(ToggleSwitch, TweenInfo.new(0.3), {BackgroundTransparency = 0.999}):Play()
-            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(113, 111, 112)}):Play()
-            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {Position = UDim2.new(0, 4, 0.5, 0)}):Play()
-            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {Size = UDim2.new(0, 12, 0, 12)}):Play()
-            TweenService:Create(UIStroke_6, TweenInfo.new(0.3), {Color = Color3.fromRGB(113, 111, 112)}):Play()
-            TweenService:Create(UIStroke_6, TweenInfo.new(0.3), {Transparency = 0.5}):Play()
-            TweenService:Create(ToggleOnOff, TweenInfo.new(0.3), {TextColor3 = Color3.fromRGB(180, 180, 180)}):Play()
+            Crystal.TweenObject({Object = ToggleSwitch, Time = 0.3, OldValue = "BackgroundTransparency", NewValue = 0.999})
+            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "BackgroundColor3", NewValue = Color3.fromRGB(113, 111, 112)})
+            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Position", NewValue = UDim2.new(0, 4, 0.5, 0)})
+            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Size", NewValue = UDim2.new(0, 12, 0, 12)})
+            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(113, 111, 112)})
+            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0.5})
+            Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(180, 180, 180)})
             ToggleOnOff.Text = "Off"
         end
         pcall(ConfigToggles.Callback, ToggleFunc.Enabled)
     end
 
     ToggleButton.Activated:Connect(function()
-        TweenService:Create(Toggle, TweenInfo.new(0.1), {BackgroundTransparency = 0.920}):Play()
+        Crystal.TweenObject({Object = Toggle, Time = 0.1, OldValue = "BackgroundTransparency", NewValue = 0.920})
         task.wait(0.1)
-        TweenService:Create(Toggle, TweenInfo.new(0.1), {BackgroundTransparency = 0.970}):Play()
+        Crystal.TweenObject({Object = Toggle, Time = 0.1, OldValue = "BackgroundTransparency", NewValue = 0.970})
         ToggleFunc:SetValue(not ToggleFunc.Enabled)
     end)
 
     ToggleFunc:SetValue(ToggleFunc.Enabled)
     return ToggleFunc
 end
-
         
         return TabObject
     end
