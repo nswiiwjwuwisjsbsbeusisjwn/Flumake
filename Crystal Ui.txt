@@ -1554,7 +1554,186 @@ function TabObject:AddButton(ButtonConfig)
 
     return Button
 end
+function TabObject:AddToggle(ConfigToggles)
+    ConfigToggles = ConfigToggles or {}
+    ConfigToggles.Title = ConfigToggles.Title or "Toggle"
+    ConfigToggles.Description = ConfigToggles.Description or ""
+    ConfigToggles.IconToggle = ConfigToggles.IconToggle or "rbxassetid://18558566660" -- Default icon
+    ConfigToggles.Default = ConfigToggles.Default or false
+    ConfigToggles.Callback = ConfigToggles.Callback or function() end
 
+    local Toggle = Instance.new("Frame")
+    local ToggleTitle = Instance.new("TextLabel")
+    local UICorner_12 = Instance.new("UICorner")
+    local ToggleContent = Instance.new("TextLabel")
+    local ToggleImage = Instance.new("ImageLabel")
+    local ToggleSwitch = Instance.new("Frame")
+    local UICorner_13 = Instance.new("UICorner")
+    local ToggleCircle = Instance.new("Frame")
+    local UICorner_14 = Instance.new("UICorner")
+    local UIStroke_6 = Instance.new("UIStroke")
+    local UIGradient = Instance.new("UIGradient") -- For glow effect in On state
+    local ToggleButton = Instance.new("TextButton")
+    local ToggleOnOff = Instance.new("TextLabel")
+    local ToggleFunc = { Enabled = ConfigToggles.Default }
+
+    Toggle.Name = ConfigToggles.Title
+    Toggle.Parent = ScrollLayers
+    Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Toggle.BackgroundTransparency = 0.970
+    Toggle.BorderSizePixel = 0
+    Toggle.Size = UDim2.new(1, -8, 0, 45)
+
+    obj.Mouseto(Toggle, function()
+        obj.TweenObject({Toggle, 0.2, "BackgroundTransparency", 0.950})
+    end, function()
+        obj.TweenObject({Toggle, 0.2, "BackgroundTransparency", 0.970})
+    end)
+
+    ToggleTitle.Name = "ToggleTitle"
+    ToggleTitle.Parent = Toggle
+    ToggleTitle.BackgroundTransparency = 1
+    ToggleTitle.Position = UDim2.new(0, 40, 0, 11)
+    ToggleTitle.Size = UDim2.new(1, -158, 0, 12)
+    ToggleTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.SemiBold)
+    ToggleTitle.Text = ConfigToggles.Title
+    ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleTitle.TextSize = 12
+    ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    UICorner_12.CornerRadius = UDim.new(0, 4)
+    UICorner_12.Parent = Toggle
+
+    ToggleContent.Name = "ToggleContent"
+    ToggleContent.Parent = Toggle
+    ToggleContent.BackgroundTransparency = 1
+    ToggleContent.Position = UDim2.new(0, 40, 0, 21)
+    ToggleContent.Size = UDim2.new(1, -158, 0, 11)
+    ToggleContent.Font = Enum.Font.GothamMedium
+    ToggleContent.Text = ConfigToggles.Description
+    ToggleContent.TextWrapped = true
+    ToggleContent.TextYAlignment = Enum.TextYAlignment.Top
+    ToggleContent.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleContent.TextSize = 11
+    ToggleContent.TextTransparency = 0.600
+    ToggleContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    ToggleImage.Name = "ToggleImage"
+    ToggleImage.Parent = Toggle
+    ToggleImage.AnchorPoint = Vector2.new(0, 0.5)
+    ToggleImage.BackgroundTransparency = 1
+    ToggleImage.Position = UDim2.new(0, 12, 0.5, 0)
+    ToggleImage.Size = UDim2.new(0, 16, 0, 16)
+    ToggleImage.Image = ConfigToggles.IconToggle
+    ToggleImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
+
+    ToggleSwitch.Name = "ToggleSwitch"
+    ToggleSwitch.Parent = Toggle
+    ToggleSwitch.AnchorPoint = Vector2.new(1, 0.5)
+    ToggleSwitch.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    ToggleSwitch.BackgroundTransparency = ConfigToggles.Default and 0 or 0.999
+    ToggleSwitch.Position = UDim2.new(1, -25, 0.5, 0)
+    ToggleSwitch.Size = UDim2.new(0, 40, 0, 20)
+
+    UICorner_13.CornerRadius = UDim.new(0, 10)
+    UICorner_13.Parent = ToggleSwitch
+
+    UIGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(93, 197, 248)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(50, 150, 255))
+    }
+    UIGradient.Rotation = 45
+    UIGradient.Enabled = ConfigToggles.Default
+    UIGradient.Parent = ToggleSwitch
+
+    ToggleCircle.Name = "ToggleCircle"
+    ToggleCircle.Parent = ToggleSwitch
+    ToggleCircle.AnchorPoint = Vector2.new(0, 0.5)
+    ToggleCircle.BackgroundColor3 = ConfigToggles.Default and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(113, 111, 112)
+    ToggleCircle.Position = ConfigToggles.Default and UDim2.new(0, 24, 0.5, 0) or UDim2.new(0, 4, 0.5, 0)
+    ToggleCircle.Size = ConfigToggles.Default and UDim2.new(0, 16, 0, 16) or UDim2.new(0, 12, 0, 12)
+
+    UICorner_14.CornerRadius = UDim.new(0, 15)
+    UICorner_14.Parent = ToggleCircle
+
+    UIStroke_6.Parent = ToggleSwitch
+    UIStroke_6.Color = ConfigToggles.Default and Color3.fromRGB(50, 150, 255) or Color3.fromRGB(113, 111, 112)
+    UIStroke_6.Thickness = 1.5
+    UIStroke_6.Transparency = ConfigToggles.Default and 0 or 0.5
+
+    ToggleButton.Name = "ToggleButton"
+    ToggleButton.Parent = Toggle
+    ToggleButton.BackgroundTransparency = 1
+    ToggleButton.Size = UDim2.new(1, 0, 1, 0)
+    ToggleButton.Font = Enum.Font.SourceSans
+    ToggleButton.Text = ""
+    ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleButton.TextSize = 14
+
+    ToggleOnOff.Name = "ToggleOnOff"
+    ToggleOnOff.Parent = Toggle
+    ToggleOnOff.AnchorPoint = Vector2.new(1, 0.5)
+    ToggleOnOff.BackgroundTransparency = 1
+    ToggleOnOff.Position = UDim2.new(1, -70, 0.5, 0)
+    ToggleOnOff.Size = UDim2.new(0, 30, 0, 12)
+    ToggleOnOff.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.SemiBold)
+    ToggleOnOff.Text = ConfigToggles.Default and "On" or "Off"
+    ToggleOnOff.TextColor3 = ConfigToggles.Default and Color3.fromRGB(50, 150, 255) or Color3.fromRGB(180, 180, 180)
+    ToggleOnOff.TextSize = 12
+    ToggleOnOff.TextXAlignment = Enum.TextXAlignment.Right
+
+    if ToggleContent.Text == "" then
+        ToggleTitle.Position = UDim2.new(0, 40, 0, 0)
+        ToggleTitle.Size = UDim2.new(1, -158, 1, 0)
+    end
+
+    obj.Stepped:Connect(function()
+        local contentHeight = math.max(ToggleContent.TextBounds.Y + 10, 30)
+        Toggle.Size = UDim2.new(1, -8, 0, contentHeight + 18)
+        ToggleContent.Size = UDim2.new(1, -158, 0, contentHeight + 10)
+    end)
+
+    function ToggleFunc:SetValue(boolean)
+        ToggleFunc.Enabled = boolean
+        if boolean then
+            -- On state: Vibrant, glowing, larger circle
+            obj.TweenObject({ToggleSwitch, 0.3, "BackgroundTransparency", 0})
+            obj.TweenObject({ToggleCircle, 0.3, "BackgroundColor3", Color3.fromRGB(255, 255, 255)})
+            obj.TweenObject({ToggleCircle, 0.3, "Position", UDim2.new(0, 24, 0.5, 0)})
+            obj.TweenObject({ToggleCircle, 0.3, "Size", UDim2.new(0, 16, 0, 16)})
+            obj.TweenObject({UIStroke_6, 0.3, "Color", Color3.fromRGB(50, 150, 255)})
+            obj.TweenObject({UIStroke_6, 0.3, "Transparency", 0})
+            obj.TweenObject({ToggleOnOff, 0.3, "TextColor3", Color3.fromRGB(50, 150, 255)})
+            UIGradient.Enabled = true
+            ToggleOnOff.Text = "On"
+        else
+            -- Off state: Muted, no glow, smaller circle
+            obj.TweenObject({ToggleSwitch, 0.3, "BackgroundTransparency", 0.999})
+            obj.TweenObject({ToggleCircle, 0.3, "BackgroundColor3", Color3.fromRGB(113, 111, 112)})
+            obj.TweenObject({ToggleCircle, 0.3, "Position", UDim2.new(0, 4, 0.5, 0)})
+            obj.TweenObject({ToggleCircle, 0.3, "Size", UDim2.new(0, 12, 0, 12)})
+            obj.TweenObject({UIStroke_6, 0.3, "Color", Color3.fromRGB(113, 111, 112)})
+            obj.TweenObject({UIStroke_6, 0.3, "Transparency", 0.5})
+            obj.TweenObject({ToggleOnOff, 0.3, "TextColor3", Color3.fromRGB(180, 180, 180)})
+            UIGradient.Enabled = false
+            ToggleOnOff.Text = "Off"
+        end
+        pcall(function()
+            ConfigToggles.Callback(ToggleFunc.Enabled)
+        end)
+    end
+
+    ToggleButton.Activated:Connect(function()
+        -- Add a slight bounce effect on click
+        obj.TweenObject({Toggle, 0.1, "BackgroundTransparency", 0.920})
+        task.wait(0.1)
+        obj.TweenObject({Toggle, 0.1, "BackgroundTransparency", 0.970})
+        ToggleFunc:SetValue(not ToggleFunc.Enabled)
+    end)
+
+    ToggleFunc:SetValue(ToggleFunc.Enabled)
+    return ToggleFunc
+end
         
         return TabObject
     end
