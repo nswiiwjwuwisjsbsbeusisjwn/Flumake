@@ -1554,11 +1554,13 @@ function TabObject:AddButton(ButtonConfig)
 
     return Button
 end
+local TweenService = game:GetService("RunService")
+
 function TabObject:AddToggle(ConfigToggles)
     ConfigToggles = ConfigToggles or {}
     ConfigToggles.Title = ConfigToggles.Title or "Toggle"
     ConfigToggles.Description = ConfigToggles.Description or ""
-    ConfigToggles.IconToggle = ConfigToggles.IconToggle or "rbxassetid://18558566660" -- Default icon
+    ConfigToggles.IconToggle = ConfigToggles.IconToggle or "rbxassetid://18558566660"
     ConfigToggles.Default = ConfigToggles.Default or false
     ConfigToggles.Callback = ConfigToggles.Callback or function() end
 
@@ -1572,22 +1574,27 @@ function TabObject:AddToggle(ConfigToggles)
     local ToggleCircle = Instance.new("Frame")
     local UICorner_14 = Instance.new("UICorner")
     local UIStroke_6 = Instance.new("UIStroke")
-    local UIGradient = Instance.new("UIGradient") -- For glow effect in On state
     local ToggleButton = Instance.new("TextButton")
     local ToggleOnOff = Instance.new("TextLabel")
     local ToggleFunc = { Enabled = ConfigToggles.Default }
 
     Toggle.Name = ConfigToggles.Title
-    Toggle.Parent = ScrollLayers
+    Toggle.Parent = ScrollLayers -- ScrollLayers must be defined in TabSystem:AddTab
     Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Toggle.BackgroundTransparency = 0.970
     Toggle.BorderSizePixel = 0
     Toggle.Size = UDim2.new(1, -8, 0, 45)
 
-    obj.Mouseto(Toggle, function()
-        obj.TweenObject({Toggle, 0.2, "BackgroundTransparency", 0.950})
-    end, function()
-        obj.TweenObject({Toggle, 0.2, "BackgroundTransparency", 0.970})
+    -- Mouse hover effect using TweenService
+    Toggle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            TweenService:Create(Toggle, TweenInfo.new(0.2), {BackgroundTransparency = 0.950}):Play()
+        end
+    end)
+    Toggle.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            TweenService:Create(Toggle, TweenInfo.new(0.2), {BackgroundTransparency = 0.970}):Play()
+        end
     end)
 
     ToggleTitle.Name = "ToggleTitle"
@@ -1595,7 +1602,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleTitle.BackgroundTransparency = 1
     ToggleTitle.Position = UDim2.new(0, 40, 0, 11)
     ToggleTitle.Size = UDim2.new(1, -158, 0, 12)
-    ToggleTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.SemiBold)
+    ToggleTitle.Font = Enum.Font.Arcade
     ToggleTitle.Text = ConfigToggles.Title
     ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     ToggleTitle.TextSize = 12
@@ -1609,7 +1616,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleContent.BackgroundTransparency = 1
     ToggleContent.Position = UDim2.new(0, 40, 0, 21)
     ToggleContent.Size = UDim2.new(1, -158, 0, 11)
-    ToggleContent.Font = Enum.Font.GothamMedium
+    ToggleContent.Font = Enum.Font.Arcade
     ToggleContent.Text = ConfigToggles.Description
     ToggleContent.TextWrapped = true
     ToggleContent.TextYAlignment = Enum.TextYAlignment.Top
@@ -1638,14 +1645,6 @@ function TabObject:AddToggle(ConfigToggles)
     UICorner_13.CornerRadius = UDim.new(0, 10)
     UICorner_13.Parent = ToggleSwitch
 
-    UIGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(93, 197, 248)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(50, 150, 255))
-    }
-    UIGradient.Rotation = 45
-    UIGradient.Enabled = ConfigToggles.Default
-    UIGradient.Parent = ToggleSwitch
-
     ToggleCircle.Name = "ToggleCircle"
     ToggleCircle.Parent = ToggleSwitch
     ToggleCircle.AnchorPoint = Vector2.new(0, 0.5)
@@ -1669,6 +1668,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleButton.Text = ""
     ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
     ToggleButton.TextSize = 14
+    ToggleButton.ZIndex = 2 -- Ensure button is clickable
 
     ToggleOnOff.Name = "ToggleOnOff"
     ToggleOnOff.Parent = Toggle
@@ -1676,7 +1676,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleOnOff.BackgroundTransparency = 1
     ToggleOnOff.Position = UDim2.new(1, -70, 0.5, 0)
     ToggleOnOff.Size = UDim2.new(0, 30, 0, 12)
-    ToggleOnOff.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.SemiBold)
+    ToggleOnOff.Font = Enum.Font.Arcade
     ToggleOnOff.Text = ConfigToggles.Default and "On" or "Off"
     ToggleOnOff.TextColor3 = ConfigToggles.Default and Color3.fromRGB(50, 150, 255) or Color3.fromRGB(180, 180, 180)
     ToggleOnOff.TextSize = 12
@@ -1687,7 +1687,8 @@ function TabObject:AddToggle(ConfigToggles)
         ToggleTitle.Size = UDim2.new(1, -158, 1, 0)
     end
 
-    obj.Stepped:Connect(function()
+    -- Dynamic sizing based on content
+    game:GetService("RunService").RenderStepped:Connect(function()
         local contentHeight = math.max(ToggleContent.TextBounds.Y + 10, 30)
         Toggle.Size = UDim2.new(1, -8, 0, contentHeight + 18)
         ToggleContent.Size = UDim2.new(1, -158, 0, contentHeight + 10)
@@ -1696,44 +1697,38 @@ function TabObject:AddToggle(ConfigToggles)
     function ToggleFunc:SetValue(boolean)
         ToggleFunc.Enabled = boolean
         if boolean then
-            -- On state: Vibrant, glowing, larger circle
-            obj.TweenObject({ToggleSwitch, 0.3, "BackgroundTransparency", 0})
-            obj.TweenObject({ToggleCircle, 0.3, "BackgroundColor3", Color3.fromRGB(255, 255, 255)})
-            obj.TweenObject({ToggleCircle, 0.3, "Position", UDim2.new(0, 24, 0.5, 0)})
-            obj.TweenObject({ToggleCircle, 0.3, "Size", UDim2.new(0, 16, 0, 16)})
-            obj.TweenObject({UIStroke_6, 0.3, "Color", Color3.fromRGB(50, 150, 255)})
-            obj.TweenObject({UIStroke_6, 0.3, "Transparency", 0})
-            obj.TweenObject({ToggleOnOff, 0.3, "TextColor3", Color3.fromRGB(50, 150, 255)})
-            UIGradient.Enabled = true
+            TweenService:Create(ToggleSwitch, TweenInfo.new(0.3), {BackgroundTransparency = 0}):Play()
+            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {Position = UDim2.new(0, 24, 0.5, 0)}):Play()
+            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {Size = UDim2.new(0, 16, 0, 16)}):Play()
+            TweenService:Create(UIStroke_6, TweenInfo.new(0.3), {Color = Color3.fromRGB(50, 150, 255)}):Play()
+            TweenService:Create(UIStroke_6, TweenInfo.new(0.3), {Transparency = 0}):Play()
+            TweenService:Create(ToggleOnOff, TweenInfo.new(0.3), {TextColor3 = Color3.fromRGB(50, 150, 255)}):Play()
             ToggleOnOff.Text = "On"
         else
-            -- Off state: Muted, no glow, smaller circle
-            obj.TweenObject({ToggleSwitch, 0.3, "BackgroundTransparency", 0.999})
-            obj.TweenObject({ToggleCircle, 0.3, "BackgroundColor3", Color3.fromRGB(113, 111, 112)})
-            obj.TweenObject({ToggleCircle, 0.3, "Position", UDim2.new(0, 4, 0.5, 0)})
-            obj.TweenObject({ToggleCircle, 0.3, "Size", UDim2.new(0, 12, 0, 12)})
-            obj.TweenObject({UIStroke_6, 0.3, "Color", Color3.fromRGB(113, 111, 112)})
-            obj.TweenObject({UIStroke_6, 0.3, "Transparency", 0.5})
-            obj.TweenObject({ToggleOnOff, 0.3, "TextColor3", Color3.fromRGB(180, 180, 180)})
-            UIGradient.Enabled = false
+            TweenService:Create(ToggleSwitch, TweenInfo.new(0.3), {BackgroundTransparency = 0.999}):Play()
+            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(113, 111, 112)}):Play()
+            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {Position = UDim2.new(0, 4, 0.5, 0)}):Play()
+            TweenService:Create(ToggleCircle, TweenInfo.new(0.3), {Size = UDim2.new(0, 12, 0, 12)}):Play()
+            TweenService:Create(UIStroke_6, TweenInfo.new(0.3), {Color = Color3.fromRGB(113, 111, 112)}):Play()
+            TweenService:Create(UIStroke_6, TweenInfo.new(0.3), {Transparency = 0.5}):Play()
+            TweenService:Create(ToggleOnOff, TweenInfo.new(0.3), {TextColor3 = Color3.fromRGB(180, 180, 180)}):Play()
             ToggleOnOff.Text = "Off"
         end
-        pcall(function()
-            ConfigToggles.Callback(ToggleFunc.Enabled)
-        end)
+        pcall(ConfigToggles.Callback, ToggleFunc.Enabled)
     end
 
     ToggleButton.Activated:Connect(function()
-        -- Add a slight bounce effect on click
-        obj.TweenObject({Toggle, 0.1, "BackgroundTransparency", 0.920})
+        TweenService:Create(Toggle, TweenInfo.new(0.1), {BackgroundTransparency = 0.920}):Play()
         task.wait(0.1)
-        obj.TweenObject({Toggle, 0.1, "BackgroundTransparency", 0.970})
+        TweenService:Create(Toggle, TweenInfo.new(0.1), {BackgroundTransparency = 0.970}):Play()
         ToggleFunc:SetValue(not ToggleFunc.Enabled)
     end)
 
     ToggleFunc:SetValue(ToggleFunc.Enabled)
     return ToggleFunc
 end
+
         
         return TabObject
     end
