@@ -2164,7 +2164,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Option
         ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
-        ChooseFrame.BackgroundColor3 = Color3.fromRGB(93, 197 atividade, 248)
+        ChooseFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
         ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ChooseFrame.BorderSizePixel = 0
         ChooseFrame.Position = UDim2.new(0, 2, 0.5, 0)
@@ -2216,14 +2216,6 @@ function TabObject:AddDropdown(ConfigDropdown)
         DropFunc.Value = {}
         DropFunc.List = {}
         OptionCounts = 0
-    end
-
-    function DropFunc:Refresh(NewValue)
-        DropFunc:Clear()
-        for _, v in pairs(NewValue) do
-            DropFunc:AddValue(v)
-        }
-        DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#NewValue * 30 + 40, 200))
     end
 
     function DropFunc:Destroy()
