@@ -1693,7 +1693,7 @@ function TabObject:AddToggle(ConfigToggles)
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(0, 162, 255)})
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0})
             Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(0, 162, 255)})
-            ToggleOnOff.Text = "On"
+            ToggleOnOff.Text = "True"
         else
             Crystal.TweenObject({Object = ToggleSwitch, Time = 0.3, OldValue = "BackgroundTransparency", NewValue = 0.999})
             Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "BackgroundColor3", NewValue = Color3.fromRGB(113, 111, 112)})
@@ -1702,7 +1702,7 @@ function TabObject:AddToggle(ConfigToggles)
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(113, 111, 112)})
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0.5})
             Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(180, 180, 180)})
-            ToggleOnOff.Text = "Off"
+            ToggleOnOff.Text = "False"
         end
         pcall(ConfigToggles.Callback, ToggleFunc.Enabled)
     end
@@ -2212,6 +2212,289 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropFunc:Set((typeof(DropFunc.Value) == "table" and DropFunc.Value or {DropFunc.Value}))
 
     return DropFunc
+end
+function TabObject:AddInput(ConfigInput)
+    ConfigInput = ConfigInput or {}
+    ConfigInput.Title = ConfigInput.Title or "Input"
+    ConfigInput.Description = ConfigInput.Description or ""
+    ConfigInput.IconInput = ConfigInput.IconInput or "rbxassetid://18558566660" -- Icon mặc định đẹp hơn
+    ConfigInput.Placeholder = ConfigInput.Placeholder or "Enter text..."
+    ConfigInput.Default = ConfigInput.Default or ""
+    ConfigInput.Numeric = ConfigInput.Numeric or false
+    ConfigInput.Finished = ConfigInput.Finished or false
+    ConfigInput.ClearTextOnFocus = ConfigInput.ClearTextOnFocus or false
+    ConfigInput.MaxLength = ConfigInput.MaxLength or 50
+    ConfigInput.Callback = ConfigInput.Callback or function() end
+
+    local TextInput = Instance.new("Frame")
+    local UICorner_20 = Instance.new("UICorner")
+    local UIStroke_Input = Instance.new("UIStroke")
+    local InputGradient = Instance.new("UIGradient")
+    local InputTitle = Instance.new("TextLabel")
+    local InputContent = Instance.new("TextLabel")
+    local InputImage = Instance.new("ImageLabel")
+    local InputFrame = Instance.new("Frame")
+    local UICorner_21 = Instance.new("UICorner")
+    local UIStroke_InputFrame = Instance.new("UIStroke")
+    local InputBoxFrame = Instance.new("Frame")
+    local InputBox = Instance.new("TextBox")
+    local InputFocusLine = Instance.new("Frame")
+    local UICorner_Focus = Instance.new("UICorner")
+
+    -- Main Input Frame
+    TextInput.Name = "TextInput"
+    TextInput.Parent = ScrollLayers
+    TextInput.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    TextInput.BackgroundTransparency = 0.05
+    TextInput.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TextInput.BorderSizePixel = 0
+    TextInput.Size = UDim2.new(1, -8, 0, 55)
+    TextInput.ClipsDescendants = true
+
+    UICorner_20.CornerRadius = UDim.new(0, 8)
+    UICorner_20.Parent = TextInput
+
+    UIStroke_Input.Parent = TextInput
+    UIStroke_Input.Color = Color3.fromRGB(45, 45, 45)
+    UIStroke_Input.Thickness = 1.5
+    UIStroke_Input.Transparency = 0.3
+
+    InputGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(93, 197, 248)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(138, 43, 226))
+    })
+    InputGradient.Rotation = 45
+    InputGradient.Parent = UIStroke_Input
+
+    -- Input Icon
+    InputImage.Name = "InputImage"
+    InputImage.Parent = TextInput
+    InputImage.AnchorPoint = Vector2.new(0, 0.5)
+    InputImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputImage.BackgroundTransparency = 1
+    InputImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputImage.BorderSizePixel = 0
+    InputImage.Position = UDim2.new(0, 15, 0.3, 0)
+    InputImage.Size = UDim2.new(0, 20, 0, 20)
+    InputImage.Image = ConfigInput.IconInput
+    InputImage.ImageColor3 = Color3.fromRGB(93, 197, 248)
+    InputImage.ScaleType = Enum.ScaleType.Fit
+
+    -- Input Title
+    InputTitle.Name = "InputTitle"
+    InputTitle.Parent = TextInput
+    InputTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputTitle.BackgroundTransparency = 1
+    InputTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputTitle.BorderSizePixel = 0
+    InputTitle.Position = UDim2.new(0, 45, 0, 12)
+    InputTitle.Size = UDim2.new(1, -160, 0, 16)
+    InputTitle.Font = Enum.Font.GothamBold
+    InputTitle.Text = ConfigInput.Title
+    InputTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InputTitle.TextSize = 14
+    InputTitle.TextXAlignment = Enum.TextXAlignment.Left
+    InputTitle.TextTransparency = 0.1
+
+    -- Input Description
+    InputContent.Name = "InputContent"
+    InputContent.Parent = TextInput
+    InputContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputContent.BackgroundTransparency = 1
+    InputContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputContent.BorderSizePixel = 0
+    InputContent.Position = UDim2.new(0, 45, 0, 28)
+    InputContent.Size = UDim2.new(1, -160, 0, 14)
+    InputContent.Font = Enum.Font.Gotham
+    InputContent.Text = ConfigInput.Description
+    InputContent.TextColor3 = Color3.fromRGB(180, 180, 180)
+    InputContent.TextSize = 11
+    InputContent.TextWrapped = true
+    InputContent.TextYAlignment = Enum.TextYAlignment.Top
+    InputContent.TextTransparency = 0.3
+    InputContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Input Frame (Textbox container)
+    InputFrame.Name = "InputFrame"
+    InputFrame.Parent = TextInput
+    InputFrame.AnchorPoint = Vector2.new(1, 0.5)
+    InputFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    InputFrame.BackgroundTransparency = 0.1
+    InputFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputFrame.BorderSizePixel = 0
+    InputFrame.ClipsDescendants = true
+    InputFrame.Position = UDim2.new(1, -12, 0.5, 0)
+    InputFrame.Size = UDim2.new(0, 140, 0, 32)
+
+    UICorner_21.CornerRadius = UDim.new(0, 6)
+    UICorner_21.Parent = InputFrame
+
+    UIStroke_InputFrame.Parent = InputFrame
+    UIStroke_InputFrame.Color = Color3.fromRGB(60, 60, 60)
+    UIStroke_InputFrame.Thickness = 1.2
+
+    -- Input Box Frame
+    InputBoxFrame.Name = "InputBoxFrame"
+    InputBoxFrame.Parent = InputFrame
+    InputBoxFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputBoxFrame.BackgroundTransparency = 1
+    InputBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputBoxFrame.BorderSizePixel = 0
+    InputBoxFrame.ClipsDescendants = true
+    InputBoxFrame.Position = UDim2.new(0, 8, 0, 0)
+    InputBoxFrame.Size = UDim2.new(1, -16, 1, 0)
+
+    -- Focus Line (animation)
+    InputFocusLine.Name = "InputFocusLine"
+    InputFocusLine.Parent = InputFrame
+    InputFocusLine.AnchorPoint = Vector2.new(0.5, 1)
+    InputFocusLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    InputFocusLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputFocusLine.BorderSizePixel = 0
+    InputFocusLine.Position = UDim2.new(0.5, 0, 1, 0)
+    InputFocusLine.Size = UDim2.new(0, 0, 0, 2)
+    InputFocusLine.Visible = false
+
+    UICorner_Focus.CornerRadius = UDim.new(0, 2)
+    UICorner_Focus.Parent = InputFocusLine
+
+    -- Input TextBox
+    InputBox.Name = "InputBox"
+    InputBox.Parent = InputBoxFrame
+    InputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputBox.BackgroundTransparency = 1
+    InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputBox.BorderSizePixel = 0
+    InputBox.Size = UDim2.new(1, 0, 1, 0)
+    InputBox.Font = Enum.Font.GothamMedium
+    InputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+    InputBox.PlaceholderText = ConfigInput.Placeholder
+    InputBox.Text = ConfigInput.Default
+    InputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InputBox.TextSize = 12
+    InputBox.TextXAlignment = Enum.TextXAlignment.Left
+    InputBox.ClearTextOnFocus = ConfigInput.ClearTextOnFocus
+    InputBox.MaxVisibleGraphemes = ConfigInput.MaxLength
+
+    -- Numeric input validation
+    if ConfigInput.Numeric then
+        InputBox.Text = tostring(ConfigInput.Default)
+        InputBox.PlaceholderText = "Enter number..."
+    end
+
+    -- Focus events với animation
+    InputBox.Focused:Connect(function()
+        InputFocusLine.Visible = true
+        Crystal.TweenObject({InputFocusLine, 0.3, "Size", UDim2.new(1, -4, 0, 2)})
+        Crystal.TweenObject({UIStroke_InputFrame, 0.3, "Color", Color3.fromRGB(93, 197, 248)})
+        Crystal.TweenObject({InputFrame, 0.3, "BackgroundTransparency", 0})
+    end)
+
+    InputBox.FocusLost:Connect(function(enterPressed)
+        Crystal.TweenObject({InputFocusLine, 0.3, "Size", UDim2.new(0, 0, 0, 2)})
+        Crystal.TweenObject({UIStroke_InputFrame, 0.3, "Color", Color3.fromRGB(60, 60, 60)})
+        Crystal.TweenObject({InputFrame, 0.3, "BackgroundTransparency", 0.1})
+        
+        task.wait(0.1)
+        InputFocusLine.Visible = false
+        
+        if ConfigInput.Finished then
+            if enterPressed then
+                local value = InputBox.Text
+                if ConfigInput.Numeric then
+                    value = tonumber(value) or 0
+                end
+                ConfigInput.Callback(value)
+            end
+        else
+            local value = InputBox.Text
+            if ConfigInput.Numeric then
+                value = tonumber(value) or 0
+            end
+            ConfigInput.Callback(value)
+        end
+    end)
+
+    -- Real-time validation for numeric input
+    if ConfigInput.Numeric then
+        InputBox:GetPropertyChangedSignal("Text"):Connect(function()
+            local text = InputBox.Text
+            if text == "" then return end
+            
+            -- Chỉ cho phép số, dấu chấm và dấu trừ
+            local cleaned = string.gsub(text, "[^%d%.%-]", "")
+            if cleaned ~= text then
+                InputBox.Text = cleaned
+            end
+            
+            -- Đảm bảo chỉ có một dấu chấm
+            local dotCount = 0
+            for i = 1, #cleaned do
+                if string.sub(cleaned, i, i) == "." then
+                    dotCount = dotCount + 1
+                end
+            end
+            if dotCount > 1 then
+                local lastDot = string.find(cleaned, "%.", 1, true)
+                InputBox.Text = string.sub(cleaned, 1, lastDot) .. string.gsub(string.sub(cleaned, lastDot + 1), "%.", "")
+            end
+        end)
+    end
+
+    -- Auto resize
+    Crystal.Stepped:Connect(function()
+        local contentHeight = math.max(InputContent.TextBounds.Y + 10, 30)
+        TextInput.Size = UDim2.new(1, -8, 0, contentHeight + 25)
+        InputContent.Size = UDim2.new(1, -160, 0, contentHeight + 5)
+    end)
+
+    -- Hide description if empty
+    if InputContent.Text == "" then
+        InputTitle.Size = UDim2.new(1, -160, 1, 0)
+        InputTitle.Position = UDim2.new(0, 45, 0, 0)
+        InputImage.Position = UDim2.new(0, 15, 0.5, 0)
+    end
+
+    -- Hover effects
+    Crystal.Mouseto(InputFrame, function()
+        Crystal.TweenObject({InputFrame, 0.2, "BackgroundTransparency", 0})
+        Crystal.TweenObject({UIStroke_InputFrame, 0.2, "Color", Color3.fromRGB(80, 80, 80)})
+    end, function()
+        if not InputBox:IsFocused() then
+            Crystal.TweenObject({InputFrame, 0.2, "BackgroundTransparency", 0.1})
+            Crystal.TweenObject({UIStroke_InputFrame, 0.2, "Color", Color3.fromRGB(60, 60, 60)})
+        end
+    end)
+
+    -- Return functions
+    local InputFunc = {}
+
+    function InputFunc:SetValue(Value)
+        InputBox.Text = tostring(Value)
+        if ConfigInput.Numeric then
+            ConfigInput.Callback(tonumber(Value) or 0)
+        else
+            ConfigInput.Callback(Value)
+        end
+    end
+
+    function InputFunc:GetValue()
+        if ConfigInput.Numeric then
+            return tonumber(InputBox.Text) or 0
+        else
+            return InputBox.Text
+        end
+    end
+
+    function InputFunc:Clear()
+        InputBox.Text = ""
+    end
+
+    function InputFunc:Destroy()
+        TextInput:Destroy()
+    end
+
+    return InputFunc
 end
 TabCount = TabCount + 1
 return TabObject
