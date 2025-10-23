@@ -1299,271 +1299,128 @@ Crystal.Window = function(self, WindowConfig)
             end
         end
     end)
-    
-    local TabSystem = {}
-    local TabCount = 0
+function TabObject:AddButton(ButtonConfig)
+    ButtonConfig = ButtonConfig or {}
+    ButtonConfig.Title = ButtonConfig.Title or "Button"
+    ButtonConfig.Icon = ButtonConfig.Icon or "rbxassetid://11401835396"
+    ButtonConfig.ClickName = ButtonConfig.ClickName or "Click"
+    ButtonConfig.Description = ButtonConfig.Description or ""
+    ButtonConfig.Callback = ButtonConfig.Callback or function() end
 
-    local function JumpTo(TabOrder, Name)
-        BackButton.LayoutOrder = TabOrder
-        BackButton.Text = Name
-        LayersPageLayout:JumpToIndex(BackButton.LayoutOrder)
-        Crystal.TweenObject({BackButton, 0.4, "TextTransparency", 0})
-        Crystal.TweenObject({BackButton_2, 0.4, "TextTransparency", 0.999})
-        Crystal.TweenObject({ForwardImage, 0.4, "ImageTransparency", 1.000})
-        BackButton.Size = UDim2.new(0, BackButton.TextBounds.X + 3, 1, 0)
-        NameBack.Size = UDim2.new(0, BackButton.Size.X.Offset, 1, 0)
-        NameBack_2.Position = UDim2.new(0, NameBack.Size.X.Offset, 0, 0)
-        NameBack_2.Size = UDim2.new(1, -(NameBack_2.Position.X.Offset), 1, 0)
+    local Button = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local ButtonContent = Instance.new("TextLabel")
+    local ButtonImage = Instance.new("ImageLabel")
+    local ButtonTitle = Instance.new("TextLabel")
+    local ButtonFrame = Instance.new("Frame")
+    local ButtonFrameCorner = Instance.new("UICorner")
+    local ButtonButton = Instance.new("TextButton")
+
+    Button.Name = ButtonConfig.Title
+    Button.Parent = ScrollLayers
+    Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Button.BackgroundTransparency = 0.970
+    Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Button.BorderSizePixel = 0
+    Button.Size = UDim2.new(1, -8, 0, 45)
+
+    UICorner.CornerRadius = UDim.new(0, 4)
+    UICorner.Parent = Button
+
+    ButtonContent.Name = "ButtonContent"
+    ButtonContent.Parent = Button
+    ButtonContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonContent.BackgroundTransparency = 0.999
+    ButtonContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonContent.BorderSizePixel = 0
+    ButtonContent.Position = UDim2.new(0, 40, 0, 21)
+    ButtonContent.Size = UDim2.new(1, -190, 0, 11)
+    ButtonContent.Font = Enum.Font.GothamMedium
+    ButtonContent.Text = ButtonConfig.Description
+    ButtonContent.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonContent.TextSize = 11
+    ButtonContent.TextTransparency = 0.600
+    ButtonContent.TextWrapped = true
+    ButtonContent.TextYAlignment = Enum.TextYAlignment.Top
+    ButtonContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    ButtonImage.Name = "ButtonImage"
+    ButtonImage.Parent = Button
+    ButtonImage.AnchorPoint = Vector2.new(0, 0.5)
+    ButtonImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonImage.BackgroundTransparency = 0.999
+    ButtonImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonImage.BorderSizePixel = 0
+    ButtonImage.Position = UDim2.new(0, 12, 0.5, 0)
+    ButtonImage.Size = UDim2.new(0, 16, 0, 16)
+    ButtonImage.Image = ButtonConfig.Icon
+
+    ButtonTitle.Name = "ButtonTitle"
+    ButtonTitle.Parent = Button
+    ButtonTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonTitle.BackgroundTransparency = 0.999
+    ButtonTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonTitle.BorderSizePixel = 0
+    ButtonTitle.Position = UDim2.new(0, 40, 0, 11)
+    ButtonTitle.Size = UDim2.new(1, -190, 0, 12)
+    ButtonTitle.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    ButtonTitle.Text = ButtonConfig.Title
+    ButtonTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonTitle.TextSize = 12
+    ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    ButtonFrame.Name = "ButtonFrame"
+    ButtonFrame.Parent = Button
+    ButtonFrame.AnchorPoint = Vector2.new(1, 0.5)
+    ButtonFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonFrame.BackgroundTransparency = 0.960
+    ButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonFrame.BorderSizePixel = 0
+    ButtonFrame.Position = UDim2.new(1, -9, 0.5, 0)
+    ButtonFrame.Size = UDim2.new(0, 125, 0, 26)
+
+    ButtonFrameCorner.CornerRadius = UDim.new(0, 4)
+    ButtonFrameCorner.Parent = ButtonFrame
+
+    ButtonButton.Name = "ButtonButton"
+    ButtonButton.Parent = ButtonFrame
+    ButtonButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonButton.BackgroundTransparency = 0.999
+    ButtonButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonButton.BorderSizePixel = 0
+    ButtonButton.Size = UDim2.new(1, 0, 1, 0)
+    ButtonButton.Font = Enum.Font.GothamMedium
+    ButtonButton.TextColor3 = Color3.fromRGB(178, 178, 178)
+    ButtonButton.TextSize = 11
+    ButtonButton.Text = ButtonConfig.ClickName
+
+    if ButtonContent.Text == "" then
+        ButtonTitle.Position = UDim2.new(0, 40, 0, 0)
+        ButtonTitle.Size = UDim2.new(1, -190, 1, 0)
     end
 
-    Crystal.CustomSize(CrystalHub.MainFrame)
-
-    BackButton.Activated:Connect(function()
-        JumpTo(BackButton.LayoutOrder, BackButton.Text)
+    Crystal.Mouseto(ButtonFrame, function()
+        ButtonFrame.BackgroundTransparency = 0.940
+    end, function()
+        ButtonFrame.BackgroundTransparency = 0.960
     end)
 
-    Crystal.UserInputService.InputBegan:Connect(function(input)
-        if input.KeyCode == WindowConfig.KeyCode then
-            CrystalHub.MainFrame.Visible = not CrystalHub.MainFrame.Visible
-        end
+    Crystal.Stepped:Connect(function()
+        local contentHeight = math.max(ButtonContent.TextBounds.Y + 10, 30)
+        Button.Size = UDim2.new(1, -8, 0, contentHeight + 18)
+        ButtonContent.Size = UDim2.new(1, -190, 0, contentHeight + 10)
     end)
 
-    function TabSystem:AddTab(TabConfig)
-        TabConfig = TabConfig or {}
-        TabConfig.Title = TabConfig.Title or "Tab"
-        TabConfig.Icon = TabConfig.Icon or ""
-
-        local Tab = Instance.new("Frame")
-        local TabCorner = Instance.new("UICorner")
-        local TabImage = Instance.new("ImageLabel")
-        local TabButton = Instance.new("TextButton")
-        local TabName = Instance.new("TextLabel")
-        local ScrollLayers = Instance.new("ScrollingFrame")
-        local ScrollLayersLayout = Instance.new("UIListLayout")
-
-        Tab.Name = "Tab"
-        Tab.Parent = CrystalHub.ScrollTab
-        Tab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        Tab.BackgroundTransparency = 0.999
-        Tab.BorderSizePixel = 0
-        Tab.Size = UDim2.new(1, 0, 0, 32)
-
-        TabCorner.CornerRadius = UDim.new(0, 6)
-        TabCorner.Parent = Tab
-
-        TabImage.Name = "TabImage"
-        TabImage.Parent = Tab
-        TabImage.AnchorPoint = Vector2.new(0, 0.5)
-        TabImage.BackgroundTransparency = 0.999
-        TabImage.BorderSizePixel = 0
-        TabImage.Position = UDim2.new(0, 9, 0.5, 0)
-        TabImage.Size = UDim2.new(0, 16, 0, 16)
-        TabImage.Image = TabConfig.Icon
-        TabImage.ImageTransparency = 0.600
-        TabImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-
-        TabButton.Name = "TabButton"
-        TabButton.Parent = Tab
-        TabButton.BackgroundTransparency = 0.999
-        TabButton.BorderSizePixel = 0
-        TabButton.Size = UDim2.new(1, 0, 1, 0)
-        TabButton.Text = ""
-        TabButton.Font = Enum.Font.SourceSans
-
-        TabName.Name = "TabName"
-        TabName.Parent = Tab
-        TabName.AnchorPoint = Vector2.new(0, 0.5)
-        TabName.BackgroundTransparency = 0.999
-        TabName.BorderSizePixel = 0
-        TabName.Position = UDim2.new(0, 32, 0.5, 0)
-        TabName.Size = UDim2.new(1, -40, 0, 12)
-        TabName.Font = Enum.Font.Arcade
-        TabName.Text = TabConfig.Title
-        TabName.TextColor3 = Color3.fromRGB(230, 230, 230)
-        TabName.TextSize = 12
-        TabName.TextTransparency = 0.600
-        TabName.TextXAlignment = Enum.TextXAlignment.Left
-
-        ScrollLayers.Name = "ScrollLayers"
-        ScrollLayers.Parent = CrystalHub.LayersFolder
-        ScrollLayers.Active = true
-        ScrollLayers.BackgroundTransparency = 0.999
-        ScrollLayers.BorderSizePixel = 0
-        ScrollLayers.Size = UDim2.new(1, 0, 1, 0)
-        ScrollLayers.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
-        ScrollLayers.CanvasSize = UDim2.new(0, 0, 0, 0)
-        ScrollLayers.ScrollBarImageTransparency = 0.700
-        ScrollLayers.ScrollBarThickness = 3
-        ScrollLayers.LayoutOrder = TabCount
-
-        Crystal.Stepped:Connect(function()
-            ScrollLayers.CanvasSize = UDim2.new(0, 0, 0, ScrollLayersLayout.AbsoluteContentSize.Y + 15)
+    Crystal.Click(ButtonButton, function()
+        ButtonFrame.BackgroundTransparency = 0.850
+        Crystal.TweenObject({ButtonFrame, 0.9, "BackgroundTransparency", 0.960})
+        pcall(function()
+            ButtonConfig.Callback()
         end)
+    end)
 
-        ScrollLayersLayout.Parent = ScrollLayers
-        ScrollLayersLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        ScrollLayersLayout.Padding = UDim.new(0, 5)
-
-        -- Indicator cho tab đầu tiên
-        if TabCount == 0 then
-            local ChoosingFrame = Instance.new("Frame")
-            local ChoosingCorner = Instance.new("UICorner")
-            local ChoosingStroke = Instance.new("UIStroke")
-
-            ChoosingFrame.Name = "ChoosingFrame"
-            ChoosingFrame.Parent = Tab
-            ChoosingFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-            ChoosingFrame.BorderSizePixel = 0
-            ChoosingFrame.Position = UDim2.new(0, 2, 0, 10)
-            ChoosingFrame.Size = UDim2.new(0, 3, 0, 12)
-
-            ChoosingCorner.CornerRadius = UDim.new(0, 100)
-            ChoosingCorner.Parent = ChoosingFrame
-
-            ChoosingStroke.Parent = ChoosingFrame
-            ChoosingStroke.Color = Color3.fromRGB(93, 197, 248)
-            ChoosingStroke.Thickness = 0.800
-
-            LayersPageLayout:JumpToIndex(0)
-            BackButton.Text = TabName.Text
-            TabImage.ImageTransparency = 0
-            Tab.BackgroundTransparency = 0.950
-            TabName.TextTransparency = 0
-            BackButton.LayoutOrder = 0
-        end
-
-        -- Hover effect
-        if LayersPageLayout.CurrentPage ~= ScrollLayers then
-            Crystal.Mouseto(Tab, function()
-                Tab.BackgroundTransparency = 0.940
-            end, function()
-                Tab.BackgroundTransparency = 0.999
-            end)
-        end
-
-        -- Click handler
-        TabButton.Activated:Connect(function()
-            local RealChooseFrame
-            for _, v in next, Tab.Parent:GetChildren() do
-                for r, frame in next, v:GetChildren() do
-                    if frame.Name == "ChoosingFrame" then
-                        RealChooseFrame = frame
-                        break
-                    end
-                end
-            end
-
-            if RealChooseFrame ~= nil and LayersPageLayout.CurrentPage ~= ScrollLayers then
-                -- Reset tất cả tabs
-                for r, v in next, Tab.Parent:GetChildren() do
-                    if v.ClassName ~= "UIListLayout" then
-                        Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.999})
-                        Crystal.TweenObject({v.TabImage, 0.4, "ImageTransparency", 0.600})
-                        Crystal.TweenObject({v.TabName, 0.4, "TextTransparency", 0.600})
-                    end
-                end
-                
-                -- Active tab hiện tại
-                Crystal.TweenObject({Tab, 0.4, "BackgroundTransparency", 0.950})
-                Crystal.TweenObject({TabImage, 0.4, "ImageTransparency", 0})
-                Crystal.TweenObject({TabName, 0.4, "TextTransparency", 0})
-                Crystal.TweenObject({RealChooseFrame, 0.4, "Position", UDim2.new(0, 2, 0, 11 + (34 * ScrollLayers.LayoutOrder))})
-                BackButton.Text = TabName.Text
-                JumpTo(ScrollLayers.LayoutOrder, TabName.Text)
-            end
-        end)
-        
-        TabCount = TabCount + 1
-        
-        -- ===== TAB OBJECT =====
-        local TabObject = {}
-        
-        -- ===== BUTTON FUNCTION =====
-        function TabObject:AddButton(ButtonConfig)
-            ButtonConfig = ButtonConfig or {}
-            ButtonConfig.Title = ButtonConfig.Title or "Button"
-            ButtonConfig.Description = ButtonConfig.Description or ""
-            ButtonConfig.Callback = ButtonConfig.Callback or function() end
-
-            local Button = Instance.new("Frame")
-            local ButtonCorner = Instance.new("UICorner")
-            local ButtonTitle = Instance.new("TextLabel")
-            local ButtonDescription = Instance.new("TextLabel")
-            local ButtonClick = Instance.new("TextButton")
-            local ButtonIcon = Instance.new("ImageLabel")
-
-            Button.Name = ButtonConfig.Title
-            Button.Parent = ScrollLayers
-            Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            Button.BackgroundTransparency = 0.900
-            Button.BorderSizePixel = 0
-            Button.Size = UDim2.new(1, 0, 0, 45)
-
-            ButtonCorner.CornerRadius = UDim.new(0, 8)
-            ButtonCorner.Parent = Button
-
-            ButtonTitle.Name = "ButtonTitle"
-            ButtonTitle.Parent = Button
-            ButtonTitle.BackgroundTransparency = 1
-            ButtonTitle.Position = UDim2.new(0, 12, 0, 8)
-            ButtonTitle.Size = UDim2.new(1, -50, 0, 14)
-            ButtonTitle.Font = Enum.Font.Arcade
-            ButtonTitle.Text = ButtonConfig.Title
-            ButtonTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            ButtonTitle.TextSize = 13
-            ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
-
-            ButtonDescription.Name = "ButtonDescription"
-            ButtonDescription.Parent = Button
-            ButtonDescription.BackgroundTransparency = 1
-            ButtonDescription.Position = UDim2.new(0, 12, 0, 24)
-            ButtonDescription.Size = UDim2.new(1, -50, 0, 10)
-            ButtonDescription.Font = Enum.Font.Arcade
-            ButtonDescription.Text = ButtonConfig.Description
-            ButtonDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
-            ButtonDescription.TextSize = 9
-            ButtonDescription.TextTransparency = 0.4
-            ButtonDescription.TextXAlignment = Enum.TextXAlignment.Left
-
-            ButtonIcon.Name = "ButtonIcon"
-            ButtonIcon.Parent = Button
-            ButtonIcon.AnchorPoint = Vector2.new(1, 0.5)
-            ButtonIcon.BackgroundTransparency = 1
-            ButtonIcon.Position = UDim2.new(1, -10, 0.5, 0)
-            ButtonIcon.Size = UDim2.new(0, 20, 0, 20)
-            ButtonIcon.Image = "rbxassetid://18558566660"
-            ButtonIcon.ImageColor3 = Color3.fromRGB(93, 197, 248)
-
-            ButtonClick.Name = "ButtonClick"
-            ButtonClick.Parent = Button
-            ButtonClick.BackgroundTransparency = 1
-            ButtonClick.Size = UDim2.new(1, 0, 1, 0)
-            ButtonClick.Text = ""
-            ButtonClick.Font = Enum.Font.SourceSans
-
-            -- Hover effect
-            Crystal.Mouseto(Button, function()
-                Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.850})
-                Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(120, 210, 255)})
-            end, function()
-                Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.900})
-                Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
-            end)
-
-            -- Click handler
-            Crystal.Click(ButtonClick, function()
-                Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.800})
-                task.wait(0.1)
-                Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.900})
-                
-                pcall(function()
-                    ButtonConfig.Callback()
-                end)
-            end)
-
-            return Button
-        end
-        
+    return Button
+end
         return TabObject
     end
 
