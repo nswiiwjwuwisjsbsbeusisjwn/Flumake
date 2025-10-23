@@ -5,99 +5,76 @@ if CoreGui:FindFirstChild('Crystal hub') then
     CoreGui:FindFirstChild('Crystal hub'):Destroy()
 end
 
-local Crystal1 = Instance.new("ScreenGui")
-local Crystal2 = Instance.new("TextButton")
-local Crystal3 = Instance.new("UICorner")
-local Crystal4 = Instance.new("ImageLabel")
-local sound = Instance.new("Sound")
-
-Crystal3.Name = "UICorner"
-Crystal3.CornerRadius = UDim.new(1, 0) 
-Crystal3.Parent = Crystal2
-
-Crystal4.Name = "ButtonImage"
-Crystal4.Parent = Crystal2
-Crystal4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Crystal4.BackgroundTransparency = 1.000
-Crystal4.BorderSizePixel = 0
-Crystal4.Position = UDim2.new(0.1, 0, 0.1, 0)
-Crystal4.Size = UDim2.new(0, 45, 0, 45)
-Crystal4.Image = "rbxassetid://129781592728096" 
-
-Crystal1.Parent = player:WaitForChild("PlayerGui")
-Crystal1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-Crystal2.Name = "CustomButton"
-Crystal2.Parent = Crystal1
-Crystal2.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-Crystal2.BackgroundTransparency = 0.1
-Crystal2.BorderSizePixel = 0
-Crystal2.AnchorPoint = Vector2.new(0.1, 0.1) 
-Crystal2.Position = UDim2.new(0, 20, 0.1, -6)
-Crystal2.Size = UDim2.new(0, 55, 0, 55)
-Crystal2.Font = Enum.Font.Arcade
-Crystal2.Text = ""
-Crystal2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Crystal2.TextSize = 9.000
-
-sound.Parent = Crystal2
-sound.SoundId = "rbxassetid://130785805"
-
-local ButtonStroke = Instance.new("UIStroke")
-ButtonStroke.Parent = Crystal2
-ButtonStroke.Color = Color3.fromRGB(93, 197, 248)
-ButtonStroke.Thickness = 2.5
-ButtonStroke.Transparency = 0.5
-
-local obj = {
-	TweenService = game:GetService("TweenService"),
-	player = game.Players.LocalPlayer,
-	WS = workspace,
-	plrGUI = game:WaitForChild("CoreGui"),
-	UserInputService = game:GetService("UserInputService"),
-	Mouse = game.Players.LocalPlayer:GetMouse(),
-	ViewportSize = workspace.CurrentCamera.ViewportSize,
-	Stepped = game:GetService("RunService").Stepped
+-- Crystal Library
+local Crystal = {
+    TweenService = game:GetService("TweenService"),
+    Player = game.Players.LocalPlayer,
+    Workspace = workspace,
+    CoreGui = game:GetService("CoreGui"),
+    UserInputService = game:GetService("UserInputService"),
+    Mouse = game.Players.LocalPlayer:GetMouse(),
+    ViewportSize = workspace.CurrentCamera.ViewportSize,
+    Stepped = game:GetService("RunService").Stepped,
+    OldMouseIcon = game.Players.LocalPlayer:GetMouse().Icon
 }
 
-local OldMouse = obj.Mouse.Icon
+-- Notification Types
+Crystal.Types = {
+    Info = {
+        Icon = "rbxassetid://11401835396",
+        Color = Color3.fromRGB(100, 150, 255)
+    },
+    Success = {
+        Icon = "rbxassetid://11401835396",
+        Color = Color3.fromRGB(50, 200, 150)
+    },
+    Warning = {
+        Icon = "rbxassetid://11401835396",
+        Color = Color3.fromRGB(255, 180, 100)
+    },
+    Error = {
+        Icon = "rbxassetid://11401835396",
+        Color = Color3.fromRGB(255, 100, 100)
+    }
+}
 
-obj.TweenObject = function(cf)
-	cf.Object = cf.Object or cf[1]
-	cf.Time = cf.Time or cf[2]
-	cf.OldValue = cf.OldValue or cf[3]
-	cf.NewValue = cf.NewValue or cf[4]
-	local Info = TweenInfo.new(cf.Time, Enum.EasingStyle.Quint)
-	local tween = obj.TweenService:Create(cf.Object, Info, {[cf.OldValue] = cf.NewValue})
-	tween:Play()
-	return tween
+-- Utility Functions
+Crystal.TweenObject = function(config)
+    config.Object = config.Object or config[1]
+    config.Time = config.Time or config[2]
+    config.OldValue = config.OldValue or config[3]
+    config.NewValue = config.NewValue or config[4]
+    local Info = TweenInfo.new(config.Time, Enum.EasingStyle.Quint)
+    local tween = Crystal.TweenService:Create(config.Object, Info, {[config.OldValue] = config.NewValue})
+    tween:Play()
+    return tween
 end
 
-obj.Click = function(Obj, callback)
-	Obj.Activated:Connect(function()
-		callback()
-	end)
+Crystal.Click = function(Object, callback)
+    Object.Activated:Connect(function()
+        callback()
+    end)
 end
 
-obj.Find = function(Object,Name)
-	for _,v in next, Object:GetChildren() do
-		if v.Name == Name then
-			return v
-		end
-	end
+Crystal.Find = function(Object, Name)
+    for _, v in next, Object:GetChildren() do
+        if v.Name == Name then
+            return v
+        end
+    end
 end
 
-obj.Mouseto = function(Obj,Callback, Callback2)
-	Obj.MouseEnter:Connect(function()
-		Callback()
-	end)
-	Obj.MouseLeave:Connect(function()
-		Callback2()
-	end)
+Crystal.Mouseto = function(Object, CallbackEnter, CallbackLeave)
+    Object.MouseEnter:Connect(function()
+        CallbackEnter()
+    end)
+    Object.MouseLeave:Connect(function()
+        CallbackLeave()
+    end)
 end
 
-obj.MakeDraggable = function(object,top)
-	local Dragging = nil
+Crystal.MakeDraggable = function(object, top)
+    local Dragging = nil
     local DragInput = nil
     local DragStart = nil
     local StartPosition = nil
@@ -109,14 +86,13 @@ obj.MakeDraggable = function(object,top)
             StartPosition.Y.Scale,
             StartPosition.Y.Offset + Delta.Y
         )
-		object.Position = newPos
+        object.Position = newPos
     end
     top.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             Dragging = true
             DragStart = input.Position
             StartPosition = object.Position
-
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     Dragging = false
@@ -129,14 +105,14 @@ obj.MakeDraggable = function(object,top)
             DragInput = input
         end
     end)
-    obj.UserInputService.InputChanged:Connect(function(input)
+    Crystal.UserInputService.InputChanged:Connect(function(input)
         if input == DragInput and Dragging then
             UpdatePos(input)
         end
     end)
 end
 
-obj.CustomSize = function(object)
+Crystal.CustomSize = function(object)
     local Dragging = false
     local DragInput = nil
     local DragStart = nil
@@ -144,21 +120,21 @@ obj.CustomSize = function(object)
     local maxSizeX = object.Size.X.Offset
     local maxSizeY = object.Size.Y.Offset
     object.Size = UDim2.new(0, maxSizeX, 0, maxSizeY)
-    local changesizeobject = Instance.new("Frame");
+    local changesizeobject = Instance.new("Frame")
     changesizeobject.AnchorPoint = Vector2.new(1, 1)
     changesizeobject.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    changesizeobject.BackgroundTransparency = 0.9990000128746033
+    changesizeobject.BackgroundTransparency = 0.999
     changesizeobject.BorderColor3 = Color3.fromRGB(0, 0, 0)
     changesizeobject.BorderSizePixel = 0
     changesizeobject.Position = UDim2.new(1, 20, 1, 20)
     changesizeobject.Size = UDim2.new(0, 40, 0, 40)
     changesizeobject.Name = "changesizeobject"
     changesizeobject.Parent = object
-	obj.Mouseto(changesizeobject, function()
-		obj.Mouse.Icon = "rbxassetid://97880490001888"
-	end,function()
-		obj.Mouse.Icon = OldMouse
-	end)
+    Crystal.Mouseto(changesizeobject, function()
+        Crystal.Mouse.Icon = "rbxassetid://97880490001888"
+    end, function()
+        Crystal.Mouse.Icon = Crystal.OldMouseIcon
+    end)
     local function UpdateSize(input)
         local Delta = input.Position - DragStart
         local newWidth = StartSize.X.Offset + Delta.X
@@ -184,38 +160,19 @@ obj.CustomSize = function(object)
             DragInput = input
         end
     end)
-    obj.UserInputService.InputChanged:Connect(function(input)
+    Crystal.UserInputService.InputChanged:Connect(function(input)
         if input == DragInput and Dragging then
             UpdateSize(input)
         end
     end)
 end
 
-function GetMidPos(mainFrame)
-    return UDim2.new(0, (obj.ViewportSize.X/2-mainFrame.Size.X.Offset/ 2), 0, (obj.ViewportSize.Y/2-mainFrame.Size.Y.Offset/2))
+Crystal.GetMidPos = function(mainFrame)
+    return UDim2.new(0, (Crystal.ViewportSize.X/2 - mainFrame.Size.X.Offset/2), 0, (Crystal.ViewportSize.Y/2 - mainFrame.Size.Y.Offset/2))
 end
 
-local Crystal = {}
-
-Crystal.Types = {
-    Info = {
-        Icon = "rbxassetid://11401835396",
-        Color = Color3.fromRGB(100, 150, 255)
-    },
-    Success = {
-        Icon = "rbxassetid://11401835396",
-        Color = Color3.fromRGB(50, 200, 150)
-    },
-    Warning = {
-        Icon = "rbxassetid://11401835396",
-        Color = Color3.fromRGB(255, 180, 100)
-    },
-    Error = {
-        Icon = "rbxassetid://11401835396",
-        Color = Color3.fromRGB(255, 100, 100)
-    }
-}
-function obj:Notify(ConfigNotify)
+-- Notification System
+Crystal.Notify = function(self, NotifyConfig)
     NotifyConfig = NotifyConfig or {}
     NotifyConfig.Title = NotifyConfig.Title or "Crystal Hub"
     NotifyConfig.Title1 = NotifyConfig.Title1 or "By Shinichi"
@@ -228,14 +185,14 @@ function obj:Notify(ConfigNotify)
     local NotifyFunc = {}
 
     spawn(function()
-        if not obj.plrGUI:FindFirstChild("NotifyGui") then
+        if not Crystal.CoreGui:FindFirstChild("NotifyGui") then
             local NotifyGui = Instance.new("ScreenGui")
             NotifyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
             NotifyGui.Name = "NotifyGui"
-            NotifyGui.Parent = obj.plrGUI
+            NotifyGui.Parent = Crystal.CoreGui
         end
 
-        if not obj.plrGUI.NotifyGui:FindFirstChild("NotifyLayout") then
+        if not Crystal.CoreGui.NotifyGui:FindFirstChild("NotifyLayout") then
             local NotifyLayout = Instance.new("Frame")
             NotifyLayout.AnchorPoint = Vector2.new(1, 0)
             NotifyLayout.BackgroundTransparency = 1
@@ -243,14 +200,14 @@ function obj:Notify(ConfigNotify)
             NotifyLayout.Position = UDim2.new(1, -10, 0, 10)
             NotifyLayout.Size = UDim2.new(0, 220, 1, -20)
             NotifyLayout.Name = "NotifyLayout"
-            NotifyLayout.Parent = obj.plrGUI.NotifyGui
+            NotifyLayout.Parent = Crystal.CoreGui.NotifyGui
 
             local Count = 0
-            obj.plrGUI.NotifyGui.NotifyLayout.ChildRemoved:Connect(function()
+            Crystal.CoreGui.NotifyGui.NotifyLayout.ChildRemoved:Connect(function()
                 Count = 0
-                for _, v in pairs(obj.plrGUI.NotifyGui.NotifyLayout:GetChildren()) do
+                for _, v in pairs(Crystal.CoreGui.NotifyGui.NotifyLayout:GetChildren()) do
                     if v:IsA("Frame") then
-                        obj.TweenObject({
+                        Crystal.TweenObject({
                             v,
                             0.3,
                             "Position",
@@ -261,11 +218,11 @@ function obj:Notify(ConfigNotify)
                 end
             end)
 
-            obj.plrGUI.NotifyGui.NotifyLayout.ChildAdded:Connect(function(child)
+            Crystal.CoreGui.NotifyGui.NotifyLayout.ChildAdded:Connect(function(child)
                 local Count2 = 1
-                for _, v in pairs(obj.plrGUI.NotifyGui.NotifyLayout:GetChildren()) do
+                for _, v in pairs(Crystal.CoreGui.NotifyGui.NotifyLayout:GetChildren()) do
                     if v ~= child and v:IsA("Frame") then
-                        obj.TweenObject({
+                        Crystal.TweenObject({
                             v,
                             0.3,
                             "Position",
@@ -300,7 +257,7 @@ function obj:Notify(ConfigNotify)
         NotifyFrame.BorderSizePixel = 0
         NotifyFrame.Size = UDim2.new(1, 0, 0, 60)
         NotifyFrame.Name = "NotifyFrame"
-        NotifyFrame.Parent = obj.plrGUI.NotifyGui.NotifyLayout
+        NotifyFrame.Parent = Crystal.CoreGui.NotifyGui.NotifyLayout
         NotifyFrame.Position = UDim2.new(0, 0, 0, 0)
 
         NotifyFrameReal.BackgroundColor3 = Color3.fromRGB(30, 15, 50)
@@ -407,7 +364,8 @@ function obj:Notify(ConfigNotify)
         NotifyContent.Name = "NotifyContent"
         NotifyContent.Parent = NotifyFrameReal
         NotifyContent.TextWrapped = true
-local typeData = Crystal.Types[NotifyConfig.Type]
+
+        local typeData = Crystal.Types[NotifyConfig.Type]
         if typeData then
             AlertImage.Image = typeData.Icon
             AlertImage.ImageColor3 = typeData.Color
@@ -450,108 +408,31 @@ local typeData = Crystal.Types[NotifyConfig.Type]
             if fadeStarted then return end
             fadeStarted = true
 
-            obj.TweenObject({
-                NotifyFrameReal,
-                0.4,
-                "BackgroundTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                NotifyLogo,
-                0.4,
-                "ImageTransparency",
-                1
-            })
-            obj.TweenObject({
-                NotifyLogo,
-                0.4,
-                "BackgroundTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                NotifyTitle,
-                0.4,
-                "TextTransparency",
-                1
-            })
-
+            Crystal.TweenObject({NotifyFrameReal, 0.4, "BackgroundTransparency", 1})
+            Crystal.TweenObject({NotifyLogo, 0.4, "ImageTransparency", 1})
+            Crystal.TweenObject({NotifyLogo, 0.4, "BackgroundTransparency", 1})
+            Crystal.TweenObject({NotifyTitle, 0.4, "TextTransparency", 1})
             if NotifyConfig.Title1 then
-                obj.TweenObject({
-                    Title1Label,
-                    0.4,
-                    "TextTransparency",
-                    1
-                })
+                Crystal.TweenObject({Title1Label, 0.4, "TextTransparency", 1})
             end
-
-            obj.TweenObject({
-                NotifyContent,
-                0.4,
-                "TextTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                AlertImage,
-                0.4,
-                "ImageTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                ProgressBar,
-                0.4,
-                "BackgroundTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                ProgressFill,
-                0.4,
-                "BackgroundTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                DropShadow,
-                0.4,
-                "ImageTransparency",
-                1
-            })
+            Crystal.TweenObject({NotifyContent, 0.4, "TextTransparency", 1})
+            Crystal.TweenObject({AlertImage, 0.4, "ImageTransparency", 1})
+            Crystal.TweenObject({ProgressBar, 0.4, "BackgroundTransparency", 1})
+            Crystal.TweenObject({ProgressFill, 0.4, "BackgroundTransparency", 1})
+            Crystal.TweenObject({DropShadow, 0.4, "ImageTransparency", 1})
         end
 
         function NotifyFunc:Close()
             if closed then return end
             closed = true
-
             FadeOut()
-
-            obj.TweenObject({
-                NotifyFrameReal,
-                NotifyConfig.Time * 0.6,
-                "Position",
-                UDim2.new(0, 250, 0, 0)
-            })
-
+            Crystal.TweenObject({NotifyFrameReal, NotifyConfig.Time * 0.6, "Position", UDim2.new(0, 250, 0, 0)})
             task.wait(NotifyConfig.Time * 0.6)
             NotifyFrame:Destroy()
         end
 
-        obj.TweenObject({
-            NotifyFrameReal,
-            NotifyConfig.Time,
-            "Position",
-            UDim2.new(0, 0, 0, 0)
-        })
-
-        obj.TweenObject({
-            ProgressFill,
-            NotifyConfig.Delay,
-            "Size",
-            UDim2.new(0, 0, 1, 0)
-        })
+        Crystal.TweenObject({NotifyFrameReal, NotifyConfig.Time, "Position", UDim2.new(0, 0, 0, 0)})
+        Crystal.TweenObject({ProgressFill, NotifyConfig.Delay, "Size", UDim2.new(0, 0, 1, 0)})
 
         task.spawn(function()
             task.wait(NotifyConfig.Delay - 0.4)
@@ -564,1636 +445,1130 @@ local typeData = Crystal.Types[NotifyConfig.Type]
     return NotifyFunc
 end
 
-function obj:Window(cfw)
-	cfw = cfw or {}
-	cfw.Title = cfw.Title or "Crystal Hub"
-	cfw.Description = cfw.Description or "Premium Edition"
-	cfw.User = cfw.User 
-	cfw.IconUser = cfw.IconUser or ""
-	cfw.UseAcrylic = cfw.UseAcrylic or false
-	-- SIZE OPTIMIZED FOR SMALL SCREENS (480x320 minimum)
-	cfw.Size = cfw.Size or UDim2.new(0, 450, 0, 320)
-	cfw.DiscordStatus = cfw.DiscordStatus or "love you hipp"
-	cfw.DisplayNameDiscord = cfw.DisplayNameDiscord or ""
-	cfw.DiscordDescription = cfw.DiscordDescription or ""
-	cfw.KeyCode = cfw.KeyCode or Enum.KeyCode.RightControl
-	
-	local Window = Instance.new("ScreenGui")
-	local Window11 = Instance.new("Frame")
-	local DropShadowHolder = Instance.new("Frame")
-	local DropShadow = Instance.new("ImageLabel")
-	local Top = Instance.new("Frame")
-	local TopTitle = Instance.new("TextLabel")
-	local TopDescription = Instance.new("TextLabel")
-	local CloseButton = Instance.new("TextButton")
-	local CloseImage = Instance.new("ImageLabel")
-	local FrameBiNgu = Instance.new("Frame")
-	local FrameOc = Instance.new("Frame")
-	local MaxButton = Instance.new("TextButton")
-	local MaxImage = Instance.new("ImageLabel")
-	local HideButton = Instance.new("TextButton")
-	local HideImage = Instance.new("ImageLabel")
-	local DecideFrame = Instance.new("Frame")
-	local UICorner = Instance.new("UICorner")
-	local LayersTab = Instance.new("Frame")
-	local Info = Instance.new("Frame")
-	local UICorner_2 = Instance.new("UICorner")
-	local NamePlayer = Instance.new("TextLabel")
-	local UsernameLabel = Instance.new("TextLabel")
-	local LogoFrame = Instance.new("Frame")
-	local LogoPlayer = Instance.new("ImageLabel")
-	local UICorner_3 = Instance.new("UICorner")
-	local UICorner_4 = Instance.new("UICorner")
-	local UIStroke = Instance.new("UIStroke")
-	local StatusIndicator = Instance.new("Frame")
-	local StatusCorner = Instance.new("UICorner")
-	local StatusStroke = Instance.new("UIStroke")
-	local DescriptionPlayer = Instance.new("TextLabel")
-	local InfoButton = Instance.new("TextButton")
-	local SearchFrame = Instance.new("Frame")
-	local UICorner_5 = Instance.new("UICorner")
-	local SearchImage = Instance.new("ImageLabel")
-	local SearchDecide = Instance.new("Frame")
-	local UICorner_6 = Instance.new("UICorner")
-	local SearchDecide_2 = Instance.new("Frame")
-	local UICorner_7 = Instance.new("UICorner")
-	local RealLayers = Instance.new("Frame")
-	local UIStroke_2 = Instance.new("UIStroke")
-	local UIStroke_3 = Instance.new("UIStroke")
-	local SearchBoxFrame = Instance.new("Frame")
-	local SearchBox = Instance.new("TextBox")
-	local ScrollTab = Instance.new("ScrollingFrame")
-	local UIListLayout = Instance.new("UIListLayout")
-	local UICorner_59 = Instance.new("UICorner")
-	local UIStroke_26 = Instance.new("UIStroke")
-	local Layers = Instance.new("Frame")
-	local AnotherFrame = Instance.new("Frame")
-	local DropShadowHolder_2 = Instance.new("Frame")
-	local DropShadow_2 = Instance.new("ImageLabel")
-	local LogFrame = Instance.new("Frame")
-	local UICorner_42 = Instance.new("UICorner")
-	local UIStroke_17 = Instance.new("UIStroke")
-	local LogTitle = Instance.new("TextLabel")
-	local LogContent = Instance.new("TextLabel")
-	local LogUnder = Instance.new("Frame")
-	local UICorner_43 = Instance.new("UICorner")
-	local ConfirmFrame = Instance.new("Frame")
-	local UICorner_44 = Instance.new("UICorner")
-	local ConfirmButton = Instance.new("TextButton")
-	local CancelFrame = Instance.new("Frame")
-	local UICorner_45 = Instance.new("UICorner")
-	local CancelButton = Instance.new("TextButton")
-	local LayersFolder = Instance.new("Folder")
-	local AnotherButton = Instance.new("TextButton")
-	local SkidderTop1VN = Instance.new("UICorner")
-	
-	Window.Name = "Window"
-	Window.Parent = obj.plrGUI
-	Window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	
-	Window11.Name = "Window11"
-	Window11.Parent = Window
-	Window11.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-	Window11.BackgroundTransparency = 0.050
-	Window11.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Window11.BorderSizePixel = 0
-	Window11.Size = cfw.Size
-	Window11.Position = GetMidPos(Window11)
-	
-	UICorner_59.CornerRadius = UDim.new(0, 12)
-	UICorner_59.Parent = Window11
-	
-	UIStroke_26.Parent = Window11
-	UIStroke_26.Color = Color3.fromRGB(60, 60, 60)
-	UIStroke_26.Thickness = 1.800
-	
-	DropShadowHolder.Name = "DropShadowHolder"
-	DropShadowHolder.Parent = Window11
-	DropShadowHolder.BackgroundTransparency = 1.000
-	DropShadowHolder.BorderSizePixel = 0
-	DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
-	DropShadowHolder.ZIndex = 0
-	
-	DropShadow.Name = "DropShadow"
-	DropShadow.Parent = DropShadowHolder
-	DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-	DropShadow.BackgroundTransparency = 1.000
-	DropShadow.BorderSizePixel = 0
-	DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-	DropShadow.Size = UDim2.new(1, 47, 1, 47)
-	DropShadow.ZIndex = 0
-	DropShadow.Image = "rbxassetid://6015897843"
-	DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-	DropShadow.ImageTransparency = 0.300
-	DropShadow.ScaleType = Enum.ScaleType.Slice
-	DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-	
-	Top.Name = "Top"
-	Top.Parent = Window11
-	Top.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Top.BackgroundTransparency = 0.999
-	Top.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Top.BorderSizePixel = 0
-	Top.Size = UDim2.new(1, 0, 0, 40)
-	Top.ZIndex = 2
-	
-	TopTitle.Name = "TopTitle"
-	TopTitle.Parent = Top
-	TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TopTitle.BackgroundTransparency = 0.999
-	TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	TopTitle.BorderSizePixel = 0
-	TopTitle.Position = UDim2.new(0, 15, 0, 12)
-	TopTitle.Size = UDim2.new(0, 100, 0, 16)
-	TopTitle.Font = Enum.Font.Arcade
-	TopTitle.Text = cfw.Title
-	TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-	TopTitle.TextSize = 14.000
-	TopTitle.TextXAlignment = Enum.TextXAlignment.Left
-	
-	TopDescription.Name = "TopDescription"
-	TopDescription.Parent = Top
-	TopDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TopDescription.BackgroundTransparency = 0.999
-	TopDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	TopDescription.BorderSizePixel = 0
-	TopDescription.Position = UDim2.new(0, 0, 0, 12)
-	TopDescription.Size = UDim2.new(0, 80, 0, 16)
-	TopDescription.Font = Enum.Font.Arcade
-	TopDescription.Text = cfw.Description
-	TopDescription.TextColor3 = Color3.fromRGB(93, 197, 248)
-	TopDescription.TextSize = 12.000
-	TopDescription.TextTransparency = 0.300
-	TopDescription.TextXAlignment = Enum.TextXAlignment.Left
-	
-	CloseButton.Name = "CloseButton"
-	CloseButton.Parent = Top
-	CloseButton.AnchorPoint = Vector2.new(1, 0)
-	CloseButton.BackgroundTransparency = 1.000
-	CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	CloseButton.BorderSizePixel = 0
-	CloseButton.Position = UDim2.new(1, 0, 0, 0)
-	CloseButton.Size = UDim2.new(0, 40, 0, 40)
-	CloseButton.Font = Enum.Font.SourceSans
-	CloseButton.AutoButtonColor = false
-	CloseButton.Text = ""
-	CloseButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-	CloseButton.TextSize = 14.000
-	
-	obj.Mouseto(CloseButton, function()
-		obj.TweenObject({CloseButton, 0.2, "BackgroundTransparency", 0.970})
-		obj.TweenObject({FrameBiNgu, 0.2, "BackgroundTransparency", 0.000})
-		obj.TweenObject({FrameOc, 0.2, "BackgroundTransparency", 0.000})
-	end, function()
-		obj.TweenObject({CloseButton, 0.2, "BackgroundTransparency", 1.000})
-		obj.TweenObject({FrameBiNgu, 0.2, "BackgroundTransparency", 1.000})
-		obj.TweenObject({FrameOc, 0.2, "BackgroundTransparency", 1.000})
-	end)
-	
-	obj.Click(CloseButton, function()
-		Window11.Visible = false
-	end)
-	
-	SkidderTop1VN.CornerRadius = UDim.new(0, 12)
-	SkidderTop1VN.Parent = CloseButton
-	
-	CloseImage.Name = "CloseImage"
-	CloseImage.Parent = CloseButton
-	CloseImage.AnchorPoint = Vector2.new(0.5, 0.5)
-	CloseImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	CloseImage.BackgroundTransparency = 0.999
-	CloseImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	CloseImage.BorderSizePixel = 0
-	CloseImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	CloseImage.Size = UDim2.new(1, -22, 1, -22)
-	CloseImage.Image = "rbxassetid://18556800637"
-	CloseImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-	
-	UICorner.Parent = CloseButton
-	
-	FrameBiNgu.Name = "FrameBiNgu"
-	FrameBiNgu.Parent = CloseButton
-	FrameBiNgu.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
-	FrameBiNgu.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	FrameBiNgu.BorderSizePixel = 0
-	FrameBiNgu.Size = UDim2.new(0, 7, 1, 0)
-	FrameBiNgu.BackgroundTransparency = 1.000
-	
-	FrameOc.Name = "FrameOc"
-	FrameOc.Parent = CloseButton
-	FrameOc.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
-	FrameOc.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	FrameOc.BorderSizePixel = 0
-	FrameOc.BackgroundTransparency = 1.000
-	FrameOc.Position = UDim2.new(0, 0, 1, -5)
-	FrameOc.Size = UDim2.new(1, 0, 0, 5)
-	
-	MaxButton.Name = "MaxButton"
-	MaxButton.Parent = Top
-	MaxButton.AutoButtonColor = false
-	MaxButton.AnchorPoint = Vector2.new(1, 0)
-	MaxButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	MaxButton.BackgroundTransparency = 0.999
-	MaxButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	MaxButton.BorderSizePixel = 0
-	MaxButton.Position = UDim2.new(1, -39, 0, 0)
-	MaxButton.Size = UDim2.new(0, 40, 0, 40)
-	MaxButton.Font = Enum.Font.SourceSans
-	MaxButton.Text = ""
-	MaxButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-	MaxButton.TextSize = 14.000
-	
-	obj.Click(MaxButton, function()
-		if Window11.Size.Y.Scale < 1 then
-			OldPos = Window11.Position
-			OldSize = Window11.Size
-			obj.TweenObject({Window11, 0.5, "Size", UDim2.new(1, 0, 1, 0)})
-			obj.TweenObject({Window11, 0.5, "Position", UDim2.new(0, 0, 0, 0)})
-		else
-			obj.TweenObject({Window11, 0.5, "Size", OldSize})
-			obj.TweenObject({Window11, 0.5, "Position", OldPos})
-		end
-	end)
-	
-	obj.Mouseto(MaxButton, function()
-		MaxButton.BackgroundTransparency = 0.970
-		obj.TweenObject({MaxImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
-	end, function()
-		MaxButton.BackgroundTransparency = 0.999
-		obj.TweenObject({MaxImage, 0.2, "ImageColor3", Color3.fromRGB(230, 230, 230)})
-	end)
-	
-	MaxImage.Name = "MaxImage"
-	MaxImage.Parent = MaxButton
-	MaxImage.AnchorPoint = Vector2.new(0.5, 0.5)
-	MaxImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	MaxImage.BackgroundTransparency = 0.999
-	MaxImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	MaxImage.BorderSizePixel = 0
-	MaxImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	MaxImage.Size = UDim2.new(1, -24, 1, -24)
-	MaxImage.Image = "rbxassetid://9886659406"
-	MaxImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-	
-	HideButton.Name = "HideButton"
-	HideButton.Parent = Top
-	HideButton.AutoButtonColor = false
-	HideButton.AnchorPoint = Vector2.new(1, 0)
-	HideButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	HideButton.BackgroundTransparency = 0.999
-	HideButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	HideButton.BorderSizePixel = 0
-	HideButton.Position = UDim2.new(1, -77, 0, 0)
-	HideButton.Size = UDim2.new(0, 40, 0, 40)
-	HideButton.Font = Enum.Font.SourceSans
-	HideButton.Text = ""
-	HideButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-	HideButton.TextSize = 14.000
-	
-	obj.Mouseto(HideButton, function()
-		HideButton.BackgroundTransparency = 0.950
-		obj.TweenObject({HideImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
-	end, function()
-		HideButton.BackgroundTransparency = 0.999
-		obj.TweenObject({HideImage, 0.2, "ImageColor3", Color3.fromRGB(230, 230, 230)})
-	end)
-	
-	obj.Click(HideButton, function()
-		Window11.Visible = false
-	end)
-	
-	HideImage.Name = "HideImage"
-	HideImage.Parent = HideButton
-	HideImage.AnchorPoint = Vector2.new(0.5, 0.5)
-	HideImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	HideImage.BackgroundTransparency = 0.999
-	HideImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	HideImage.BorderSizePixel = 0
-	HideImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	HideImage.Size = UDim2.new(1, -24, 1, -24)
-	HideImage.Image = "rbxassetid://18556824827"
-	HideImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-	
-	DecideFrame.Name = "DecideFrame"
-	DecideFrame.Parent = Top
-	DecideFrame.AnchorPoint = Vector2.new(0.5, 1)
-	DecideFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-	DecideFrame.BackgroundTransparency = 0.800
-	DecideFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	DecideFrame.BorderSizePixel = 0
-	DecideFrame.Position = UDim2.new(0.5, 0, 1, 2)
-	DecideFrame.Size = UDim2.new(1, -14, 0, 2)
-	
-	UICorner.CornerRadius = UDim.new(0, 100)
-	UICorner.Parent = DecideFrame
-	
-	LayersTab.Name = "LayersTab"
-	LayersTab.Parent = Window11
-	LayersTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	LayersTab.BackgroundTransparency = 0.999
-	LayersTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LayersTab.BorderSizePixel = 0
-	LayersTab.Position = UDim2.new(0, 10, 0, 48)
-	LayersTab.Size = UDim2.new(0, 140, 1, -58)
-	
-	Info.Name = "Info"
-	Info.Parent = LayersTab
-	Info.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-	Info.BackgroundTransparency = 1.000
-	Info.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Info.BorderSizePixel = 0
-	Info.Size = UDim2.new(1, 0, 0, 48)
-	
-	obj.Mouseto(Info, function()
-		Info.BackgroundTransparency = 0.950
-		obj.TweenObject({UIStroke, 0.3, "Transparency", 0.400})
-	end, function()
-		Info.BackgroundTransparency = 1.000
-		obj.TweenObject({UIStroke, 0.3, "Transparency", 0.700})
-	end)
-	
-	UICorner_2.CornerRadius = UDim.new(0, 6)
-	UICorner_2.Parent = Info
-	
-	NamePlayer.Name = "NamePlayer"
-	NamePlayer.Parent = Info
-	NamePlayer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	NamePlayer.BackgroundTransparency = 0.999
-	NamePlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	NamePlayer.BorderSizePixel = 0
-	NamePlayer.Position = UDim2.new(0, 46, 0, 10)
-	NamePlayer.Size = UDim2.new(1, -50, 0, 12)
-	NamePlayer.Font = Enum.Font.Arcade
-	NamePlayer.Text = tostring(game:GetService("Players").LocalPlayer.DisplayName)
-	NamePlayer.TextColor3 = Color3.fromRGB(255, 255, 255)
-	NamePlayer.TextSize = 12.000
-	NamePlayer.TextWrapped = true
-	NamePlayer.TextXAlignment = Enum.TextXAlignment.Left
-	
-	UsernameLabel.Name = "UsernameLabel"
-	UsernameLabel.Parent = Info
-	UsernameLabel.BackgroundTransparency = 1
-	UsernameLabel.Position = UDim2.new(0, 46, 0, 24)
-	UsernameLabel.Size = UDim2.new(1, -50, 0, 10)
-	UsernameLabel.Font = Enum.Font.Arcade
-	UsernameLabel.Text = tostring(game:GetService("Players").LocalPlayer.Name)
-	UsernameLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
-	UsernameLabel.TextSize = 9.000
-	UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
-	
-	LogoFrame.Name = "LogoFrame"
-	LogoFrame.Parent = Info
-	LogoFrame.AnchorPoint = Vector2.new(0, 0.5)
-	LogoFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-	LogoFrame.BackgroundTransparency = 0.850
-	LogoFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LogoFrame.BorderSizePixel = 0
-	LogoFrame.Position = UDim2.new(0, 4, 0.5, 0)
-	LogoFrame.Size = UDim2.new(0, 38, 0, 38)
-	
-	LogoPlayer.Name = "LogoPlayer"
-	LogoPlayer.Parent = LogoFrame
-	LogoPlayer.AnchorPoint = Vector2.new(0.5, 0.5)
-	LogoPlayer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	LogoPlayer.BackgroundTransparency = 0.999
-	LogoPlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LogoPlayer.BorderSizePixel = 0
-	LogoPlayer.Position = UDim2.new(0.5, 0, 0.5, 0)
-	LogoPlayer.Size = UDim2.new(1, -2, 1, -2)
-	LogoPlayer.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..game:GetService("Players").LocalPlayer.UserId.."&width=420&height=420&format=png"
-	
-	UICorner_3.CornerRadius = UDim.new(0, 1000)
-	UICorner_3.Parent = LogoPlayer
-	
-	UICorner_4.CornerRadius = UDim.new(0, 1000)
-	UICorner_4.Parent = LogoFrame
-	
-	UIStroke.Parent = LogoFrame
-	UIStroke.Color = Color3.fromRGB(93, 197, 248)
-	UIStroke.Transparency = 0.700
-	UIStroke.Thickness = 2.000
-	
-	StatusIndicator.Name = "StatusIndicator"
-	StatusIndicator.Parent = LogoFrame
-	StatusIndicator.AnchorPoint = Vector2.new(1, 1)
-	StatusIndicator.BackgroundColor3 = Color3.fromRGB(67, 181, 129)
-	StatusIndicator.BorderSizePixel = 0
-	StatusIndicator.Position = UDim2.new(1, -1, 1, -1)
-	StatusIndicator.Size = UDim2.new(0, 11, 0, 11)
-	StatusIndicator.ZIndex = 5
-	
-	StatusCorner.CornerRadius = UDim.new(1, 0)
-	StatusCorner.Parent = Status
-	
-local typeData = Crystal.Types[NotifyConfig.Type]
-        if typeData then
-            AlertImage.Image = typeData.Icon
-            AlertImage.ImageColor3 = typeData.Color
+-- Window Creation
+Crystal.Window = function(self, WindowConfig)
+    WindowConfig = WindowConfig or {}
+    WindowConfig.Title = WindowConfig.Title or "Crystal Hub"
+    WindowConfig.Description = WindowConfig.Description or "Premium Edition"
+    WindowConfig.User = WindowConfig.User
+    WindowConfig.IconUser = WindowConfig.IconUser or ""
+    WindowConfig.UseAcrylic = WindowConfig.UseAcrylic or false
+    WindowConfig.Size = WindowConfig.Size or UDim2.new(0, 450, 0, 320)
+    WindowConfig.DiscordStatus = WindowConfig.DiscordStatus or "love you hipp"
+    WindowConfig.DisplayNameDiscord = WindowConfig.DisplayNameDiscord or ""
+    WindowConfig.DiscordDescription = WindowConfig.DiscordDescription or ""
+    WindowConfig.KeyCode = WindowConfig.KeyCode or Enum.KeyCode.RightControl
+
+    -- Create UI instances
+    local CrystalHub = {}
+    CrystalHub.Window = Instance.new("ScreenGui")
+    CrystalHub.MainFrame = Instance.new("Frame")
+    CrystalHub.DropShadowHolder = Instance.new("Frame")
+    CrystalHub.DropShadow = Instance.new("ImageLabel")
+    CrystalHub.TopBar = Instance.new("Frame")
+    CrystalHub.TopTitle = Instance.new("TextLabel")
+    CrystalHub.TopDescription = Instance.new("TextLabel")
+    CrystalHub.CloseButton = Instance.new("TextButton")
+    CrystalHub.CloseImage = Instance.new("ImageLabel")
+    CrystalHub.CloseBorderLeft = Instance.new("Frame")
+    CrystalHub.CloseBorderBottom = Instance.new("Frame")
+    CrystalHub.MaxButton = Instance.new("TextButton")
+    CrystalHub.MaxImage = Instance.new("ImageLabel")
+    CrystalHub.HideButton = Instance.new("TextButton")
+    CrystalHub.HideImage = Instance.new("ImageLabel")
+    CrystalHub.DecideFrame = Instance.new("Frame")
+    CrystalHub.DecideCorner = Instance.new("UICorner")
+    CrystalHub.LayersTab = Instance.new("Frame")
+    CrystalHub.PlayerInfo = Instance.new("Frame")
+    CrystalHub.InfoCorner = Instance.new("UICorner")
+    CrystalHub.PlayerName = Instance.new("TextLabel")
+    CrystalHub.PlayerUsername = Instance.new("TextLabel")
+    CrystalHub.PlayerDescription = Instance.new("TextLabel")
+    CrystalHub.AvatarFrame = Instance.new("Frame")
+    CrystalHub.AvatarImage = Instance.new("ImageLabel")
+    CrystalHub.AvatarCorner = Instance.new("UICorner")
+    CrystalHub.AvatarFrameCorner = Instance.new("UICorner")
+    CrystalHub.AvatarStroke = Instance.new("UIStroke")
+    CrystalHub.StatusIndicator = Instance.new("Frame")
+    CrystalHub.StatusCorner = Instance.new("UICorner")
+    CrystalHub.StatusStroke = Instance.new("UIStroke")
+    CrystalHub.InfoButton = Instance.new("TextButton")
+    CrystalHub.SearchFrame = Instance.new("Frame")
+    CrystalHub.SearchCorner = Instance.new("UICorner")
+    CrystalHub.SearchImage = Instance.new("ImageLabel")
+    CrystalHub.SearchDecide = Instance.new("Frame")
+    CrystalHub.SearchDecideCorner = Instance.new("UICorner")
+    CrystalHub.SearchDecideActive = Instance.new("Frame")
+    CrystalHub.SearchDecideActiveCorner = Instance.new("UICorner")
+    CrystalHub.SearchDecideStroke = Instance.new("UIStroke")
+    CrystalHub.SearchDecideActiveStroke = Instance.new("UIStroke")
+    CrystalHub.SearchBoxFrame = Instance.new("Frame")
+    CrystalHub.SearchBox = Instance.new("TextBox")
+    CrystalHub.ScrollTab = Instance.new("ScrollingFrame")
+    CrystalHub.TabListLayout = Instance.new("UIListLayout")
+    CrystalHub.MainCorner = Instance.new("UICorner")
+    CrystalHub.MainStroke = Instance.new("UIStroke")
+    CrystalHub.Layers = Instance.new("Frame")
+    CrystalHub.ConfirmationFrame = Instance.new("Frame")
+    CrystalHub.ConfirmationBackground = Instance.new("TextButton")
+    CrystalHub.ConfirmationDropShadowHolder = Instance.new("Frame")
+    CrystalHub.ConfirmationDropShadow = Instance.new("ImageLabel")
+    CrystalHub.ConfirmationDialog = Instance.new("Frame")
+    CrystalHub.ConfirmationDialogCorner = Instance.new("UICorner")
+    CrystalHub.ConfirmationDialogStroke = Instance.new("UIStroke")
+    CrystalHub.ConfirmationTitle = Instance.new("TextLabel")
+    CrystalHub.ConfirmationContent = Instance.new("TextLabel")
+    CrystalHub.ConfirmationBottom = Instance.new("Frame")
+    CrystalHub.ConfirmationBottomCorner = Instance.new("UICorner")
+    CrystalHub.ConfirmButtonFrame = Instance.new("Frame")
+    CrystalHub.ConfirmButtonCorner = Instance.new("UICorner")
+    CrystalHub.ConfirmButton = Instance.new("TextButton")
+    CrystalHub.CancelButtonFrame = Instance.new("Frame")
+    CrystalHub.CancelButtonCorner = Instance.new("UICorner")
+    CrystalHub.CancelButton = Instance.new("TextButton")
+    CrystalHub.LayersFolder = Instance.new("Folder")
+    CrystalHub.CloseCorner = Instance.new("UICorner")
+
+    -- Setup Window
+    CrystalHub.Window.Name = "Window"
+    CrystalHub.Window.Parent = Crystal.CoreGui
+    CrystalHub.Window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    CrystalHub.MainFrame.Name = "Window11"
+    CrystalHub.MainFrame.Parent = CrystalHub.Window
+    CrystalHub.MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    CrystalHub.MainFrame.BackgroundTransparency = 0.050
+    CrystalHub.MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.MainFrame.BorderSizePixel = 0
+    CrystalHub.MainFrame.Size = WindowConfig.Size
+    CrystalHub.MainFrame.Position = Crystal.GetMidPos(CrystalHub.MainFrame)
+
+    CrystalHub.MainCorner.CornerRadius = UDim.new(0, 12)
+    CrystalHub.MainCorner.Parent = CrystalHub.MainFrame
+
+    CrystalHub.MainStroke.Parent = CrystalHub.MainFrame
+    CrystalHub.MainStroke.Color = Color3.fromRGB(60, 60, 60)
+    CrystalHub.MainStroke.Thickness = 1.800
+
+    -- Drop Shadow
+    CrystalHub.DropShadowHolder.Name = "DropShadowHolder"
+    CrystalHub.DropShadowHolder.Parent = CrystalHub.MainFrame
+    CrystalHub.DropShadowHolder.BackgroundTransparency = 1.000
+    CrystalHub.DropShadowHolder.BorderSizePixel = 0
+    CrystalHub.DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.DropShadowHolder.ZIndex = 0
+
+    CrystalHub.DropShadow.Name = "DropShadow"
+    CrystalHub.DropShadow.Parent = CrystalHub.DropShadowHolder
+    CrystalHub.DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.DropShadow.BackgroundTransparency = 1.000
+    CrystalHub.DropShadow.BorderSizePixel = 0
+    CrystalHub.DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.DropShadow.Size = UDim2.new(1, 47, 1, 47)
+    CrystalHub.DropShadow.ZIndex = 0
+    CrystalHub.DropShadow.Image = "rbxassetid://6015897843"
+    CrystalHub.DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.DropShadow.ImageTransparency = 0.300
+    CrystalHub.DropShadow.ScaleType = Enum.ScaleType.Slice
+    CrystalHub.DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+    -- Top Bar
+    CrystalHub.TopBar.Name = "Top"
+    CrystalHub.TopBar.Parent = CrystalHub.MainFrame
+    CrystalHub.TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.TopBar.BackgroundTransparency = 0.999
+    CrystalHub.TopBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.TopBar.BorderSizePixel = 0
+    CrystalHub.TopBar.Size = UDim2.new(1, 0, 0, 40)
+    CrystalHub.TopBar.ZIndex = 2
+
+    CrystalHub.TopTitle.Name = "TopTitle"
+    CrystalHub.TopTitle.Parent = CrystalHub.TopBar
+    CrystalHub.TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.TopTitle.BackgroundTransparency = 0.999
+    CrystalHub.TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.TopTitle.BorderSizePixel = 0
+    CrystalHub.TopTitle.Position = UDim2.new(0, 15, 0, 12)
+    CrystalHub.TopTitle.Size = UDim2.new(0, 100, 0, 16)
+    CrystalHub.TopTitle.Font = Enum.Font.Arcade
+    CrystalHub.TopTitle.Text = WindowConfig.Title
+    CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.TopTitle.TextSize = 14.000
+    CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.TopDescription.Name = "TopDescription"
+    CrystalHub.TopDescription.Parent = CrystalHub.TopBar
+    CrystalHub.TopDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.TopDescription.BackgroundTransparency = 0.999
+    CrystalHub.TopDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.TopDescription.BorderSizePixel = 0
+    CrystalHub.TopDescription.Position = UDim2.new(0, 0, 0, 12)
+    CrystalHub.TopDescription.Size = UDim2.new(0, 80, 0, 16)
+    CrystalHub.TopDescription.Font = Enum.Font.Arcade
+    CrystalHub.TopDescription.Text = WindowConfig.Description
+    CrystalHub.TopDescription.TextColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.TopDescription.TextSize = 12.000
+    CrystalHub.TopDescription.TextTransparency = 0.300
+    CrystalHub.TopDescription.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Close Button
+    CrystalHub.CloseButton.Name = "CloseButton"
+    CrystalHub.CloseButton.Parent = CrystalHub.TopBar
+    CrystalHub.CloseButton.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.CloseButton.BackgroundTransparency = 1.000
+    CrystalHub.CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseButton.BorderSizePixel = 0
+    CrystalHub.CloseButton.Position = UDim2.new(1, 0, 0, 0)
+    CrystalHub.CloseButton.Size = UDim2.new(0, 40, 0, 40)
+    CrystalHub.CloseButton.Font = Enum.Font.SourceSans
+    CrystalHub.CloseButton.AutoButtonColor = false
+    CrystalHub.CloseButton.Text = ""
+    CrystalHub.CloseButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseButton.TextSize = 14.000
+
+    Crystal.Mouseto(CrystalHub.CloseButton, function()
+        Crystal.TweenObject({CrystalHub.CloseButton, 0.2, "BackgroundTransparency", 0.970})
+        Crystal.TweenObject({CrystalHub.CloseBorderLeft, 0.2, "BackgroundTransparency", 0.000})
+        Crystal.TweenObject({CrystalHub.CloseBorderBottom, 0.2, "BackgroundTransparency", 0.000})
+    end, function()
+        Crystal.TweenObject({CrystalHub.CloseButton, 0.2, "BackgroundTransparency", 1.000})
+        Crystal.TweenObject({CrystalHub.CloseBorderLeft, 0.2, "BackgroundTransparency", 1.000})
+        Crystal.TweenObject({CrystalHub.CloseBorderBottom, 0.2, "BackgroundTransparency", 1.000})
+    end)
+
+    Crystal.Click(CrystalHub.CloseButton, function()
+        CrystalHub.MainFrame.Visible = false
+    end)
+
+    CrystalHub.CloseCorner.CornerRadius = UDim.new(0, 12)
+    CrystalHub.CloseCorner.Parent = CrystalHub.CloseButton
+
+    CrystalHub.CloseImage.Name = "CloseImage"
+    CrystalHub.CloseImage.Parent = CrystalHub.CloseButton
+    CrystalHub.CloseImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.CloseImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.CloseImage.BackgroundTransparency = 0.999
+    CrystalHub.CloseImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseImage.BorderSizePixel = 0
+    CrystalHub.CloseImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.CloseImage.Size = UDim2.new(1, -22, 1, -22)
+    CrystalHub.CloseImage.Image = "rbxassetid://18556800637"
+    CrystalHub.CloseImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
+
+    CrystalHub.CloseBorderLeft.Name = "FrameBiNgu"
+    CrystalHub.CloseBorderLeft.Parent = CrystalHub.CloseButton
+    CrystalHub.CloseBorderLeft.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+    CrystalHub.CloseBorderLeft.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseBorderLeft.BorderSizePixel = 0
+    CrystalHub.CloseBorderLeft.Size = UDim2.new(0, 7, 1, 0)
+    CrystalHub.CloseBorderLeft.BackgroundTransparency = 1.000
+
+    CrystalHub.CloseBorderBottom.Name = "FrameOc"
+    CrystalHub.CloseBorderBottom.Parent = CrystalHub.CloseButton
+    CrystalHub.CloseBorderBottom.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+    CrystalHub.CloseBorderBottom.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseBorderBottom.BorderSizePixel = 0
+    CrystalHub.CloseBorderBottom.BackgroundTransparency = 1.000
+    CrystalHub.CloseBorderBottom.Position = UDim2.new(0, 0, 1, -5)
+    CrystalHub.CloseBorderBottom.Size = UDim2.new(1, 0, 0, 5)
+
+    -- Max Button
+    CrystalHub.MaxButton.Name = "MaxButton"
+    CrystalHub.MaxButton.Parent = CrystalHub.TopBar
+    CrystalHub.MaxButton.AutoButtonColor = false
+    CrystalHub.MaxButton.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.MaxButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.MaxButton.BackgroundTransparency = 0.999
+    CrystalHub.MaxButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.MaxButton.BorderSizePixel = 0
+    CrystalHub.MaxButton.Position = UDim2.new(1, -39, 0, 0)
+    CrystalHub.MaxButton.Size = UDim2.new(0, 40, 0, 40)
+    CrystalHub.MaxButton.Font = Enum.Font.SourceSans
+    CrystalHub.MaxButton.Text = ""
+    CrystalHub.MaxButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.MaxButton.TextSize = 14.000
+
+    local OldPos, OldSize
+    Crystal.Click(CrystalHub.MaxButton, function()
+        if CrystalHub.MainFrame.Size.Y.Scale < 1 then
+            OldPos = CrystalHub.MainFrame.Position
+            OldSize = CrystalHub.MainFrame.Size
+            Crystal.TweenObject({CrystalHub.MainFrame, 0.5, "Size", UDim2.new(1, 0, 1, 0)})
+            Crystal.TweenObject({CrystalHub.MainFrame, 0.5, "Position", UDim2.new(0, 0, 0, 0)})
         else
-            AlertImage.Image = NotifyConfig.Type
-            AlertImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
+            Crystal.TweenObject({CrystalHub.MainFrame, 0.5, "Size", OldSize})
+            Crystal.TweenObject({CrystalHub.MainFrame, 0.5, "Position", OldPos})
         end
+    end)
 
-        AlertImage.AnchorPoint = Vector2.new(1, 0.5)
-        AlertImage.BackgroundTransparency = 1
-        AlertImage.BorderSizePixel = 0
-        AlertImage.Position = UDim2.new(1, -6, 0.5, 0)
-        AlertImage.Size = UDim2.new(0, 24, 0, 24)
-        AlertImage.Parent = NotifyFrameReal
+    Crystal.Mouseto(CrystalHub.MaxButton, function()
+        CrystalHub.MaxButton.BackgroundTransparency = 0.970
+        Crystal.TweenObject({CrystalHub.MaxImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
+    end, function()
+        CrystalHub.MaxButton.BackgroundTransparency = 0.999
+        Crystal.TweenObject({CrystalHub.MaxImage, 0.2, "ImageColor3", Color3.fromRGB(230, 230, 230)})
+    end)
 
-        ProgressBar.BackgroundColor3 = Color3.fromRGB(60, 40, 80)
-        ProgressBar.BorderSizePixel = 0
-        ProgressBar.Position = UDim2.new(0, 6, 1, -4)
-        ProgressBar.Size = UDim2.new(1, -12, 0, 2)
-        ProgressBar.Parent = NotifyFrameReal
+    CrystalHub.MaxImage.Name = "MaxImage"
+    CrystalHub.MaxImage.Parent = CrystalHub.MaxButton
+    CrystalHub.MaxImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.MaxImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.MaxImage.BackgroundTransparency = 0.999
+    CrystalHub.MaxImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.MaxImage.BorderSizePixel = 0
+    CrystalHub.MaxImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.MaxImage.Size = UDim2.new(1, -24, 1, -24)
+    CrystalHub.MaxImage.Image = "rbxassetid://9886659406"
+    CrystalHub.MaxImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
 
-        UICorner2.CornerRadius = UDim.new(1, 0)
-        UICorner2.Parent = ProgressBar
+    -- Hide Button
+    CrystalHub.HideButton.Name = "HideButton"
+    CrystalHub.HideButton.Parent = CrystalHub.TopBar
+    CrystalHub.HideButton.AutoButtonColor = false
+    CrystalHub.HideButton.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.HideButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    CrystalHub.HideButton.BackgroundTransparency = 0.999
+    CrystalHub.HideButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.HideButton.BorderSizePixel = 0
+    CrystalHub.HideButton.Position = UDim2.new(1, -77, 0, 0)
+    CrystalHub.HideButton.Size = UDim2.new(0, 40, 0, 40)
+    CrystalHub.HideButton.Font = Enum.Font.SourceSans
+    CrystalHub.HideButton.Text = ""
+    CrystalHub.HideButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.HideButton.TextSize = 14.000
 
-        ProgressFill.BackgroundColor3 = typeData and typeData.Color or Color3.fromRGB(100, 150, 255)
-        ProgressFill.BorderSizePixel = 0
-        ProgressFill.Size = UDim2.new(1, 0, 1, 0)
-        ProgressFill.Parent = ProgressBar
+    Crystal.Mouseto(CrystalHub.HideButton, function()
+        CrystalHub.HideButton.BackgroundTransparency = 0.950
+        Crystal.TweenObject({CrystalHub.HideImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
+    end, function()
+        CrystalHub.HideButton.BackgroundTransparency = 0.999
+        Crystal.TweenObject({CrystalHub.HideImage, 0.2, "ImageColor3", Color3.fromRGB(230, 230, 230)})
+    end)
 
-        UICorner3.CornerRadius = UDim.new(1, 0)
-        UICorner3.Parent = ProgressFill
+    Crystal.Click(CrystalHub.HideButton, function()
+        CrystalHub.MainFrame.Visible = false
+    end)
 
-        local contentHeight = math.max(26, NotifyContent.TextBounds.Y)
-        NotifyFrame.Size = UDim2.new(1, 0, 0, math.max(60, contentHeight + 34))
+    CrystalHub.HideImage.Name = "HideImage"
+    CrystalHub.HideImage.Parent = CrystalHub.HideButton
+    CrystalHub.HideImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.HideImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.HideImage.BackgroundTransparency = 0.999
+    CrystalHub.HideImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.HideImage.BorderSizePixel = 0
+    CrystalHub.HideImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.HideImage.Size = UDim2.new(1, -24, 1, -24)
+    CrystalHub.HideImage.Image = "rbxassetid://18556824827"
+    CrystalHub.HideImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
 
-        local closed = false
-        local fadeStarted = false
+    -- Decide Frame
+    CrystalHub.DecideFrame.Name = "DecideFrame"
+    CrystalHub.DecideFrame.Parent = CrystalHub.TopBar
+    CrystalHub.DecideFrame.AnchorPoint = Vector2.new(0.5, 1)
+    CrystalHub.DecideFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.DecideFrame.BackgroundTransparency = 0.800
+    CrystalHub.DecideFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.DecideFrame.BorderSizePixel = 0
+    CrystalHub.DecideFrame.Position = UDim2.new(0.5, 0, 1, 2)
+    CrystalHub.DecideFrame.Size = UDim2.new(1, -14, 0, 2)
 
-        local function FadeOut()
-            if fadeStarted then return end
-            fadeStarted = true
+    CrystalHub.DecideCorner.CornerRadius = UDim.new(0, 100)
+    CrystalHub.DecideCorner.Parent = CrystalHub.DecideFrame
 
-            obj.TweenObject({
-                NotifyFrameReal,
-                0.4,
-                "BackgroundTransparency",
-                1
-            })
+    -- Layers Tab
+    CrystalHub.LayersTab.Name = "LayersTab"
+    CrystalHub.LayersTab.Parent = CrystalHub.MainFrame
+    CrystalHub.LayersTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.LayersTab.BackgroundTransparency = 0.999
+    CrystalHub.LayersTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.LayersTab.BorderSizePixel = 0
+    CrystalHub.LayersTab.Position = UDim2.new(0, 10, 0, 48)
+    CrystalHub.LayersTab.Size = UDim2.new(0, 140, 1, -58)
 
-            obj.TweenObject({
-                NotifyLogo,
-                0.4,
-                "ImageTransparency",
-                1
-            })
-            obj.TweenObject({
-                NotifyLogo,
-                0.4,
-                "BackgroundTransparency",
-                1
-            })
+    -- Player Info
+    CrystalHub.PlayerInfo.Name = "Info"
+    CrystalHub.PlayerInfo.Parent = CrystalHub.LayersTab
+    CrystalHub.PlayerInfo.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    CrystalHub.PlayerInfo.BackgroundTransparency = 1.000
+    CrystalHub.PlayerInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerInfo.BorderSizePixel = 0
+    CrystalHub.PlayerInfo.Size = UDim2.new(1, 0, 0, 48)
 
-            obj.TweenObject({
-                NotifyTitle,
-                0.4,
-                "TextTransparency",
-                1
-            })
+    Crystal.Mouseto(CrystalHub.PlayerInfo, function()
+        CrystalHub.PlayerInfo.BackgroundTransparency = 0.950
+        Crystal.TweenObject({CrystalHub.AvatarStroke, 0.3, "Transparency", 0.400})
+    end, function()
+        CrystalHub.PlayerInfo.BackgroundTransparency = 1.000
+        Crystal.TweenObject({CrystalHub.AvatarStroke, 0.3, "Transparency", 0.700})
+    end)
 
-            if NotifyConfig.Title1 then
-                obj.TweenObject({
-                    Title1Label,
-                    0.4,
-                    "TextTransparency",
-                    1
-                })
+    CrystalHub.InfoCorner.CornerRadius = UDim.new(0, 6)
+    CrystalHub.InfoCorner.Parent = CrystalHub.PlayerInfo
+
+    CrystalHub.PlayerName.Name = "NamePlayer"
+    CrystalHub.PlayerName.Parent = CrystalHub.PlayerInfo
+    CrystalHub.PlayerName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerName.BackgroundTransparency = 0.999
+    CrystalHub.PlayerName.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerName.BorderSizePixel = 0
+    CrystalHub.PlayerName.Position = UDim2.new(0, 46, 0, 10)
+    CrystalHub.PlayerName.Size = UDim2.new(1, -50, 0, 12)
+    CrystalHub.PlayerName.Font = Enum.Font.Arcade
+    CrystalHub.PlayerName.Text = tostring(Crystal.Player.DisplayName)
+    CrystalHub.PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerName.TextSize = 12.000
+    CrystalHub.PlayerName.TextWrapped = true
+    CrystalHub.PlayerName.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.PlayerUsername.Name = "UsernameLabel"
+    CrystalHub.PlayerUsername.Parent = CrystalHub.PlayerInfo
+    CrystalHub.PlayerUsername.BackgroundTransparency = 1
+    CrystalHub.PlayerUsername.Position = UDim2.new(0, 46, 0, 24)
+    CrystalHub.PlayerUsername.Size = UDim2.new(1, -50, 0, 10)
+    CrystalHub.PlayerUsername.Font = Enum.Font.Arcade
+    CrystalHub.PlayerUsername.Text = tostring(Crystal.Player.Name)
+    CrystalHub.PlayerUsername.TextColor3 = Color3.fromRGB(160, 160, 160)
+    CrystalHub.PlayerUsername.TextSize = 9.000
+    CrystalHub.PlayerUsername.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.PlayerDescription.Name = "DescriptionPlayer"
+    CrystalHub.PlayerDescription.Parent = CrystalHub.PlayerInfo
+    CrystalHub.PlayerDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerDescription.BackgroundTransparency = 0.999
+    CrystalHub.PlayerDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerDescription.BorderSizePixel = 0
+    CrystalHub.PlayerDescription.Position = UDim2.new(0, 46, 0, 24)
+    CrystalHub.PlayerDescription.Size = UDim2.new(1, -50, 0, 9)
+    CrystalHub.PlayerDescription.Font = Enum.Font.Arcade
+    CrystalHub.PlayerDescription.Text = tostring(Crystal.Player.UserId)
+    CrystalHub.PlayerDescription.TextColor3 = Color3.fromRGB(120, 120, 120)
+    CrystalHub.PlayerDescription.TextSize = 8.000
+    CrystalHub.PlayerDescription.TextTransparency = 0.400
+    CrystalHub.PlayerDescription.TextWrapped = true
+    CrystalHub.PlayerDescription.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Avatar Frame
+    CrystalHub.AvatarFrame.Name = "LogoFrame"
+    CrystalHub.AvatarFrame.Parent = CrystalHub.PlayerInfo
+    CrystalHub.AvatarFrame.AnchorPoint = Vector2.new(0, 0.5)
+    CrystalHub.AvatarFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    CrystalHub.AvatarFrame.BackgroundTransparency = 0.850
+    CrystalHub.AvatarFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.AvatarFrame.BorderSizePixel = 0
+    CrystalHub.AvatarFrame.Position = UDim2.new(0, 4, 0.5, 0)
+    CrystalHub.AvatarFrame.Size = UDim2.new(0, 38, 0, 38)
+
+    CrystalHub.AvatarImage.Name = "LogoPlayer"
+    CrystalHub.AvatarImage.Parent = CrystalHub.AvatarFrame
+    CrystalHub.AvatarImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.AvatarImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.AvatarImage.BackgroundTransparency = 0.999
+    CrystalHub.AvatarImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.AvatarImage.BorderSizePixel = 0
+    CrystalHub.AvatarImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.AvatarImage.Size = UDim2.new(1, -2, 1, -2)
+    CrystalHub.AvatarImage.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..Crystal.Player.UserId.."&width=420&height=420&format=png"
+
+    CrystalHub.AvatarCorner.CornerRadius = UDim.new(0, 1000)
+    CrystalHub.AvatarCorner.Parent = CrystalHub.AvatarImage
+
+    CrystalHub.AvatarFrameCorner.CornerRadius = UDim.new(0, 1000)
+    CrystalHub.AvatarFrameCorner.Parent = CrystalHub.AvatarFrame
+
+    CrystalHub.AvatarStroke.Parent = CrystalHub.AvatarFrame
+    CrystalHub.AvatarStroke.Color = Color3.fromRGB(93, 197, 248)
+    CrystalHub.AvatarStroke.Transparency = 0.700
+    CrystalHub.AvatarStroke.Thickness = 2.000
+
+    -- Status Indicator
+    CrystalHub.StatusIndicator.Name = "StatusIndicator"
+    CrystalHub.StatusIndicator.Parent = CrystalHub.AvatarFrame
+    CrystalHub.StatusIndicator.AnchorPoint = Vector2.new(1, 1)
+    CrystalHub.StatusIndicator.BackgroundColor3 = Color3.fromRGB(67, 181, 129)
+    CrystalHub.StatusIndicator.BorderSizePixel = 0
+    CrystalHub.StatusIndicator.Position = UDim2.new(1, -1, 1, -1)
+    CrystalHub.StatusIndicator.Size = UDim2.new(0, 11, 0, 11)
+    CrystalHub.StatusIndicator.ZIndex = 5
+
+    CrystalHub.StatusCorner.CornerRadius = UDim.new(1, 0)
+    CrystalHub.StatusCorner.Parent = CrystalHub.StatusIndicator
+
+    CrystalHub.StatusStroke.Parent = CrystalHub.StatusIndicator
+    CrystalHub.StatusStroke.Color = Color3.fromRGB(20, 20, 20)
+    CrystalHub.StatusStroke.Thickness = 2.000
+
+    CrystalHub.InfoButton.Name = "InfoButton"
+    CrystalHub.InfoButton.Parent = CrystalHub.PlayerInfo
+    CrystalHub.InfoButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.InfoButton.BackgroundTransparency = 0.999
+    CrystalHub.InfoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.InfoButton.BorderSizePixel = 0
+    CrystalHub.InfoButton.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.InfoButton.Font = Enum.Font.SourceSans
+    CrystalHub.InfoButton.Text = ""
+    CrystalHub.InfoButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.InfoButton.TextSize = 14.000
+
+    -- Search Frame
+    CrystalHub.SearchFrame.Name = "SearchFrame"
+    CrystalHub.SearchFrame.Parent = CrystalHub.LayersTab
+    CrystalHub.SearchFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    CrystalHub.SearchFrame.BackgroundTransparency = 0.900
+    CrystalHub.SearchFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.SearchFrame.BorderSizePixel = 0
+    CrystalHub.SearchFrame.ClipsDescendants = true
+    CrystalHub.SearchFrame.Position = UDim2.new(0, 0, 0, 56)
+    CrystalHub.SearchFrame.Size = UDim2.new(1, 0, 0, 26)
+
+    CrystalHub.SearchCorner.CornerRadius = UDim.new(0, 6)
+    CrystalHub.SearchCorner.Parent = CrystalHub.SearchFrame
+
+    CrystalHub.SearchImage.Name = "SearchImage"
+    CrystalHub.SearchImage.Parent = CrystalHub.SearchFrame
+    CrystalHub.SearchImage.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.SearchImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.SearchImage.BackgroundTransparency = 0.999
+    CrystalHub.SearchImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.SearchImage.BorderSizePixel = 0
+    CrystalHub.SearchImage.Position = UDim2.new(1, -6, 0, 6)
+    CrystalHub.SearchImage.Size = UDim2.new(0, 14, 0, 14)
+    CrystalHub.SearchImage.Image = "rbxassetid://18557078698"
+    CrystalHub.SearchImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
+
+    CrystalHub.SearchDecide.Name = "SearchDecide"
+    CrystalHub.SearchDecide.Parent = CrystalHub.SearchFrame
+    CrystalHub.SearchDecide.AnchorPoint = Vector2.new(0.5, 1)
+    CrystalHub.SearchDecide.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    CrystalHub.SearchDecide.BackgroundTransparency = 0.900
+    CrystalHub.SearchDecide.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.SearchDecide.BorderSizePixel = 0
+    CrystalHub.SearchDecide.Position = UDim2.new(0.5, 0, 1, 0)
+    CrystalHub.SearchDecide.Size = UDim2.new(1, -4, 0, 1.5)
+
+    CrystalHub.SearchDecideCorner.CornerRadius = UDim.new(0, 5)
+    CrystalHub.SearchDecideCorner.Parent = CrystalHub.SearchDecide
+
+    CrystalHub.SearchDecideActive.Name = "SearchDecide_2"
+    CrystalHub.SearchDecideActive.Parent = CrystalHub.SearchDecide
+    CrystalHub.SearchDecideActive.AnchorPoint = Vector2.new(0.5, 1)
+    CrystalHub.SearchDecideActive.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.SearchDecideActive.BackgroundTransparency = 0.999
+    CrystalHub.SearchDecideActive.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.SearchDecideActive.BorderSizePixel = 0
+    CrystalHub.SearchDecideActive.Position = UDim2.new(0.5, 0, 1, 0)
+    CrystalHub.SearchDecideActive.Size = UDim2.new(1, -4, 0, 1.5)
+
+    CrystalHub.SearchDecideActiveCorner.CornerRadius = UDim.new(0, 5)
+    CrystalHub.SearchDecideActiveCorner.Parent = CrystalHub.SearchDecideActive
+
+    CrystalHub.SearchDecideActiveStroke.Parent = CrystalHub.SearchDecideActive
+    CrystalHub.SearchDecideActiveStroke.Color = Color3.fromRGB(93, 197, 248)
+    CrystalHub.SearchDecideActiveStroke.Transparency = 0.999
+    CrystalHub.SearchDecideActiveStroke.Thickness = 0.800
+
+    CrystalHub.SearchDecideStroke.Parent = CrystalHub.SearchDecide
+    CrystalHub.SearchDecideStroke.Color = Color3.fromRGB(60, 60, 60)
+    CrystalHub.SearchDecideStroke.Transparency = 0.900
+    CrystalHub.SearchDecideStroke.Thickness = 0.800
+
+    CrystalHub.SearchBoxFrame.Name = "SearchBoxFrame"
+    CrystalHub.SearchBoxFrame.Parent = CrystalHub.SearchFrame
+    CrystalHub.SearchBoxFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.SearchBoxFrame.BackgroundTransparency = 0.999
+    CrystalHub.SearchBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.SearchBoxFrame.BorderSizePixel = 0
+    CrystalHub.SearchBoxFrame.ClipsDescendants = true
+    CrystalHub.SearchBoxFrame.Position = UDim2.new(0, 8, 0, 0)
+    CrystalHub.SearchBoxFrame.Size = UDim2.new(1, -30, 0, 26)
+
+    CrystalHub.SearchBox.Name = "SearchBox"
+    CrystalHub.SearchBox.Parent = CrystalHub.SearchBoxFrame
+    CrystalHub.SearchBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.SearchBox.BackgroundTransparency = 0.999
+    CrystalHub.SearchBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.SearchBox.BorderSizePixel = 0
+    CrystalHub.SearchBox.Position = UDim2.new(0, 2, 0, 0)
+    CrystalHub.SearchBox.Size = UDim2.new(1, -2, 1, 0)
+    CrystalHub.SearchBox.Font = Enum.Font.Arcade
+    CrystalHub.SearchBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
+    CrystalHub.SearchBox.PlaceholderText = "Search..."
+    CrystalHub.SearchBox.Text = ""
+    CrystalHub.SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.SearchBox.TextSize = 11.000
+    CrystalHub.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.SearchBox.Focused:Connect(function()
+        Crystal.TweenObject({CrystalHub.SearchDecideActive, 0.3, "BackgroundTransparency", 0})
+        Crystal.TweenObject({CrystalHub.SearchDecideActiveStroke, 0.3, "Transparency", 0})
+    end)
+
+    CrystalHub.SearchBox.FocusLost:Connect(function()
+        Crystal.TweenObject({CrystalHub.SearchDecideActive, 0.3, "BackgroundTransparency", 0.999})
+        Crystal.TweenObject({CrystalHub.SearchDecideActiveStroke, 0.3, "Transparency", 0.999})
+    end)
+
+    -- Scroll Tab
+    CrystalHub.ScrollTab.Name = "ScrollTab"
+    CrystalHub.ScrollTab.Parent = CrystalHub.LayersTab
+    CrystalHub.ScrollTab.Active = true
+    CrystalHub.ScrollTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ScrollTab.BackgroundTransparency = 0.999
+    CrystalHub.ScrollTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ScrollTab.BorderSizePixel = 0
+    CrystalHub.ScrollTab.Position = UDim2.new(0, 0, 0, 90)
+    CrystalHub.ScrollTab.Size = UDim2.new(1, 0, 1, -90)
+    CrystalHub.ScrollTab.ZIndex = 0
+    CrystalHub.ScrollTab.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.ScrollTab.CanvasSize = UDim2.new(0, 0, 0, 220)
+    CrystalHub.ScrollTab.ScrollBarImageTransparency = 0.700
+    CrystalHub.ScrollTab.ScrollBarThickness = 3
+
+    Crystal.Stepped:Connect(function()
+        CrystalHub.ScrollTab.CanvasSize = UDim2.new(0, 0, 0, CrystalHub.TabListLayout.AbsoluteContentSize.Y + 15)
+    end)
+
+    CrystalHub.TabListLayout.Parent = CrystalHub.ScrollTab
+    CrystalHub.TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    CrystalHub.TabListLayout.Padding = UDim.new(0, 2)
+
+    -- Confirmation Frame
+    CrystalHub.ConfirmationFrame.Name = "AnotherFrame"
+    CrystalHub.ConfirmationFrame.Parent = CrystalHub.MainFrame
+    CrystalHub.ConfirmationFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationFrame.BackgroundTransparency = 0.300
+    CrystalHub.ConfirmationFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationFrame.BorderSizePixel = 0
+    CrystalHub.ConfirmationFrame.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ConfirmationFrame.Visible = false
+    CrystalHub.ConfirmationFrame.ZIndex = 5
+
+    CrystalHub.ConfirmationDropShadowHolder.Name = "DropShadowHolder"
+    CrystalHub.ConfirmationDropShadowHolder.Parent = CrystalHub.ConfirmationFrame
+    CrystalHub.ConfirmationDropShadowHolder.BackgroundTransparency = 1.000
+    CrystalHub.ConfirmationDropShadowHolder.BorderSizePixel = 0
+    CrystalHub.ConfirmationDropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ConfirmationDropShadowHolder.ZIndex = 0
+
+    CrystalHub.ConfirmationDropShadow.Name = "DropShadow"
+    CrystalHub.ConfirmationDropShadow.Parent = CrystalHub.ConfirmationDropShadowHolder
+    CrystalHub.ConfirmationDropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.ConfirmationDropShadow.BackgroundTransparency = 1.000
+    CrystalHub.ConfirmationDropShadow.BorderSizePixel = 0
+    CrystalHub.ConfirmationDropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.ConfirmationDropShadow.Size = UDim2.new(1, 47, 1, 47)
+    CrystalHub.ConfirmationDropShadow.ZIndex = 0
+    CrystalHub.ConfirmationDropShadow.Image = "rbxassetid://6015897843"
+    CrystalHub.ConfirmationDropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationDropShadow.ImageTransparency = 0.500
+    CrystalHub.ConfirmationDropShadow.ScaleType = Enum.ScaleType.Slice
+    CrystalHub.ConfirmationDropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+    CrystalHub.ConfirmationDialog.Name = "LogFrame"
+    CrystalHub.ConfirmationDialog.Parent = CrystalHub.ConfirmationDropShadow
+    CrystalHub.ConfirmationDialog.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.ConfirmationDialog.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    CrystalHub.ConfirmationDialog.BackgroundTransparency = 0.020
+    CrystalHub.ConfirmationDialog.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationDialog.BorderSizePixel = 0
+    CrystalHub.ConfirmationDialog.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.ConfirmationDialog.Size = UDim2.new(0, 220, 0, 120)
+    CrystalHub.ConfirmationDialog.Visible = false
+
+    CrystalHub.ConfirmationDialogCorner.CornerRadius = UDim.new(0, 8)
+    CrystalHub.ConfirmationDialogCorner.Parent = CrystalHub.ConfirmationDialog
+
+    CrystalHub.ConfirmationDialogStroke.Parent = CrystalHub.ConfirmationDialog
+    CrystalHub.ConfirmationDialogStroke.Color = Color3.fromRGB(50, 50, 50)
+    CrystalHub.ConfirmationDialogStroke.Thickness = 1.500
+
+    CrystalHub.ConfirmationTitle.Name = "LogTitle"
+    CrystalHub.ConfirmationTitle.Parent = CrystalHub.ConfirmationDialog
+    CrystalHub.ConfirmationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmationTitle.BackgroundTransparency = 0.999
+    CrystalHub.ConfirmationTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationTitle.BorderSizePixel = 0
+    CrystalHub.ConfirmationTitle.Position = UDim2.new(0, 18, 0, 18)
+    CrystalHub.ConfirmationTitle.Size = UDim2.new(0, 180, 0, 18)
+    CrystalHub.ConfirmationTitle.Font = Enum.Font.Arcade
+    CrystalHub.ConfirmationTitle.Text = "Confirmation"
+    CrystalHub.ConfirmationTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmationTitle.TextSize = 15.000
+    CrystalHub.ConfirmationTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.ConfirmationContent.Name = "LogContent"
+    CrystalHub.ConfirmationContent.Parent = CrystalHub.ConfirmationDialog
+    CrystalHub.ConfirmationContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmationContent.BackgroundTransparency = 0.999
+    CrystalHub.ConfirmationContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationContent.BorderSizePixel = 0
+    CrystalHub.ConfirmationContent.Position = UDim2.new(0, 18, 0, 38)
+    CrystalHub.ConfirmationContent.Size = UDim2.new(0, 180, 0, 12)
+    CrystalHub.ConfirmationContent.Font = Enum.Font.Arcade
+    CrystalHub.ConfirmationContent.Text = "Are you sure about this action?"
+    CrystalHub.ConfirmationContent.TextColor3 = Color3.fromRGB(200, 200, 200)
+    CrystalHub.ConfirmationContent.TextSize = 12.000
+    CrystalHub.ConfirmationContent.TextTransparency = 0.400
+    CrystalHub.ConfirmationContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.ConfirmationBottom.Name = "LogUnder"
+    CrystalHub.ConfirmationBottom.Parent = CrystalHub.ConfirmationDialog
+    CrystalHub.ConfirmationBottom.AnchorPoint = Vector2.new(0, 1)
+    CrystalHub.ConfirmationBottom.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+    CrystalHub.ConfirmationBottom.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationBottom.BorderSizePixel = 0
+    CrystalHub.ConfirmationBottom.Position = UDim2.new(0, 0, 1, 0)
+    CrystalHub.ConfirmationBottom.Size = UDim2.new(1, 0, 1, -62)
+
+    CrystalHub.ConfirmationBottomCorner.CornerRadius = UDim.new(0, 8)
+    CrystalHub.ConfirmationBottomCorner.Parent = CrystalHub.ConfirmationBottom
+
+    CrystalHub.ConfirmButtonFrame.Name = "ConfirmFrame"
+    CrystalHub.ConfirmButtonFrame.Parent = CrystalHub.ConfirmationBottom
+    CrystalHub.ConfirmButtonFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.ConfirmButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmButtonFrame.BorderSizePixel = 0
+    CrystalHub.ConfirmButtonFrame.Position = UDim2.new(0, 15, 0, 12)
+    CrystalHub.ConfirmButtonFrame.Size = UDim2.new(0, 85, 0, 28)
+
+    CrystalHub.ConfirmButtonCorner.CornerRadius = UDim.new(0, 5)
+    CrystalHub.ConfirmButtonCorner.Parent = CrystalHub.ConfirmButtonFrame
+
+    CrystalHub.ConfirmButton.Name = "ConfirmButton"
+    CrystalHub.ConfirmButton.Parent = CrystalHub.ConfirmButtonFrame
+    CrystalHub.ConfirmButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmButton.BackgroundTransparency = 0.999
+    CrystalHub.ConfirmButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmButton.BorderSizePixel = 0
+    CrystalHub.ConfirmButton.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ConfirmButton.Font = Enum.Font.Arcade
+    CrystalHub.ConfirmButton.Text = "Confirm"
+    CrystalHub.ConfirmButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmButton.TextSize = 12.000
+
+    Crystal.Mouseto(CrystalHub.ConfirmButtonFrame, function()
+        Crystal.TweenObject({CrystalHub.ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(120, 210, 255)})
+    end, function()
+        Crystal.TweenObject({CrystalHub.ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(93, 197, 248)})
+    end)
+
+    CrystalHub.CancelButtonFrame.Name = "CancelFrame"
+    CrystalHub.CancelButtonFrame.Parent = CrystalHub.ConfirmationBottom
+    CrystalHub.CancelButtonFrame.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.CancelButtonFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    CrystalHub.CancelButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CancelButtonFrame.BorderSizePixel = 0
+    CrystalHub.CancelButtonFrame.Position = UDim2.new(1, -15, 0, 12)
+    CrystalHub.CancelButtonFrame.Size = UDim2.new(0, 85, 0, 28)
+
+    CrystalHub.CancelButtonCorner.CornerRadius = UDim.new(0, 5)
+    CrystalHub.CancelButtonCorner.Parent = CrystalHub.CancelButtonFrame
+
+    CrystalHub.CancelButton.Name = "CancelButton"
+    CrystalHub.CancelButton.Parent = CrystalHub.CancelButtonFrame
+    CrystalHub.CancelButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.CancelButton.BackgroundTransparency = 0.999
+    CrystalHub.CancelButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CancelButton.BorderSizePixel = 0
+    CrystalHub.CancelButton.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.CancelButton.Font = Enum.Font.Arcade
+    CrystalHub.CancelButton.Text = "Cancel"
+    CrystalHub.CancelButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+    CrystalHub.CancelButton.TextSize = 12.000
+
+    Crystal.Mouseto(CrystalHub.CancelButtonFrame, function()
+        Crystal.TweenObject({CrystalHub.CancelButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(45, 45, 45)})
+    end, function()
+        Crystal.TweenObject({CrystalHub.CancelButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(35, 35, 35)})
+    end)
+
+    -- Layers Setup
+    local TopLayers = Instance.new("Frame")
+    local NameBack = Instance.new("Frame")
+    local BackButton = Instance.new("TextButton")
+    local NameBack_2 = Instance.new("Frame")
+    local ForwardImage = Instance.new("ImageLabel")
+    local BackButton_2 = Instance.new("TextButton")
+    local UIListLayout_2 = Instance.new("UIListLayout")
+    local LayersPageLayout = Instance.new("UIPageLayout")
+    local RealLayers = Instance.new("Frame")
+
+    CrystalHub.Layers.Name = "Layers"
+    CrystalHub.Layers.Parent = CrystalHub.MainFrame
+    CrystalHub.Layers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.Layers.BackgroundTransparency = 0.999
+    CrystalHub.Layers.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.Layers.BorderSizePixel = 0
+    CrystalHub.Layers.Position = UDim2.new(0, 158, 0, 48)
+    CrystalHub.Layers.Size = UDim2.new(1, -168, 1, -58)
+    CrystalHub.Layers.ZIndex = 3
+
+    TopLayers.Name = "TopLayers"
+    TopLayers.Parent = CrystalHub.Layers
+    TopLayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TopLayers.BackgroundTransparency = 0.999
+    TopLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TopLayers.BorderSizePixel = 0
+    TopLayers.ClipsDescendants = true
+    TopLayers.Size = UDim2.new(1, 0, 0, 30)
+
+    NameBack.Name = "NameBack"
+    NameBack.Parent = TopLayers
+    NameBack.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NameBack.BackgroundTransparency = 0.999
+    NameBack.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NameBack.BorderSizePixel = 0
+    NameBack.Size = UDim2.new(0, 45, 1, 0)
+
+    BackButton.Name = "BackButton"
+    BackButton.Parent = NameBack
+    BackButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton.BackgroundTransparency = 0.999
+    BackButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    BackButton.BorderSizePixel = 0
+    BackButton.Size = UDim2.new(1, 0, 1, 0)
+    BackButton.Font = Enum.Font.Arcade
+    BackButton.Text = ""
+    BackButton.LayoutOrder = 0
+    BackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton.TextSize = 14.000
+    BackButton.TextTransparency = 0
+    BackButton.TextXAlignment = Enum.TextXAlignment.Left
+
+    NameBack_2.Name = "NameBack_2"
+    NameBack_2.Parent = TopLayers
+    NameBack_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NameBack_2.BackgroundTransparency = 0.999
+    NameBack_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NameBack_2.BorderSizePixel = 0
+    NameBack_2.Position = UDim2.new(0, 90, 0, 0)
+    NameBack_2.Size = UDim2.new(0, 90, 1, 0)
+
+    ForwardImage.Name = "ForwardImage"
+    ForwardImage.Parent = NameBack_2
+    ForwardImage.AnchorPoint = Vector2.new(0, 0.5)
+    ForwardImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ForwardImage.BackgroundTransparency = 0.999
+    ForwardImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ForwardImage.BorderSizePixel = 0
+    ForwardImage.Position = UDim2.new(0, 8, 0.54, 0)
+    ForwardImage.Size = UDim2.new(0, 15, 0, 15)
+    ForwardImage.Image = "rbxassetid://18558566660"
+    ForwardImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
+    ForwardImage.ImageTransparency = 1.000
+
+    BackButton_2.Name = "BackButton_2"
+    BackButton_2.Parent = NameBack_2
+    BackButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton_2.BackgroundTransparency = 0.999
+    BackButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    BackButton_2.BorderSizePixel = 0
+    BackButton_2.Position = UDim2.new(0, 28, 0, 0)
+    BackButton_2.Size = UDim2.new(0, 62, 1, 0)
+    BackButton_2.Font = Enum.Font.Arcade
+    BackButton_2.Text = ""
+    BackButton_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton_2.TextSize = 14.000
+    BackButton_2.TextTransparency = 0.600
+    BackButton_2.TextXAlignment = Enum.TextXAlignment.Left
+
+    UIListLayout_2.Parent = TopLayers
+    UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+
+    RealLayers.Name = "RealLayers"
+    RealLayers.Parent = CrystalHub.Layers
+    RealLayers.AnchorPoint = Vector2.new(1, 1)
+    RealLayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    RealLayers.BackgroundTransparency = 0.999
+    RealLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    RealLayers.BorderSizePixel = 0
+    RealLayers.ClipsDescendants = true
+    RealLayers.Position = UDim2.new(1, 0, 1, 0)
+    RealLayers.Size = UDim2.new(1, 0, 1, -30)
+    RealLayers.ZIndex = 2
+
+    CrystalHub.LayersFolder.Name = "LayersFolder"
+    CrystalHub.LayersFolder.Parent = RealLayers
+
+    LayersPageLayout.Name = "LayersPageLayout"
+    LayersPageLayout.Parent = CrystalHub.LayersFolder
+    LayersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    LayersPageLayout.EasingDirection = Enum.EasingDirection.InOut
+    LayersPageLayout.EasingStyle = Enum.EasingStyle.Quad
+    LayersPageLayout.GamepadInputEnabled = false
+    LayersPageLayout.ScrollWheelInputEnabled = false
+    LayersPageLayout.TouchInputEnabled = false
+    LayersPageLayout.TweenTime = 0.350
+
+    CrystalHub.TopDescription.Position = UDim2.new(0, CrystalHub.TopTitle.TextBounds.X + 19, 0, 12)
+
+    CrystalHub.ConfirmationBackground.Name = "AnotherButton"
+    CrystalHub.ConfirmationBackground.Parent = CrystalHub.ConfirmationFrame
+    CrystalHub.ConfirmationBackground.BackgroundTransparency = 1
+    CrystalHub.ConfirmationBackground.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ConfirmationBackground.Text = ""
+    CrystalHub.ConfirmationBackground.ZIndex = 4
+
+    Crystal.Click(CrystalHub.ConfirmationBackground, function()
+        CrystalHub.ConfirmationFrame.Visible = false
+    end)
+
+    Crystal.MakeDraggable(CrystalHub.MainFrame, CrystalHub.TopBar)
+
+    CrystalHub.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+        for r, v in next, CrystalHub.LayersFolder:GetChildren() do
+            for con, cu in next, v:GetChildren() do
+                if cu:IsA("Frame") then
+                    local RealSearch = cu.Name:lower():gsub(" ", "")
+                    local InputText = CrystalHub.SearchBox.Text:lower():gsub(" ", "")
+                    if CrystalHub.SearchBox.Text == "" or string.find(RealSearch, InputText) then
+                        cu.Visible = true
+                    else
+                        cu.Visible = false
+                    end
+                end
             end
-
-            obj.TweenObject({
-                NotifyContent,
-                0.4,
-                "TextTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                AlertImage,
-                0.4,
-                "ImageTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                ProgressBar,
-                0.4,
-                "BackgroundTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                ProgressFill,
-                0.4,
-                "BackgroundTransparency",
-                1
-            })
-
-            obj.TweenObject({
-                DropShadow,
-                0.4,
-                "ImageTransparency",
-                1
-            })
         end
+    end)
 
-        function NotifyFunc:Close()
-            if closed then return end
-            closed = true
+    local TabSystem = {}
+    local TabCount = 0
 
-            FadeOut()
+    local function JumpTo(TabOrder, Name)
+        BackButton.LayoutOrder = TabOrder
+        BackButton.Text = Name
+        LayersPageLayout:JumpToIndex(BackButton.LayoutOrder)
+        Crystal.TweenObject({BackButton, 0.4, "TextTransparency", 0})
+        Crystal.TweenObject({BackButton_2, 0.4, "TextTransparency", 0.999})
+        Crystal.TweenObject({ForwardImage, 0.4, "ImageTransparency", 1.000})
+        BackButton.Size = UDim2.new(0, BackButton.TextBounds.X + 3, 1, 0)
+        NameBack.Size = UDim2.new(0, BackButton.Size.X.Offset, 1, 0)
+        NameBack_2.Position = UDim2.new(0, NameBack.Size.X.Offset, 0, 0)
+        NameBack_2.Size = UDim2.new(1, -(NameBack_2.Position.X.Offset), 1, 0)
+    end
 
-            obj.TweenObject({
-                NotifyFrameReal,
-                NotifyConfig.Time * 0.6,
-                "Position",
-                UDim2.new(0, 250, 0, 0)
-            })
+    Crystal.CustomSize(CrystalHub.MainFrame)
 
-            task.wait(NotifyConfig.Time * 0.6)
-            NotifyFrame:Destroy()
+    BackButton.Activated:Connect(function()
+        JumpTo(BackButton.LayoutOrder, BackButton.Text)
+    end)
+
+    Crystal.UserInputService.InputBegan:Connect(function(input)
+        if input.KeyCode == WindowConfig.KeyCode then
+            if CrystalHub.MainFrame.Visible then
+                CrystalHub.MainFrame.Visible = false
+            else
+                CrystalHub.MainFrame.Visible = true
+            end
         end
+    end)
 
-        obj.TweenObject({
-            NotifyFrameReal,
-            NotifyConfig.Time,
-            "Position",
-            UDim2.new(0, 0, 0, 0)
-        })
+    function TabSystem:AddTab(TabConfig)
+        TabConfig = TabConfig or {}
+        TabConfig.Title = TabConfig.Title or "Tab"
+        TabConfig.Icon = TabConfig.Icon or ""
+        TabConfig.TaskbarIcon = TabConfig.TaskbarIcon or ""
 
-        obj.TweenObject({
-            ProgressFill,
-            NotifyConfig.Delay,
-            "Size",
-            UDim2.new(0, 0, 1, 0)
-        })
+        local Tab = Instance.new("Frame")
+        local TabCorner = Instance.new("UICorner")
+        local TabImage = Instance.new("ImageLabel")
+        local TabButton = Instance.new("TextButton")
+        local TabName = Instance.new("TextLabel")
+        local ScrollLayers = Instance.new("ScrollingFrame")
+        local ScrollLayersLayout = Instance.new("UIListLayout")
 
-        task.spawn(function()
-            task.wait(NotifyConfig.Delay - 0.4)
-            FadeOut()
-            task.wait(0.4)
-            NotifyFunc:Close()
+        Tab.Name = "Tab"
+        Tab.Parent = CrystalHub.ScrollTab
+        Tab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        Tab.BackgroundTransparency = 0.999
+        Tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        Tab.BorderSizePixel = 0
+        Tab.Size = UDim2.new(1, 0, 0, 32)
+
+        TabCorner.CornerRadius = UDim.new(0, 6)
+        TabCorner.Parent = Tab
+
+        TabImage.Name = "TabImage"
+        TabImage.Parent = Tab
+        TabImage.AnchorPoint = Vector2.new(0, 0.5)
+        TabImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TabImage.BackgroundTransparency = 0.999
+        TabImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TabImage.BorderSizePixel = 0
+        TabImage.Position = UDim2.new(0, 9, 0.5, 0)
+        TabImage.Size = UDim2.new(0, 16, 0, 16)
+        TabImage.Image = TabConfig.Icon
+        TabImage.ImageTransparency = 0.600
+        TabImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
+
+        TabButton.Name = "TabButton"
+        TabButton.Parent = Tab
+        TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TabButton.BackgroundTransparency = 0.999
+        TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TabButton.BorderSizePixel = 0
+        TabButton.Size = UDim2.new(1, 0, 1, 0)
+        TabButton.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+        TabButton.Text = ""
+        TabButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+        TabButton.TextSize = 14.000
+
+        TabName.Name = "TabName"
+        TabName.Parent = Tab
+        TabName.AnchorPoint = Vector2.new(0, 0.5)
+        TabName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TabName.BackgroundTransparency = 0.999
+        TabName.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TabName.BorderSizePixel = 0
+        TabName.Position = UDim2.new(0, 32, 0.5, 0)
+        TabName.Size = UDim2.new(1, -40, 0, 12)
+        TabName.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+        TabName.Text = TabConfig.Title
+        TabName.TextColor3 = Color3.fromRGB(230, 230, 230)
+        TabName.TextSize = 12.000
+        TabName.TextTransparency = 0.600
+        TabName.TextXAlignment = Enum.TextXAlignment.Left
+
+        ScrollLayers.Name = "ScrollLayers"
+        ScrollLayers.Parent = CrystalHub.LayersFolder
+        ScrollLayers.Active = true
+        ScrollLayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ScrollLayers.BackgroundTransparency = 0.999
+        ScrollLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ScrollLayers.BorderSizePixel = 0
+        ScrollLayers.Size = UDim2.new(1, 0, 1, 0)
+        ScrollLayers.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
+        ScrollLayers.CanvasSize = UDim2.new(0, 0, 1.4, 0)
+        ScrollLayers.ScrollBarImageTransparency = 0.700
+        ScrollLayers.ScrollBarThickness = 3
+        ScrollLayers.LayoutOrder = TabCount
+
+        Crystal.Stepped:Connect(function()
+            ScrollLayers.CanvasSize = UDim2.new(0, 0, 0, ScrollLayersLayout.AbsoluteContentSize.Y + 15)
         end)
 
-    return NotifyFunc
+        ScrollLayersLayout.Parent = ScrollLayers
+        ScrollLayersLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        ScrollLayersLayout.Padding = UDim.new(0, 5)
+
+        if TabCount == 0 then
+            local ChoosingFrame = Instance.new("Frame")
+            local ChoosingCorner = Instance.new("UICorner")
+            local ChoosingStroke = Instance.new("UIStroke")
+
+            ChoosingFrame.Name = "ChoosingFrame"
+            ChoosingFrame.Parent = Tab
+            ChoosingFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+            ChoosingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            ChoosingFrame.BorderSizePixel = 0
+            ChoosingFrame.Position = UDim2.new(0, 2, 0, 10)
+            ChoosingFrame.Size = UDim2.new(0, 3, 0, 12)
+
+            ChoosingCorner.CornerRadius = UDim.new(0, 100)
+            ChoosingCorner.Parent = ChoosingFrame
+
+            ChoosingStroke.Parent = ChoosingFrame
+            ChoosingStroke.Color = Color3.fromRGB(93, 197, 248)
+            ChoosingStroke.Thickness = 0.800
+        end
+
+        if TabCount == 0 then
+            LayersPageLayout:JumpToIndex(0)
+            BackButton.Text = TabName.Text
+            TabImage.ImageTransparency = 0
+            Tab.BackgroundTransparency = 0.950
+            TabName.TextTransparency = 0
+            BackButton.LayoutOrder = 0
+            BackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end
+
+        if LayersPageLayout.CurrentPage ~= ScrollLayers then
+            Crystal.Mouseto(Tab, function()
+                Tab.BackgroundTransparency = 0.940
+            end, function()
+                Tab.BackgroundTransparency = 0.999
+            end)
+        end
+
+        TabButton.Activated:Connect(function()
+            local RealChooseFrame
+            for _, v in next, Tab.Parent:GetChildren() do
+                for r, frame in next, v:GetChildren() do
+                    if frame.Name == "ChoosingFrame" then
+                        RealChooseFrame = frame
+                        break
+                    end
+                end
+            end
+
+            if RealChooseFrame ~= nil and LayersPageLayout.CurrentPage ~= ScrollLayers then
+                for r, v in next, Tab.Parent:GetChildren() do
+                    if v.ClassName ~= "UIListLayout" then
+                        Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.999})
+                        Crystal.TweenObject({v.TabImage, 0.4, "ImageTransparency", 0.600})
+                        Crystal.TweenObject({v.TabName, 0.4, "TextTransparency", 0.600})
+                    end
+                end
+                Crystal.TweenObject({Tab, 0.4, "BackgroundTransparency", 0.950})
+                Crystal.TweenObject({TabImage, 0.4, "ImageTransparency", 0})
+                Crystal.TweenObject({TabName, 0.4, "TextTransparency", 0})
+                Crystal.TweenObject({RealChooseFrame, 0.4, "Position", UDim2.new(0, 2, 0, 11 + (34 * ScrollLayers.LayoutOrder))})
+                BackButton.Text = TabName.Text
+                JumpTo(ScrollLayers.LayoutOrder, TabName.Text)
+            end
+        end)
+
+        TabCount = TabCount + 1
+        return ScrollLayers
+    end
+
+    return TabSystem
 end
 
-function obj:Window(cfw)
-	cfw = cfw or {}
-	cfw.Title = cfw.Title or "Crystal Hub"
-	cfw.Description = cfw.Description or "Premium Edition"
-	cfw.User = cfw.User 
-	cfw.IconUser = cfw.IconUser or ""
-	cfw.UseAcrylic = cfw.UseAcrylic or false
-	cfw.Size = cfw.Size or UDim2.new(0, 450, 0, 320)
-	cfw.DiscordStatus = cfw.DiscordStatus or "love you hipp"
-	cfw.DisplayNameDiscord = cfw.DisplayNameDiscord or ""
-	cfw.DiscordDescription = cfw.DiscordDescription or ""
-	cfw.KeyCode = cfw.KeyCode or Enum.KeyCode.RightControl
-	
-	local Window = Instance.new("ScreenGui")
-	local Window11 = Instance.new("Frame")
-	local DropShadowHolder = Instance.new("Frame")
-	local DropShadow = Instance.new("ImageLabel")
-	local Top = Instance.new("Frame")
-	local TopTitle = Instance.new("TextLabel")
-	local TopDescription = Instance.new("TextLabel")
-	local CloseButton = Instance.new("TextButton")
-	local CloseImage = Instance.new("ImageLabel")
-	local FrameBiNgu = Instance.new("Frame")
-	local FrameOc = Instance.new("Frame")
-	local MaxButton = Instance.new("TextButton")
-	local MaxImage = Instance.new("ImageLabel")
-	local HideButton = Instance.new("TextButton")
-	local HideImage = Instance.new("ImageLabel")
-	local DecideFrame = Instance.new("Frame")
-	local UICorner = Instance.new("UICorner")
-	local LayersTab = Instance.new("Frame")
-	local Info = Instance.new("Frame")
-	local UICorner_2 = Instance.new("UICorner")
-	local NamePlayer = Instance.new("TextLabel")
-	local UsernameLabel = Instance.new("TextLabel")
-	local LogoFrame = Instance.new("Frame")
-	local LogoPlayer = Instance.new("ImageLabel")
-	local UICorner_3 = Instance.new("UICorner")
-	local UICorner_4 = Instance.new("UICorner")
-	local UIStroke = Instance.new("UIStroke")
-	local StatusIndicator = Instance.new("Frame")
-	local StatusCorner = Instance.new("UICorner")
-	local StatusStroke = Instance.new("UIStroke")
-	local DescriptionPlayer = Instance.new("TextLabel")
-	local InfoButton = Instance.new("TextButton")
-	local SearchFrame = Instance.new("Frame")
-	local UICorner_5 = Instance.new("UICorner")
-	local SearchImage = Instance.new("ImageLabel")
-	local SearchDecide = Instance.new("Frame")
-	local UICorner_6 = Instance.new("UICorner")
-	local SearchDecide_2 = Instance.new("Frame")
-	local UICorner_7 = Instance.new("UICorner")
-	local RealLayers = Instance.new("Frame")
-	local UIStroke_2 = Instance.new("UIStroke")
-	local UIStroke_3 = Instance.new("UIStroke")
-	local SearchBoxFrame = Instance.new("Frame")
-	local SearchBox = Instance.new("TextBox")
-	local ScrollTab = Instance.new("ScrollingFrame")
-	local UIListLayout = Instance.new("UIListLayout")
-	local UICorner_59 = Instance.new("UICorner")
-	local UIStroke_26 = Instance.new("UIStroke")
-	local Layers = Instance.new("Frame")
-	local AnotherFrame = Instance.new("Frame")
-	local DropShadowHolder_2 = Instance.new("Frame")
-	local DropShadow_2 = Instance.new("ImageLabel")
-	local LogFrame = Instance.new("Frame")
-	local UICorner_42 = Instance.new("UICorner")
-	local UIStroke_17 = Instance.new("UIStroke")
-	local LogTitle = Instance.new("TextLabel")
-	local LogContent = Instance.new("TextLabel")
-	local LogUnder = Instance.new("Frame")
-	local UICorner_43 = Instance.new("UICorner")
-	local ConfirmFrame = Instance.new("Frame")
-	local UICorner_44 = Instance.new("UICorner")
-	local ConfirmButton = Instance.new("TextButton")
-	local CancelFrame = Instance.new("Frame")
-	local UICorner_45 = Instance.new("UICorner")
-	local CancelButton = Instance.new("TextButton")
-	local LayersFolder = Instance.new("Folder")
-	local AnotherButton = Instance.new("TextButton")
-	local SkidderTop1VN = Instance.new("UICorner")
-	
-	Window.Name = "Window"
-	Window.Parent = obj.plrGUI
-	Window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	
-	Window11.Name = "Window11"
-	Window11.Parent = Window
-	Window11.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-	Window11.BackgroundTransparency = 0.050
-	Window11.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Window11.BorderSizePixel = 0
-	Window11.Size = cfw.Size
-	Window11.Position = GetMidPos(Window11)
-	
-	UICorner_59.CornerRadius = UDim.new(0, 12)
-	UICorner_59.Parent = Window11
-	
-	UIStroke_26.Parent = Window11
-	UIStroke_26.Color = Color3.fromRGB(60, 60, 60)
-	UIStroke_26.Thickness = 1.800
-	
-	DropShadowHolder.Name = "DropShadowHolder"
-	DropShadowHolder.Parent = Window11
-	DropShadowHolder.BackgroundTransparency = 1.000
-	DropShadowHolder.BorderSizePixel = 0
-	DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
-	DropShadowHolder.ZIndex = 0
-	
-	DropShadow.Name = "DropShadow"
-	DropShadow.Parent = DropShadowHolder
-	DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-	DropShadow.BackgroundTransparency = 1.000
-	DropShadow.BorderSizePixel = 0
-	DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-	DropShadow.Size = UDim2.new(1, 47, 1, 47)
-	DropShadow.ZIndex = 0
-	DropShadow.Image = "rbxassetid://6015897843"
-	DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-	DropShadow.ImageTransparency = 0.300
-	DropShadow.ScaleType = Enum.ScaleType.Slice
-	DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-	
-	Top.Name = "Top"
-	Top.Parent = Window11
-	Top.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Top.BackgroundTransparency = 0.999
-	Top.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Top.BorderSizePixel = 0
-	Top.Size = UDim2.new(1, 0, 0, 40)
-	Top.ZIndex = 2
-	
-	TopTitle.Name = "TopTitle"
-	TopTitle.Parent = Top
-	TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TopTitle.BackgroundTransparency = 0.999
-	TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	TopTitle.BorderSizePixel = 0
-	TopTitle.Position = UDim2.new(0, 15, 0, 12)
-	TopTitle.Size = UDim2.new(0, 100, 0, 16)
-	TopTitle.Font = Enum.Font.Arcade
-	TopTitle.Text = cfw.Title
-	TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-	TopTitle.TextSize = 14.000
-	TopTitle.TextXAlignment = Enum.TextXAlignment.Left
-	
-	TopDescription.Name = "TopDescription"
-	TopDescription.Parent = Top
-	TopDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TopDescription.BackgroundTransparency = 0.999
-	TopDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	TopDescription.BorderSizePixel = 0
-	TopDescription.Position = UDim2.new(0, 0, 0, 12)
-	TopDescription.Size = UDim2.new(0, 80, 0, 16)
-	TopDescription.Font = Enum.Font.Arcade
-	TopDescription.Text = cfw.Description
-	TopDescription.TextColor3 = Color3.fromRGB(93, 197, 248)
-	TopDescription.TextSize = 12.000
-	TopDescription.TextTransparency = 0.300
-	TopDescription.TextXAlignment = Enum.TextXAlignment.Left
-	
-	CloseButton.Name = "CloseButton"
-	CloseButton.Parent = Top
-	CloseButton.AnchorPoint = Vector2.new(1, 0)
-	CloseButton.BackgroundTransparency = 1.000
-	CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	CloseButton.BorderSizePixel = 0
-	CloseButton.Position = UDim2.new(1, 0, 0, 0)
-	CloseButton.Size = UDim2.new(0, 40, 0, 40)
-	CloseButton.Font = Enum.Font.SourceSans
-	CloseButton.AutoButtonColor = false
-	CloseButton.Text = ""
-	CloseButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-	CloseButton.TextSize = 14.000
-	
-	obj.Mouseto(CloseButton, function()
-		obj.TweenObject({CloseButton, 0.2, "BackgroundTransparency", 0.970})
-		obj.TweenObject({FrameBiNgu, 0.2, "BackgroundTransparency", 0.000})
-		obj.TweenObject({FrameOc, 0.2, "BackgroundTransparency", 0.000})
-	end, function()
-		obj.TweenObject({CloseButton, 0.2, "BackgroundTransparency", 1.000})
-		obj.TweenObject({FrameBiNgu, 0.2, "BackgroundTransparency", 1.000})
-		obj.TweenObject({FrameOc, 0.2, "BackgroundTransparency", 1.000})
-	end)
-	
-	obj.Click(CloseButton, function()
-		Window11.Visible = false
-	end)
-	
-	SkidderTop1VN.CornerRadius = UDim.new(0, 12)
-	SkidderTop1VN.Parent = CloseButton
-	
-	CloseImage.Name = "CloseImage"
-	CloseImage.Parent = CloseButton
-	CloseImage.AnchorPoint = Vector2.new(0.5, 0.5)
-	CloseImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	CloseImage.BackgroundTransparency = 0.999
-	CloseImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	CloseImage.BorderSizePixel = 0
-	CloseImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	CloseImage.Size = UDim2.new(1, -22, 1, -22)
-	CloseImage.Image = "rbxassetid://18556800637"
-	CloseImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-	
-	UICorner.Parent = CloseButton
-	
-	FrameBiNgu.Name = "FrameBiNgu"
-	FrameBiNgu.Parent = CloseButton
-	FrameBiNgu.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
-	FrameBiNgu.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	FrameBiNgu.BorderSizePixel = 0
-	FrameBiNgu.Size = UDim2.new(0, 7, 1, 0)
-	FrameBiNgu.BackgroundTransparency = 1.000
-	
-	FrameOc.Name = "FrameOc"
-	FrameOc.Parent = CloseButton
-	FrameOc.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
-	FrameOc.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	FrameOc.BorderSizePixel = 0
-	FrameOc.BackgroundTransparency = 1.000
-	FrameOc.Position = UDim2.new(0, 0, 1, -5)
-	FrameOc.Size = UDim2.new(1, 0, 0, 5)
-	
-	MaxButton.Name = "MaxButton"
-	MaxButton.Parent = Top
-	MaxButton.AutoButtonColor = false
-	MaxButton.AnchorPoint = Vector2.new(1, 0)
-	MaxButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	MaxButton.BackgroundTransparency = 0.999
-	MaxButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	MaxButton.BorderSizePixel = 0
-	MaxButton.Position = UDim2.new(1, -39, 0, 0)
-	MaxButton.Size = UDim2.new(0, 40, 0, 40)
-	MaxButton.Font = Enum.Font.SourceSans
-	MaxButton.Text = ""
-	MaxButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-	MaxButton.TextSize = 14.000
-	
-	obj.Click(MaxButton, function()
-		if Window11.Size.Y.Scale < 1 then
-			OldPos = Window11.Position
-			OldSize = Window11.Size
-			obj.TweenObject({Window11, 0.5, "Size", UDim2.new(1, 0, 1, 0)})
-			obj.TweenObject({Window11, 0.5, "Position", UDim2.new(0, 0, 0, 0)})
-		else
-			obj.TweenObject({Window11, 0.5, "Size", OldSize})
-			obj.TweenObject({Window11, 0.5, "Position", OldPos})
-		end
-	end)
-	
-	obj.Mouseto(MaxButton, function()
-		MaxButton.BackgroundTransparency = 0.970
-		obj.TweenObject({MaxImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
-	end, function()
-		MaxButton.BackgroundTransparency = 0.999
-		obj.TweenObject({MaxImage, 0.2, "ImageColor3", Color3.fromRGB(230, 230, 230)})
-	end)
-	
-	MaxImage.Name = "MaxImage"
-	MaxImage.Parent = MaxButton
-	MaxImage.AnchorPoint = Vector2.new(0.5, 0.5)
-	MaxImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	MaxImage.BackgroundTransparency = 0.999
-	MaxImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	MaxImage.BorderSizePixel = 0
-	MaxImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	MaxImage.Size = UDim2.new(1, -24, 1, -24)
-	MaxImage.Image = "rbxassetid://9886659406"
-	MaxImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-	
-	HideButton.Name = "HideButton"
-	HideButton.Parent = Top
-	HideButton.AutoButtonColor = false
-	HideButton.AnchorPoint = Vector2.new(1, 0)
-	HideButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	HideButton.BackgroundTransparency = 0.999
-	HideButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	HideButton.BorderSizePixel = 0
-	HideButton.Position = UDim2.new(1, -77, 0, 0)
-	HideButton.Size = UDim2.new(0, 40, 0, 40)
-	HideButton.Font = Enum.Font.SourceSans
-	HideButton.Text = ""
-	HideButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-	HideButton.TextSize = 14.000
-	
-	obj.Mouseto(HideButton, function()
-		HideButton.BackgroundTransparency = 0.950
-		obj.TweenObject({HideImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
-	end, function()
-		HideButton.BackgroundTransparency = 0.999
-		obj.TweenObject({HideImage, 0.2, "ImageColor3", Color3.fromRGB(230, 230, 230)})
-	end)
-	
-	obj.Click(HideButton, function()
-		Window11.Visible = false
-	end)
-	
-	HideImage.Name = "HideImage"
-	HideImage.Parent = HideButton
-	HideImage.AnchorPoint = Vector2.new(0.5, 0.5)
-	HideImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	HideImage.BackgroundTransparency = 0.999
-	HideImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	HideImage.BorderSizePixel = 0
-	HideImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-	HideImage.Size = UDim2.new(1, -24, 1, -24)
-	HideImage.Image = "rbxassetid://18556824827"
-	HideImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-	
-	DecideFrame.Name = "DecideFrame"
-	DecideFrame.Parent = Top
-	DecideFrame.AnchorPoint = Vector2.new(0.5, 1)
-	DecideFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-	DecideFrame.BackgroundTransparency = 0.800
-	DecideFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	DecideFrame.BorderSizePixel = 0
-	DecideFrame.Position = UDim2.new(0.5, 0, 1, 2)
-	DecideFrame.Size = UDim2.new(1, -14, 0, 2)
-	
-	UICorner.CornerRadius = UDim.new(0, 100)
-	UICorner.Parent = DecideFrame
-	
-	LayersTab.Name = "LayersTab"
-	LayersTab.Parent = Window11
-	LayersTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	LayersTab.BackgroundTransparency = 0.999
-	LayersTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LayersTab.BorderSizePixel = 0
-	LayersTab.Position = UDim2.new(0, 10, 0, 48)
-	LayersTab.Size = UDim2.new(0, 140, 1, -58)
-	
-	Info.Name = "Info"
-	Info.Parent = LayersTab
-	Info.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-	Info.BackgroundTransparency = 1.000
-	Info.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Info.BorderSizePixel = 0
-	Info.Size = UDim2.new(1, 0, 0, 48)
-	
-	obj.Mouseto(Info, function()
-		Info.BackgroundTransparency = 0.950
-		obj.TweenObject({UIStroke, 0.3, "Transparency", 0.400})
-	end, function()
-		Info.BackgroundTransparency = 1.000
-		obj.TweenObject({UIStroke, 0.3, "Transparency", 0.700})
-	end)
-	
-	UICorner_2.CornerRadius = UDim.new(0, 6)
-	UICorner_2.Parent = Info
-	
-	NamePlayer.Name = "NamePlayer"
-	NamePlayer.Parent = Info
-	NamePlayer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	NamePlayer.BackgroundTransparency = 0.999
-	NamePlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	NamePlayer.BorderSizePixel = 0
-	NamePlayer.Position = UDim2.new(0, 46, 0, 10)
-	NamePlayer.Size = UDim2.new(1, -50, 0, 12)
-	NamePlayer.Font = Enum.Font.Arcade
-	NamePlayer.Text = tostring(game:GetService("Players").LocalPlayer.DisplayName)
-	NamePlayer.TextColor3 = Color3.fromRGB(255, 255, 255)
-	NamePlayer.TextSize = 12.000
-	NamePlayer.TextWrapped = true
-	NamePlayer.TextXAlignment = Enum.TextXAlignment.Left
-DescriptionPlayer.Name = "DescriptionPlayer"  
-DescriptionPlayer.Parent = Info
-DescriptionPlayer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-DescriptionPlayer.BackgroundTransparency = 0.999
-DescriptionPlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-DescriptionPlayer.BorderSizePixel = 0
-DescriptionPlayer.Position = UDim2.new(0, 46, 0, 24)  -- 
-DescriptionPlayer.Size = UDim2.new(1, -50, 0, 9)
-DescriptionPlayer.Font = Enum.Font.Arcade
-DescriptionPlayer.Text = tostring(game:GetService("Players").LocalPlayer.UserId)
-DescriptionPlayer.TextColor3 = Color3.fromRGB(120, 120, 120)
-DescriptionPlayer.TextSize = 8.000
-DescriptionPlayer.TextTransparency = 0.400
-DescriptionPlayer.TextWrapped = true
-DescriptionPlayer.TextXAlignment = Enum.TextXAlignment.Left
-	
-	LogoFrame.Name = "LogoFrame"
-	LogoFrame.Parent = Info
-	LogoFrame.AnchorPoint = Vector2.new(0, 0.5)
-	LogoFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-	LogoFrame.BackgroundTransparency = 0.850
-	LogoFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LogoFrame.BorderSizePixel = 0
-	LogoFrame.Position = UDim2.new(0, 4, 0.5, 0)
-	LogoFrame.Size = UDim2.new(0, 38, 0, 38)
-	
-	LogoPlayer.Name = "LogoPlayer"
-	LogoPlayer.Parent = LogoFrame
-	LogoPlayer.AnchorPoint = Vector2.new(0.5, 0.5)
-	LogoPlayer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	LogoPlayer.BackgroundTransparency = 0.999
-	LogoPlayer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LogoPlayer.BorderSizePixel = 0
-	LogoPlayer.Position = UDim2.new(0.5, 0, 0.5, 0)
-	LogoPlayer.Size = UDim2.new(1, -2, 1, -2)
-	LogoPlayer.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..game:GetService("Players").LocalPlayer.UserId.."&width=420&height=420&format=png"
-	
-	UICorner_3.CornerRadius = UDim.new(0, 1000)
-	UICorner_3.Parent = LogoPlayer
-	
-	UICorner_4.CornerRadius = UDim.new(0, 1000)
-	UICorner_4.Parent = LogoFrame
-	
-	UIStroke.Parent = LogoFrame
-	UIStroke.Color = Color3.fromRGB(93, 197, 248)
-	UIStroke.Transparency = 0.700
-	UIStroke.Thickness = 2.000
-	
-	StatusIndicator.Name = "StatusIndicator"
-	StatusIndicator.Parent = LogoFrame
-	StatusIndicator.AnchorPoint = Vector2.new(1, 1)
-	StatusIndicator.BackgroundColor3 = Color3.fromRGB(67, 181, 129)
-	StatusIndicator.BorderSizePixel = 0
-	StatusIndicator.Position = UDim2.new(1, -1, 1, -1)
-	StatusIndicator.Size = UDim2.new(0, 11, 0, 11)
-	StatusIndicator.ZIndex = 5
-	
-	StatusCorner.CornerRadius = UDim.new(1, 0)
-	StatusCorner.Parent = Status
-	StatusCorner.Parent = StatusIndicator
-	
-	StatusStroke.Parent = StatusIndicator
-	StatusStroke.Color = Color3.fromRGB(20, 20, 20)
-	StatusStroke.Thickness = 2.000
-	
-	InfoButton.Name = "InfoButton"
-	InfoButton.Parent = Info
-	InfoButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	InfoButton.BackgroundTransparency = 0.999
-	InfoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	InfoButton.BorderSizePixel = 0
-	InfoButton.Size = UDim2.new(1, 0, 1, 0)
-	InfoButton.Font = Enum.Font.SourceSans
-	InfoButton.Text = ""
-	InfoButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-	InfoButton.TextSize = 14.000
-	
-	SearchFrame.Name = "SearchFrame"
-	SearchFrame.Parent = LayersTab
-	SearchFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-	SearchFrame.BackgroundTransparency = 0.900
-	SearchFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	SearchFrame.BorderSizePixel = 0
-	SearchFrame.ClipsDescendants = true
-	SearchFrame.Position = UDim2.new(0, 0, 0, 56)
-	SearchFrame.Size = UDim2.new(1, 0, 0, 26)
-	
-	UICorner_5.CornerRadius = UDim.new(0, 6)
-	UICorner_5.Parent = SearchFrame
-	
-	SearchImage.Name = "SearchImage"
-	SearchImage.Parent = SearchFrame
-	SearchImage.AnchorPoint = Vector2.new(1, 0)
-	SearchImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	SearchImage.BackgroundTransparency = 0.999
-	SearchImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	SearchImage.BorderSizePixel = 0
-	SearchImage.Position = UDim2.new(1, -6, 0, 6)
-	SearchImage.Size = UDim2.new(0, 14, 0, 14)
-	SearchImage.Image = "rbxassetid://18557078698"
-	SearchImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
-	
-	SearchDecide.Name = "SearchDecide"
-	SearchDecide.Parent = SearchFrame
-	SearchDecide.AnchorPoint = Vector2.new(0.5, 1)
-	SearchDecide.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-	SearchDecide.BackgroundTransparency = 0.900
-	SearchDecide.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	SearchDecide.BorderSizePixel = 0
-	SearchDecide.Position = UDim2.new(0.5, 0, 1, 0)
-	SearchDecide.Size = UDim2.new(1, -4, 0, 1.5)
-	
-	UICorner_6.CornerRadius = UDim.new(0, 5)
-	UICorner_6.Parent = SearchDecide
-	
-	SearchDecide_2.Name = "SearchDecide_2"
-	SearchDecide_2.Parent = SearchDecide
-	SearchDecide_2.AnchorPoint = Vector2.new(0.5, 1)
-	SearchDecide_2.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-	SearchDecide_2.BackgroundTransparency = 0.999
-	SearchDecide_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	SearchDecide_2.BorderSizePixel = 0
-	SearchDecide_2.Position = UDim2.new(0.5, 0, 1, 0)
-	SearchDecide_2.Size = UDim2.new(1, -4, 0, 1.5)
-	
-	UICorner_7.CornerRadius = UDim.new(0, 5)
-	UICorner_7.Parent = SearchDecide_2
-	
-	UIStroke_2.Parent = SearchDecide_2
-	UIStroke_2.Color = Color3.fromRGB(93, 197, 248)
-	UIStroke_2.Transparency = 0.999
-	UIStroke_2.Thickness = 0.800
-	
-	UIStroke_3.Parent = SearchDecide
-	UIStroke_3.Color = Color3.fromRGB(60, 60, 60)
-	UIStroke_3.Transparency = 0.900
-	UIStroke_3.Thickness = 0.800
-	
-	SearchBoxFrame.Name = "SearchBoxFrame"
-	SearchBoxFrame.Parent = SearchFrame
-	SearchBoxFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	SearchBoxFrame.BackgroundTransparency = 0.999
-	SearchBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	SearchBoxFrame.BorderSizePixel = 0
-	SearchBoxFrame.ClipsDescendants = true
-	SearchBoxFrame.Position = UDim2.new(0, 8, 0, 0)
-	SearchBoxFrame.Size = UDim2.new(1, -30, 0, 26)
-	
-	SearchBox.Name = "SearchBox"
-	SearchBox.Parent = SearchBoxFrame
-	SearchBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	SearchBox.BackgroundTransparency = 0.999
-	SearchBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	SearchBox.BorderSizePixel = 0
-	SearchBox.Position = UDim2.new(0, 2, 0, 0)
-	SearchBox.Size = UDim2.new(1, -2, 1, 0)
-	SearchBox.Font = Enum.Font.Arcade
-	SearchBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
-	SearchBox.PlaceholderText = "Search..."
-	SearchBox.Text = ""
-	SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-	SearchBox.TextSize = 11.000
-	SearchBox.TextXAlignment = Enum.TextXAlignment.Left
-	
-	SearchBox.Focused:Connect(function()
-		obj.TweenObject({SearchDecide_2, 0.3, "BackgroundTransparency", 0})
-		obj.TweenObject({UIStroke_2, 0.3, "Transparency", 0})
-	end)
-	
-	SearchBox.FocusLost:Connect(function()
-		obj.TweenObject({SearchDecide_2, 0.3, "BackgroundTransparency", 0.999})
-		obj.TweenObject({UIStroke_2, 0.3, "Transparency", 0.999})
-	end)
-	
-	ScrollTab.Name = "ScrollTab"
-	ScrollTab.Parent = LayersTab
-	ScrollTab.Active = true
-	ScrollTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	ScrollTab.BackgroundTransparency = 0.999
-	ScrollTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	ScrollTab.BorderSizePixel = 0
-	ScrollTab.Position = UDim2.new(0, 0, 0, 90)
-	ScrollTab.Size = UDim2.new(1, 0, 1, -90)
-	ScrollTab.ZIndex = 0
-	ScrollTab.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
-	ScrollTab.CanvasSize = UDim2.new(0, 0, 0, 220)
-	ScrollTab.ScrollBarImageTransparency = 0.700
-	ScrollTab.ScrollBarThickness = 3
-	
-	obj.Stepped:Connect(function()
-		ScrollTab.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y + 15)
-	end)
-	
-	UIListLayout.Parent = ScrollTab
-	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayout.Padding = UDim.new(0, 2)
-	
-	AnotherFrame.Name = "AnotherFrame"
-	AnotherFrame.Parent = Window11
-	AnotherFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	AnotherFrame.BackgroundTransparency = 0.300
-	AnotherFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	AnotherFrame.BorderSizePixel = 0
-	AnotherFrame.Size = UDim2.new(1, 0, 1, 0)
-	AnotherFrame.Visible = false
-	AnotherFrame.ZIndex = 5
-	
-	DropShadowHolder_2.Name = "DropShadowHolder"
-	DropShadowHolder_2.Parent = AnotherFrame
-	DropShadowHolder_2.BackgroundTransparency = 1.000
-	DropShadowHolder_2.BorderSizePixel = 0
-	DropShadowHolder_2.Size = UDim2.new(1, 0, 1, 0)
-	DropShadowHolder_2.ZIndex = 0
-	
-	DropShadow_2.Name = "DropShadow"
-	DropShadow_2.Parent = DropShadowHolder_2
-	DropShadow_2.AnchorPoint = Vector2.new(0.5, 0.5)
-	DropShadow_2.BackgroundTransparency = 1.000
-	DropShadow_2.BorderSizePixel = 0
-	DropShadow_2.Position = UDim2.new(0.5, 0, 0.5, 0)
-	DropShadow_2.Size = UDim2.new(1, 47, 1, 47)
-	DropShadow_2.ZIndex = 0
-	DropShadow_2.Image = "rbxassetid://6015897843"
-	DropShadow_2.ImageColor3 = Color3.fromRGB(0, 0, 0)
-	DropShadow_2.ImageTransparency = 0.500
-	DropShadow_2.ScaleType = Enum.ScaleType.Slice
-	DropShadow_2.SliceCenter = Rect.new(49, 49, 450, 450)
-	
-	LogFrame.Name = "LogFrame"
-	LogFrame.Parent = DropShadow_2
-	LogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-	LogFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-	LogFrame.BackgroundTransparency = 0.020
-	LogFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LogFrame.BorderSizePixel = 0
-	LogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-	LogFrame.Size = UDim2.new(0, 220, 0, 120)
-	LogFrame.Visible = false
-	
-	UICorner_42.CornerRadius = UDim.new(0, 8)
-	UICorner_42.Parent = LogFrame
-	
-	UIStroke_17.Parent = LogFrame
-	UIStroke_17.Color = Color3.fromRGB(50, 50, 50)
-	UIStroke_17.Thickness = 1.500
-	
-	LogTitle.Name = "LogTitle"
-	LogTitle.Parent = LogFrame
-	LogTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	LogTitle.BackgroundTransparency = 0.999
-	LogTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LogTitle.BorderSizePixel = 0
-	LogTitle.Position = UDim2.new(0, 18, 0, 18)
-	LogTitle.Size = UDim2.new(0, 180, 0, 18)
-	LogTitle.Font = Enum.Font.Arcade
-	LogTitle.Text = "Confirmation"
-	LogTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-	LogTitle.TextSize = 15.000
-	LogTitle.TextXAlignment = Enum.TextXAlignment.Left
-	
-	LogContent.Name = "LogContent"
-	LogContent.Parent = LogFrame
-	LogContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	LogContent.BackgroundTransparency = 0.999
-	LogContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LogContent.BorderSizePixel = 0
-	LogContent.Position = UDim2.new(0, 18, 0, 38)
-	LogContent.Size = UDim2.new(0, 180, 0, 12)
-	LogContent.Font = Enum.Font.Arcade
-	LogContent.Text = "Are you sure about this action?"
-	LogContent.TextColor3 = Color3.fromRGB(200, 200, 200)
-	LogContent.TextSize = 12.000
-	LogContent.TextTransparency = 0.400
-	LogContent.TextXAlignment = Enum.TextXAlignment.Left
-	
-	LogUnder.Name = "LogUnder"
-	LogUnder.Parent = LogFrame
-	LogUnder.AnchorPoint = Vector2.new(0, 1)
-	LogUnder.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
-	LogUnder.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	LogUnder.BorderSizePixel = 0
-	LogUnder.Position = UDim2.new(0, 0, 1, 0)
-	LogUnder.Size = UDim2.new(1, 0, 1, -62)
-	
-	UICorner_43.CornerRadius = UDim.new(0, 8)
-	UICorner_43.Parent = LogUnder
-	
-	ConfirmFrame.Name = "ConfirmFrame"
-	ConfirmFrame.Parent = LogUnder
-	ConfirmFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-	ConfirmFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	ConfirmFrame.BorderSizePixel = 0
-	ConfirmFrame.Position = UDim2.new(0, 15, 0, 12)
-	ConfirmFrame.Size = UDim2.new(0, 85, 0, 28)
-	
-	UICorner_44.CornerRadius = UDim.new(0, 5)
-	UICorner_44.Parent = ConfirmFrame
-	
-	ConfirmButton.Name = "ConfirmButton"
-	ConfirmButton.Parent = ConfirmFrame
-	ConfirmButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	ConfirmButton.BackgroundTransparency = 0.999
-	ConfirmButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	ConfirmButton.BorderSizePixel = 0
-	ConfirmButton.Size = UDim2.new(1, 0, 1, 0)
-	ConfirmButton.Font = Enum.Font.Arcade
-	ConfirmButton.Text = "Confirm"
-	ConfirmButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-	ConfirmButton.TextSize = 12.000
-	
-	obj.Mouseto(ConfirmFrame, function()
-		obj.TweenObject({ConfirmFrame, 0.2, "BackgroundColor3", Color3.fromRGB(120, 210, 255)})
-	end, function()
-		obj.TweenObject({ConfirmFrame, 0.2, "BackgroundColor3", Color3.fromRGB(93, 197, 248)})
-	end)
-	
-	CancelFrame.Name = "CancelFrame"
-	CancelFrame.Parent = LogUnder
-	CancelFrame.AnchorPoint = Vector2.new(1, 0)
-	CancelFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-	CancelFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	CancelFrame.BorderSizePixel = 0
-	CancelFrame.Position = UDim2.new(1, -15, 0, 12)
-	CancelFrame.Size = UDim2.new(0, 85, 0, 28)
-	
-	UICorner_45.CornerRadius = UDim.new(0, 5)
-	UICorner_45.Parent = CancelFrame
-	
-	CancelButton.Name = "CancelButton"
-	CancelButton.Parent = CancelFrame
-	CancelButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	CancelButton.BackgroundTransparency = 0.999
-	CancelButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	CancelButton.BorderSizePixel = 0
-	CancelButton.Size = UDim2.new(1, 0, 1, 0)
-	CancelButton.Font = Enum.Font.Arcade
-	CancelButton.Text = "Cancel"
-	CancelButton.TextColor3 = Color3.fromRGB(200, 200, 200)
-	CancelButton.TextSize = 12.000
-	
-	obj.Mouseto(CancelFrame, function()
-		obj.TweenObject({CancelFrame, 0.2, "BackgroundColor3", Color3.fromRGB(45, 45, 45)})
-	end, function()
-		obj.TweenObject({CancelFrame, 0.2, "BackgroundColor3", Color3.fromRGB(35, 35, 35)})
-	end)
-	
-	local Layers = Instance.new("Frame")
-	local TopLayers = Instance.new("Frame")
-	local NameBack = Instance.new("Frame")
-	local BackButton = Instance.new("TextButton")
-	local NameBack_2 = Instance.new("Frame")
-	local ForwardImage = Instance.new("ImageLabel")
-	local BackButton_2 = Instance.new("TextButton")
-	local UIListLayout_2 = Instance.new("UIListLayout")
-	local LayersPageLayout = Instance.new("UIPageLayout")
-	
-	Layers.Name = "Layers"
-	Layers.Parent = Window11
-	Layers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Layers.BackgroundTransparency = 0.999
-	Layers.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Layers.BorderSizePixel = 0
-	Layers.Position = UDim2.new(0, 158, 0, 48)
-	Layers.Size = UDim2.new(1, -168, 1, -58)
-	Layers.ZIndex = 3
-	
-	TopLayers.Name = "TopLayers"
-	TopLayers.Parent = Layers
-	TopLayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TopLayers.BackgroundTransparency = 0.999
-	TopLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	TopLayers.BorderSizePixel = 0
-	TopLayers.ClipsDescendants = true
-	TopLayers.Size = UDim2.new(1, 0, 0, 30)
-	
-	NameBack.Name = "NameBack"
-	NameBack.Parent = TopLayers
-	NameBack.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	NameBack.BackgroundTransparency = 0.999
-	NameBack.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	NameBack.BorderSizePixel = 0
-	NameBack.Size = UDim2.new(0, 45, 1, 0)
-	
-	BackButton.Name = "BackButton"
-	BackButton.Parent = NameBack
-	BackButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	BackButton.BackgroundTransparency = 0.999
-	BackButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	BackButton.BorderSizePixel = 0
-	BackButton.Size = UDim2.new(1, 0, 1, 0)
-	BackButton.Font = Enum.Font.Arcade
-	BackButton.Text = ""
-	BackButton.LayoutOrder = 0
-	BackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-	BackButton.TextSize = 14.000
-	BackButton.TextTransparency = 0
-	BackButton.TextXAlignment = Enum.TextXAlignment.Left
-	
-	NameBack_2.Name = "NameBack_2"
-	NameBack_2.Parent = TopLayers
-	NameBack_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	NameBack_2.BackgroundTransparency = 0.999
-	NameBack_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	NameBack_2.BorderSizePixel = 0
-	NameBack_2.Position = UDim2.new(0, 90, 0, 0)
-	NameBack_2.Size = UDim2.new(0, 90, 1, 0)
-	
-	ForwardImage.Name = "ForwardImage"
-	ForwardImage.Parent = NameBack_2
-	ForwardImage.AnchorPoint = Vector2.new(0, 0.5)
-	ForwardImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	ForwardImage.BackgroundTransparency = 0.999
-	ForwardImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	ForwardImage.BorderSizePixel = 0
-	ForwardImage.Position = UDim2.new(0, 8, 0.54, 0)
-	ForwardImage.Size = UDim2.new(0, 15, 0, 15)
-	ForwardImage.Image = "rbxassetid://18558566660"
-	ForwardImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-	ForwardImage.ImageTransparency = 1.000
-	
-	BackButton_2.Name = "BackButton_2"
-	BackButton_2.Parent = NameBack_2
-	BackButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	BackButton_2.BackgroundTransparency = 0.999
-	BackButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	BackButton_2.BorderSizePixel = 0
-	BackButton_2.Position = UDim2.new(0, 28, 0, 0)
-	BackButton_2.Size = UDim2.new(0, 62, 1, 0)
-	BackButton_2.Font = Enum.Font.Arcade
-	BackButton_2.Text = ""
-	BackButton_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-	BackButton_2.TextSize = 14.000
-	BackButton_2.TextTransparency = 0.600
-	BackButton_2.TextXAlignment = Enum.TextXAlignment.Left
-	
-	UIListLayout_2.Parent = TopLayers
-	UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
-	UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
-	
-	RealLayers.Name = "RealLayers"
-	RealLayers.Parent = Layers
-	RealLayers.AnchorPoint = Vector2.new(1, 1)
-	RealLayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	RealLayers.BackgroundTransparency = 0.999
-	RealLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	RealLayers.BorderSizePixel = 0
-	RealLayers.ClipsDescendants = true
-	RealLayers.Position = UDim2.new(1, 0, 1, 0)
-	RealLayers.Size = UDim2.new(1, 0, 1, -30)
-	RealLayers.ZIndex = 2
-	
-	LayersFolder.Name = "LayersFolder"
-	LayersFolder.Parent = RealLayers
-	
-	LayersPageLayout.Name = "LayersPageLayout"
-	LayersPageLayout.Parent = LayersFolder
-	LayersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	LayersPageLayout.EasingDirection = Enum.EasingDirection.InOut
-	LayersPageLayout.EasingStyle = Enum.EasingStyle.Quad
-	LayersPageLayout.GamepadInputEnabled = false
-	LayersPageLayout.ScrollWheelInputEnabled = false
-	LayersPageLayout.TouchInputEnabled = false
-	LayersPageLayout.TweenTime = 0.350
-	
-	TopDescription.Position = UDim2.new(0, TopTitle.TextBounds.X + 19, 0, 12)
-	
-	AnotherButton.Name = "AnotherButton"
-	AnotherButton.Parent = AnotherFrame
-	AnotherButton.BackgroundTransparency = 1
-	AnotherButton.Size = UDim2.new(1, 0, 1, 0)
-	AnotherButton.Text = ""
-	AnotherButton.ZIndex = 4
-	
-	obj.Click(AnotherButton, function()
-		AnotherFrame.Visible = false
-	end)
-	
-	obj.MakeDraggable(Window11, Top)
-	
-	SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-		for r, v in next, LayersFolder:GetChildren() do
-			for con, cu in next, v:GetChildren() do
-				if cu:IsA("Frame") then
-					local RealSearch = cu.Name:lower():gsub(" ", "")
-					local InputText = SearchBox.Text:lower():gsub(" ", "")
-					if SearchBox.Text == "" or string.find(RealSearch, InputText) then
-						cu.Visible = true
-					else
-						cu.Visible = false
-					end
-				end
-			end
-		end
-	end)
-	
-	local UITab = {}
-	local Counts = 0
-	
-	function JumpTo(TabOder, Name)
-		BackButton.LayoutOrder = TabOder
-		BackButton.Text = Name
-		LayersPageLayout:JumpToIndex(BackButton.LayoutOrder)
-		obj.TweenObject({BackButton, 0.4, "TextTransparency", 0})
-		obj.TweenObject({BackButton_2, 0.4, "TextTransparency", 0.999})
-		obj.TweenObject({ForwardImage, 0.4, "ImageTransparency", 1.000})
-		BackButton.Size = UDim2.new(0, BackButton.TextBounds.X + 3, 1, 0)
-		NameBack.Size = UDim2.new(0, BackButton.Size.X.Offset, 1, 0)
-		NameBack_2.Position = UDim2.new(0, NameBack.Size.X.Offset, 0, 0)
-		NameBack_2.Size = UDim2.new(1, -(NameBack_2.Position.X.Offset), 1, 0)
-	end
-	
-	obj.CustomSize(Window11)
-	
-	BackButton.Activated:Connect(function()
-		JumpTo(BackButton.LayoutOrder, BackButton.Text)
-	end)
-	
-	obj.UserInputService.InputBegan:Connect(function(v)
-		if v.KeyCode == Enum.KeyCode.LeftControl then
-			if Window11.Visible then
-				Window11.Visible = false
-			else
-				Window11.Visible = true
-			end
-		end
-	end)
-	function UITab:AddTab(cftab)
-		cftab = cftab or {}
-		cftab.Title = cftab.Title or "Tab"
-		cftab.Icon = cftab.Icon or ""
-		cftab.TaskbarIcon = cftab.TaskbarIcon or ""
-		
-		local Tab = Instance.new("Frame")
-		local UICorner_8 = Instance.new("UICorner")
-		local TabImage = Instance.new("ImageLabel")
-		local TabButton = Instance.new("TextButton")
-		local TabName = Instance.new("TextLabel")
-		local ScrollLayers = Instance.new("ScrollingFrame")
-		local UIListLayout_5 = Instance.new("UIListLayout")
-		
-		Tab.Name = "Tab"
-		Tab.Parent = ScrollTab
-		Tab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-		Tab.BackgroundTransparency = 0.999
-		Tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		Tab.BorderSizePixel = 0
-		Tab.Size = UDim2.new(1, 0, 0, 32)
-		
-		UICorner_8.CornerRadius = UDim.new(0, 6)
-		UICorner_8.Parent = Tab
-		
-		TabImage.Name = "TabImage"
-		TabImage.Parent = Tab
-		TabImage.AnchorPoint = Vector2.new(0, 0.5)
-		TabImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		TabImage.BackgroundTransparency = 0.999
-		TabImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		TabImage.BorderSizePixel = 0
-		TabImage.Position = UDim2.new(0, 9, 0.5, 0)
-		TabImage.Size = UDim2.new(0, 16, 0, 16)
-		TabImage.Image = cftab.Icon
-		TabImage.ImageTransparency = 0.600
-		TabImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
-		
-		TabButton.Name = "TabButton"
-		TabButton.Parent = Tab
-		TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		TabButton.BackgroundTransparency = 0.999
-		TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		TabButton.BorderSizePixel = 0
-		TabButton.Size = UDim2.new(1, 0, 1, 0)
-		TabButton.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-		TabButton.Text = ""
-		TabButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-		TabButton.TextSize = 14.000
-		
-		TabName.Name = "TabName"
-		TabName.Parent = Tab
-		TabName.AnchorPoint = Vector2.new(0, 0.5)
-		TabName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		TabName.BackgroundTransparency = 0.999
-		TabName.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		TabName.BorderSizePixel = 0
-		TabName.Position = UDim2.new(0, 32, 0.5, 0)
-		TabName.Size = UDim2.new(1, -40, 0, 12)
-		TabName.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-		TabName.Text = cftab.Title
-		TabName.TextColor3 = Color3.fromRGB(230, 230, 230)
-		TabName.TextSize = 12.000
-		TabName.TextTransparency = 0.600
-		TabName.TextXAlignment = Enum.TextXAlignment.Left
-		
-		ScrollLayers.Name = "ScrollLayers"
-		ScrollLayers.Parent = LayersFolder
-		ScrollLayers.Active = true
-		ScrollLayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		ScrollLayers.BackgroundTransparency = 0.999
-		ScrollLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		ScrollLayers.BorderSizePixel = 0
-		ScrollLayers.Size = UDim2.new(1, 0, 1, 0)
-		ScrollLayers.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
-		ScrollLayers.CanvasSize = UDim2.new(0, 0, 1.4, 0)
-		ScrollLayers.ScrollBarImageTransparency = 0.700
-		ScrollLayers.ScrollBarThickness = 3
-		ScrollLayers.LayoutOrder = Counts
-		
-		obj.Stepped:Connect(function()
-			ScrollLayers.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_5.AbsoluteContentSize.Y + 15)
-		end)
-		
-		UIListLayout_5.Parent = ScrollLayers
-		UIListLayout_5.SortOrder = Enum.SortOrder.LayoutOrder
-		UIListLayout_5.Padding = UDim.new(0, 5)
-		
-		if Counts == 0 then
-			local ChoosingFrame = Instance.new("Frame")
-			local UICorner_9 = Instance.new("UICorner")
-			local UIStroke_4 = Instance.new("UIStroke")
-			
-			ChoosingFrame.Name = "ChoosingFrame"
-			ChoosingFrame.Parent = Tab
-			ChoosingFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-			ChoosingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			ChoosingFrame.BorderSizePixel = 0
-			ChoosingFrame.Position = UDim2.new(0, 2, 0, 10)
-			ChoosingFrame.Size = UDim2.new(0, 3, 0, 12)
-			
-			UICorner_9.CornerRadius = UDim.new(0, 100)
-			UICorner_9.Parent = ChoosingFrame
-			
-			UIStroke_4.Parent = ChoosingFrame
-			UIStroke_4.Color = Color3.fromRGB(93, 197, 248)
-			UIStroke_4.Thickness = 0.800
-		end
-		
-		if Counts == 0 then
-			LayersPageLayout:JumpToIndex(0)
-			BackButton.Text = TabName.Text
-			TabImage.ImageTransparency = 0
-			Tab.BackgroundTransparency = 0.950
-			TabName.TextTransparency = 0
-			BackButton.LayoutOrder = 0
-			BackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-		end
-		
-		if LayersPageLayout.CurrentPage ~= ScrollLayers then
-			obj.Mouseto(Tab, function()
-				Tab.BackgroundTransparency = 0.940
-			end, function()
-				Tab.BackgroundTransparency = 0.999
-			end)
-		end
-		
-		TabButton.Activated:Connect(function()
-			local RealChooseFrame
-			for _, v in next, Tab.Parent:GetChildren() do
-				for r, frame in next, v:GetChildren() do
-					if frame.Name == "ChoosingFrame" then
-						RealChooseFrame = frame
-						break
-					end
-				end
-			end
-			
-			if RealChooseFrame ~= nil and LayersPageLayout.CurrentPage ~= ScrollLayers then
-				for r, v in next, Tab.Parent:GetChildren() do
-					if v.ClassName ~= "UIListLayout" then
-						obj.TweenObject({v, 0.4, "BackgroundTransparency", 0.999})
-						obj.TweenObject({v.TabImage, 0.4, "ImageTransparency", 0.600})
-						obj.TweenObject({v.TabName, 0.4, "TextTransparency", 0.600})
-					end
-				end
-				obj.TweenObject({Tab, 0.4, "BackgroundTransparency", 0.950})
-				obj.TweenObject({TabImage, 0.4, "ImageTransparency", 0})
-				obj.TweenObject({TabName, 0.4, "TextTransparency", 0})
-				obj.TweenObject({RealChooseFrame, 0.4, "Position", UDim2.new(0, 2, 0, 11 + (34 * ScrollLayers.LayoutOrder))})
-				BackButton.Text = TabName.Text
-				JumpTo(ScrollLayers.LayoutOrder, TabName.Text)
-			end
-		end)
-		
-		Counts = Counts + 1
-		return ScrollLayers
-	end
-	
-	return UITab
-end
+-- Initialize Button
+local Crystal1 = Instance.new("ScreenGui")
+local Crystal2 = Instance.new("TextButton")
+local Crystal3 = Instance.new("UICorner")
+local Crystal4 = Instance.new("ImageLabel")
+local CrystalSound = Instance.new("Sound")
 
-return obj
+Crystal3.Name = "UICorner"
+Crystal3.CornerRadius = UDim.new(1, 0)
+Crystal3.Parent = Crystal2
 
+Crystal4.Name = "ButtonImage"
+Crystal4.Parent = Crystal2
+Crystal4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Crystal4.BackgroundTransparency = 1.000
+Crystal4.BorderSizePixel = 0
+Crystal4.Position = UDim2.new(0.1, 0, 0.1, 0)
+Crystal4.Size = UDim2.new(0, 45, 0, 45)
+Crystal4.Image = "rbxassetid://129781592728096"
+
+Crystal1.Parent = player:WaitForChild("PlayerGui")
+Crystal1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Crystal2.Name = "CustomButton"
+Crystal2.Parent = Crystal1
+Crystal2.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+Crystal2.BackgroundTransparency = 0.1
+Crystal2.BorderSizePixel = 0
+Crystal2.AnchorPoint = Vector2.new(0.1, 0.1)
+Crystal2.Position = UDim2.new(0, 20, 0.1, -6)
+Crystal2.Size = UDim2.new(0, 55, 0, 55)
+Crystal2.Font = Enum.Font.Arcade
+Crystal2.Text = ""
+Crystal2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Crystal2.TextSize = 9.000
+
+CrystalSound.Parent = Crystal2
+CrystalSound.SoundId = "rbxassetid://130785805"
+
+local CrystalButtonStroke = Instance.new("UIStroke")
+CrystalButtonStroke.Parent = Crystal2
+CrystalButtonStroke.Color = Color3.fromRGB(93, 197, 248)
+CrystalButtonStroke.Thickness = 2.5
+CrystalButtonStroke.Transparency = 0.5
+
+return Crystal
