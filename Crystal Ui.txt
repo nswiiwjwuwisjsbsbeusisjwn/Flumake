@@ -2287,7 +2287,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
-
+end
     return TabSystem
 end
 
