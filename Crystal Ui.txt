@@ -1299,6 +1299,7 @@ Crystal.Window = function(self, WindowConfig)
             end
         end
     end)
+
     local TabSystem = {}
     local TabCount = 0
 
@@ -1466,7 +1467,12 @@ Crystal.Window = function(self, WindowConfig)
                 JumpTo(ScrollLayers.LayoutOrder, TabName.Text)
             end
         end)
-        function TabObject:AddButton(ButtonConfig)
+        
+        TabCount = TabCount + 1
+        
+        local TabObject = {}
+        
+function TabObject:AddButton(ButtonConfig)
     ButtonConfig = ButtonConfig or {}
     ButtonConfig.Title = ButtonConfig.Title or "Button"
     ButtonConfig.Icon = ButtonConfig.Icon or "rbxassetid://11401835396"
@@ -1586,16 +1592,13 @@ Crystal.Window = function(self, WindowConfig)
         end)
     end)
 
-
-            return Button
-        end
+    return Button
+end
         
         return TabObject
     end
-TabCount = TabCount + 1      
-        local TabObject = {}
-        
+
     return TabSystem
 end
+
 return Crystal
-        
