@@ -1475,124 +1475,206 @@ Crystal.Window = function(self, WindowConfig)
 function TabObject:AddButton(ButtonConfig)
     ButtonConfig = ButtonConfig or {}
     ButtonConfig.Title = ButtonConfig.Title or "Button"
-    ButtonConfig.Icon = ButtonConfig.Icon or "rbxassetid://11401835396"
-    ButtonConfig.ClickName = ButtonConfig.ClickName or "Click"
     ButtonConfig.Description = ButtonConfig.Description or ""
     ButtonConfig.Callback = ButtonConfig.Callback or function() end
+    ButtonConfig.Icon = ButtonConfig.Icon or "rbxassetid://18558566660"
+    ButtonConfig.IconColor = ButtonConfig.IconColor or Color3.fromRGB(93, 197, 248)
+    ButtonConfig.Disabled = ButtonConfig.Disabled or false
+    ButtonConfig.ConfirmRequired = ButtonConfig.ConfirmRequired or false
 
     local Button = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local ButtonContent = Instance.new("TextLabel")
-    local ButtonImage = Instance.new("ImageLabel")
+    local ButtonCorner = Instance.new("UICorner")
     local ButtonTitle = Instance.new("TextLabel")
-    local ButtonFrame = Instance.new("Frame")
-    local ButtonFrameCorner = Instance.new("UICorner")
-    local ButtonButton = Instance.new("TextButton")
+    local ButtonDescription = Instance.new("TextLabel")
+    local ButtonClick = Instance.new("TextButton")
+    local ButtonIcon = Instance.new("ImageLabel")
+    local ButtonStroke = Instance.new("UIStroke")
+    local Ripple = Instance.new("Frame")
+    local RippleCorner = Instance.new("UICorner")
 
     Button.Name = ButtonConfig.Title
     Button.Parent = ScrollLayers
-    Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Button.BackgroundTransparency = 0.970
-    Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Button.BackgroundTransparency = 0.900
     Button.BorderSizePixel = 0
-    Button.Size = UDim2.new(1, -8, 0, 45)
+    Button.Size = UDim2.new(1, 0, 0, 45)
+    Button.ClipsDescendants = true
 
-    UICorner.CornerRadius = UDim.new(0, 4)
-    UICorner.Parent = Button
+    ButtonCorner.CornerRadius = UDim.new(0, 8)
+    ButtonCorner.Parent = Button
 
-    ButtonContent.Name = "ButtonContent"
-    ButtonContent.Parent = Button
-    ButtonContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonContent.BackgroundTransparency = 0.999
-    ButtonContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ButtonContent.BorderSizePixel = 0
-    ButtonContent.Position = UDim2.new(0, 40, 0, 21)
-    ButtonContent.Size = UDim2.new(1, -190, 0, 11)
-    ButtonContent.Font = Enum.Font.GothamMedium
-    ButtonContent.Text = ButtonConfig.Description
-    ButtonContent.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonContent.TextSize = 11
-    ButtonContent.TextTransparency = 0.600
-    ButtonContent.TextWrapped = true
-    ButtonContent.TextYAlignment = Enum.TextYAlignment.Top
-    ButtonContent.TextXAlignment = Enum.TextXAlignment.Left
+    ButtonStroke.Parent = Button
+    ButtonStroke.Color = Color3.fromRGB(93, 197, 248)
+    ButtonStroke.Thickness = 0
+    ButtonStroke.Transparency = 0.5
+    ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
-    ButtonImage.Name = "ButtonImage"
-    ButtonImage.Parent = Button
-    ButtonImage.AnchorPoint = Vector2.new(0, 0.5)
-    ButtonImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonImage.BackgroundTransparency = 0.999
-    ButtonImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ButtonImage.BorderSizePixel = 0
-    ButtonImage.Position = UDim2.new(0, 12, 0.5, 0)
-    ButtonImage.Size = UDim2.new(0, 16, 0, 16)
-    ButtonImage.Image = ButtonConfig.Icon
+    Ripple.Name = "Ripple"
+    Ripple.Parent = Button
+    Ripple.AnchorPoint = Vector2.new(0.5, 0.5)
+    Ripple.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    Ripple.BackgroundTransparency = 1
+    Ripple.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Ripple.Size = UDim2.new(0, 0, 0, 0)
+    Ripple.ZIndex = 0
+
+    RippleCorner.CornerRadius = UDim.new(1, 0)
+    RippleCorner.Parent = Ripple
 
     ButtonTitle.Name = "ButtonTitle"
     ButtonTitle.Parent = Button
-    ButtonTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonTitle.BackgroundTransparency = 0.999
-    ButtonTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ButtonTitle.BorderSizePixel = 0
-    ButtonTitle.Position = UDim2.new(0, 40, 0, 11)
-    ButtonTitle.Size = UDim2.new(1, -190, 0, 12)
-    ButtonTitle.FontFace = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    ButtonTitle.BackgroundTransparency = 1
+    ButtonTitle.Position = UDim2.new(0, 12, 0, 8)
+    ButtonTitle.Size = UDim2.new(1, -50, 0, 14)
+    ButtonTitle.Font = Enum.Font.Arcade
     ButtonTitle.Text = ButtonConfig.Title
     ButtonTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonTitle.TextSize = 12
+    ButtonTitle.TextSize = 13
     ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
+    ButtonTitle.ZIndex = 2
 
-    ButtonFrame.Name = "ButtonFrame"
-    ButtonFrame.Parent = Button
-    ButtonFrame.AnchorPoint = Vector2.new(1, 0.5)
-    ButtonFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonFrame.BackgroundTransparency = 0.960
-    ButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ButtonFrame.BorderSizePixel = 0
-    ButtonFrame.Position = UDim2.new(1, -9, 0.5, 0)
-    ButtonFrame.Size = UDim2.new(0, 125, 0, 26)
+    ButtonDescription.Name = "ButtonDescription"
+    ButtonDescription.Parent = Button
+    ButtonDescription.BackgroundTransparency = 1
+    ButtonDescription.Position = UDim2.new(0, 12, 0, 24)
+    ButtonDescription.Size = UDim2.new(1, -50, 0, 10)
+    ButtonDescription.Font = Enum.Font.Arcade
+    ButtonDescription.Text = ButtonConfig.Description
+    ButtonDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
+    ButtonDescription.TextSize = 9
+    ButtonDescription.TextTransparency = 0.4
+    ButtonDescription.TextXAlignment = Enum.TextXAlignment.Left
+    ButtonDescription.TextWrapped = true
+    ButtonDescription.ZIndex = 2
 
-    ButtonFrameCorner.CornerRadius = UDim.new(0, 4)
-    ButtonFrameCorner.Parent = ButtonFrame
+    ButtonIcon.Name = "ButtonIcon"
+    ButtonIcon.Parent = Button
+    ButtonIcon.AnchorPoint = Vector2.new(1, 0.5)
+    ButtonIcon.BackgroundTransparency = 1
+    ButtonIcon.Position = UDim2.new(1, -10, 0.5, 0)
+    ButtonIcon.Size = UDim2.new(0, 20, 0, 20)
+    ButtonIcon.Image = ButtonConfig.Icon
+    ButtonIcon.ImageColor3 = ButtonConfig.IconColor
+    ButtonIcon.ZIndex = 2
 
-    ButtonButton.Name = "ButtonButton"
-    ButtonButton.Parent = ButtonFrame
-    ButtonButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonButton.BackgroundTransparency = 0.999
-    ButtonButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ButtonButton.BorderSizePixel = 0
-    ButtonButton.Size = UDim2.new(1, 0, 1, 0)
-    ButtonButton.Font = Enum.Font.GothamMedium
-    ButtonButton.TextColor3 = Color3.fromRGB(178, 178, 178)
-    ButtonButton.TextSize = 11
-    ButtonButton.Text = ButtonConfig.ClickName
+    ButtonClick.Name = "ButtonClick"
+    ButtonClick.Parent = Button
+    ButtonClick.BackgroundTransparency = 1
+    ButtonClick.Size = UDim2.new(1, 0, 1, 0)
+    ButtonClick.Text = ""
+    ButtonClick.Font = Enum.Font.SourceSans
+    ButtonClick.ZIndex = 3
 
-    if ButtonContent.Text == "" then
-        ButtonTitle.Position = UDim2.new(0, 40, 0, 0)
-        ButtonTitle.Size = UDim2.new(1, -190, 1, 0)
+    local cooldown = false
+    local isDisabled = ButtonConfig.Disabled
+
+    local function createRipple(x, y)
+        local size = math.max(Button.AbsoluteSize.X, Button.AbsoluteSize.Y) * 2
+        Ripple.Position = UDim2.new(0, x, 0, y)
+        Ripple.Size = UDim2.new(0, 0, 0, 0)
+        Ripple.BackgroundTransparency = 0.7
+        
+        Crystal.TweenObject({Ripple, 0.5, "Size", UDim2.new(0, size, 0, size)})
+        Crystal.TweenObject({Ripple, 0.5, "BackgroundTransparency", 1})
     end
 
-    Crystal.Mouseto(ButtonFrame, function()
-        ButtonFrame.BackgroundTransparency = 0.940
+    Crystal.Mouseto(Button, function()
+        if not isDisabled then
+            Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.850})
+            Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(120, 210, 255)})
+            Crystal.TweenObject({ButtonStroke, 0.2, "Thickness", 1})
+        end
     end, function()
-        ButtonFrame.BackgroundTransparency = 0.960
+        if not isDisabled then
+            Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.900})
+            Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", ButtonConfig.IconColor})
+            Crystal.TweenObject({ButtonStroke, 0.2, "Thickness", 0})
+        end
     end)
 
-    Crystal.Stepped:Connect(function()
-        local contentHeight = math.max(ButtonContent.TextBounds.Y + 10, 30)
-        Button.Size = UDim2.new(1, -8, 0, contentHeight + 18)
-        ButtonContent.Size = UDim2.new(1, -190, 0, contentHeight + 10)
-    end)
-
-    Crystal.Click(ButtonButton, function()
-        ButtonFrame.BackgroundTransparency = 0.850
-        Crystal.TweenObject({ButtonFrame, 0.9, "BackgroundTransparency", 0.960})
+    Crystal.Click(ButtonClick, function()
+        if isDisabled or cooldown then return end
+        
+        cooldown = true
+        
+        Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.800})
+        Crystal.TweenObject({ButtonIcon, 0.1, "Size", UDim2.new(0, 18, 0, 18)})
+        
+        local mousePos = game:GetService("UserInputService"):GetMouseLocation()
+        local buttonPos = Button.AbsolutePosition
+        local relativeX = mousePos.X - buttonPos.X
+        local relativeY = mousePos.Y - buttonPos.Y
+        createRipple(relativeX, relativeY)
+        
+        task.wait(0.1)
+        Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.900})
+        Crystal.TweenObject({ButtonIcon, 0.1, "Size", UDim2.new(0, 20, 0, 20)})
+        
+        if ButtonConfig.ConfirmRequired then
+            local originalTitle = ButtonTitle.Text
+            ButtonTitle.Text = "Click again to confirm"
+            ButtonTitle.TextColor3 = Color3.fromRGB(255, 200, 100)
+            
+            task.wait(2)
+            if ButtonTitle.Text == "Click again to confirm" then
+                ButtonTitle.Text = originalTitle
+                ButtonTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+                cooldown = false
+                return
+            end
+        end
+        
         pcall(function()
             ButtonConfig.Callback()
         end)
+        
+        task.wait(0.3)
+        cooldown = false
     end)
 
-    return Button
+    local ButtonMethods = {}
+    
+    function ButtonMethods:SetTitle(newTitle)
+        ButtonTitle.Text = newTitle
+        Button.Name = newTitle
+    end
+    
+    function ButtonMethods:SetDescription(newDesc)
+        ButtonDescription.Text = newDesc
+    end
+    
+    function ButtonMethods:SetIcon(iconId)
+        ButtonIcon.Image = iconId
+    end
+    
+    function ButtonMethods:SetDisabled(disabled)
+        isDisabled = disabled
+        if disabled then
+            ButtonTitle.TextTransparency = 0.6
+            ButtonDescription.TextTransparency = 0.7
+            ButtonIcon.ImageTransparency = 0.6
+            Button.BackgroundTransparency = 0.950
+        else
+            ButtonTitle.TextTransparency = 0
+            ButtonDescription.TextTransparency = 0.4
+            ButtonIcon.ImageTransparency = 0
+            Button.BackgroundTransparency = 0.900
+        end
+    end
+    
+    function ButtonMethods:Destroy()
+        Button:Destroy()
+    end
+    
+    function ButtonMethods:SetCallback(callback)
+        ButtonConfig.Callback = callback
+    end
+
+    if ButtonConfig.Disabled then
+        ButtonMethods:SetDisabled(true)
+    end
+
+    return ButtonMethods
 end
         
         return TabObject
