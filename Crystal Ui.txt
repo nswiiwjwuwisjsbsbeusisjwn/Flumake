@@ -1468,7 +1468,6 @@ Crystal.Window = function(self, WindowConfig)
             end
         end)
         
-        TabCount = TabCount + 1
         
         local TabObject = {}
         
@@ -2310,8 +2309,11 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
+		Counts = Counts + 1
+	end
+	return TabSystem
 end
-    return TabSystem
-end
-
 return Crystal
+
+
+    
