@@ -1886,8 +1886,16 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     Crystal.Stepped:Connect(function()
         ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
-        if DropMore.Visible then
-            DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)
+        if DropMore.Visible and Dropdown:IsDescendantOf(game) then
+            local dropdownAbsolutePosition = Dropdown.AbsolutePosition
+            local dropdownAbsoluteSize = Dropdown.AbsoluteSize
+            
+            if dropdownAbsolutePosition and dropdownAbsoluteSize then
+                DropdownSelectReal.Position = UDim2.new(
+                    0.5, 0, 
+                    0, dropdownAbsolutePosition.Y + dropdownAbsoluteSize.Y + 5
+                )
+            end
         end
     end)
 
@@ -1919,7 +1927,19 @@ function TabObject:AddDropdown(ConfigDropdown)
     Dropdown.BorderSizePixel = 0
     Dropdown.Size = UDim2.new(1, -8, 0, 45)
 
-    DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)
+    -- Sửa lỗi ở đây
+    if Dropdown:IsDescendantOf(game) then
+        local dropdownAbsolutePosition = Dropdown.AbsolutePosition
+        local dropdownAbsoluteSize = Dropdown.AbsoluteSize
+        
+        if dropdownAbsolutePosition and dropdownAbsoluteSize then
+            DropdownSelectReal.Position = UDim2.new(
+                0.5, 0, 
+                0, dropdownAbsolutePosition.Y + dropdownAbsoluteSize.Y + 5
+            )
+        end
+    end
+    
     DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#ConfigDropdown.Values * 30 + 40, 200))
 
     DropdownTitle.Name = "DropdownTitle"
@@ -2039,7 +2059,23 @@ function TabObject:AddDropdown(ConfigDropdown)
                 v.Active = false
             end
         end
-        Crystal.TweenObject({DropdownSelectReal, 0.5, "Position", UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)})
+        
+        -- Sửa lỗi ở đây
+        task.wait()
+        
+        if Dropdown:IsDescendantOf(game) then
+            local dropdownAbsolutePosition = Dropdown.AbsolutePosition
+            local dropdownAbsoluteSize = Dropdown.AbsoluteSize
+            
+            if dropdownAbsolutePosition and dropdownAbsoluteSize then
+                Crystal.TweenObject({
+                    DropdownSelectReal, 
+                    0.5, 
+                    "Position", 
+                    UDim2.new(0.5, 0, 0, dropdownAbsolutePosition.Y + dropdownAbsoluteSize.Y + 5)
+                })
+            end
+        end
     end)
 
     Crystal.Click(DropButton, function()
@@ -2048,7 +2084,22 @@ function TabObject:AddDropdown(ConfigDropdown)
                 v.Active = true
             end
         end
-        Crystal.TweenObject({DropdownSelectReal, 0.5, "Position", UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)})
+        
+        -- Sửa lỗi ở đây
+        if Dropdown:IsDescendantOf(game) then
+            local dropdownAbsolutePosition = Dropdown.AbsolutePosition
+            local dropdownAbsoluteSize = Dropdown.AbsoluteSize
+            
+            if dropdownAbsolutePosition and dropdownAbsoluteSize then
+                Crystal.TweenObject({
+                    DropdownSelectReal, 
+                    0.5, 
+                    "Position", 
+                    UDim2.new(0.5, 0, 0, dropdownAbsolutePosition.Y + dropdownAbsoluteSize.Y + 5)
+                })
+            end
+        end
+        
         task.wait(0.1)
         DropMore.Visible = false
     end)
@@ -2217,8 +2268,6 @@ function TabObject:AddDropdown(ConfigDropdown)
         DropFunc.List = {}
         OptionCounts = 0
     end
-
-  
 
     function DropFunc:Destroy()
         outsideConnection:Disconnect()
