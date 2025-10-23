@@ -2672,6 +2672,353 @@ function TabObject:AddSeperator(Text)
 
     return SeperatorFunc
 end
+function TabObject:AddImage(ConfigImage)
+    ConfigImage = ConfigImage or {}
+    ConfigImage.Title = ConfigImage.Title or "Image"
+    ConfigImage.Description = ConfigImage.Description or ""
+    ConfigImage.Icon = ConfigImage.Icon or ""
+    ConfigImage.Acreage = ConfigImage.Acreage or 100
+
+    local ImageElement = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local ImageTitle = Instance.new("TextLabel")
+    local ImageDesc = Instance.new("TextLabel")
+    local ImageLabel = Instance.new("ImageLabel")
+    local ImageButton = Instance.new("TextButton")
+
+    ImageElement.Name = ConfigImage.Title
+    ImageElement.Parent = ScrollLayers
+    ImageElement.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    ImageElement.BackgroundTransparency = 0.970
+    ImageElement.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageElement.BorderSizePixel = 0
+    ImageElement.Size = UDim2.new(1, -8, 0, 120)
+
+    UICorner.CornerRadius = UDim.new(0, 4)
+    UICorner.Parent = ImageElement
+
+    ImageTitle.Name = "ImageTitle"
+    ImageTitle.Parent = ImageElement
+    ImageTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageTitle.BackgroundTransparency = 0.999
+    ImageTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageTitle.BorderSizePixel = 0
+    ImageTitle.Position = UDim2.new(0, 0, 0, 10)
+    ImageTitle.Size = UDim2.new(1, 0, 0, 16)
+    ImageTitle.Font = Enum.Font.Arcade
+    ImageTitle.Text = ConfigImage.Title
+    ImageTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ImageTitle.TextSize = 14
+    ImageTitle.TextXAlignment = Enum.TextXAlignment.Center
+
+    ImageDesc.Name = "ImageDesc"
+    ImageDesc.Parent = ImageElement
+    ImageDesc.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageDesc.BackgroundTransparency = 0.999
+    ImageDesc.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageDesc.BorderSizePixel = 0
+    ImageDesc.Position = UDim2.new(0, 15, 0, 30)
+    ImageDesc.Size = UDim2.new(1, -30, 0, 14)
+    ImageDesc.Font = Enum.Font.Arcade
+    ImageDesc.Text = ConfigImage.Description
+    ImageDesc.TextColor3 = Color3.fromRGB(160, 160, 160)
+    ImageDesc.TextSize = 11
+    ImageDesc.TextTransparency = 0.600
+    ImageDesc.TextXAlignment = Enum.TextXAlignment.Center
+    ImageDesc.TextWrapped = true
+
+    ImageLabel.Name = "ImageLabel"
+    ImageLabel.Parent = ImageElement
+    ImageLabel.AnchorPoint = Vector2.new(0.5, 0)
+    ImageLabel.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    ImageLabel.BackgroundTransparency = 0.900
+    ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageLabel.BorderSizePixel = 0
+    ImageLabel.Position = UDim2.new(0.5, 0, 0, 50)
+    ImageLabel.Size = UDim2.new(0, ConfigImage.Acreage, 0, ConfigImage.Acreage)
+    ImageLabel.Image = ConfigImage.Icon
+    ImageLabel.ScaleType = Enum.ScaleType.Fit
+
+    ImageButton.Name = "ImageButton"
+    ImageButton.Parent = ImageElement
+    ImageButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageButton.BackgroundTransparency = 0.999
+    ImageButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageButton.BorderSizePixel = 0
+    ImageButton.Size = UDim2.new(1, 0, 1, 0)
+    ImageButton.Font = Enum.Font.SourceSans
+    ImageButton.Text = ""
+    ImageButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    ImageButton.TextSize = 14
+
+    Crystal.Mouseto(ImageButton, function()
+        Crystal.TweenObject({ImageElement, 0.2, "BackgroundTransparency", 0.950})
+        Crystal.TweenObject({ImageLabel, 0.2, "BackgroundTransparency", 0.850})
+    end, function()
+        Crystal.TweenObject({ImageElement, 0.2, "BackgroundTransparency", 0.970})
+        Crystal.TweenObject({ImageLabel, 0.2, "BackgroundTransparency", 0.900})
+    end)
+
+    Crystal.Click(ImageButton, function()
+        Crystal.TweenObject({ImageLabel, 0.1, "Size", UDim2.new(0, ConfigImage.Acreage * 0.95, 0, ConfigImage.Acreage * 0.95)})
+        task.wait(0.1)
+        Crystal.TweenObject({ImageLabel, 0.1, "Size", UDim2.new(0, ConfigImage.Acreage, 0, ConfigImage.Acreage)})
+    end)
+
+    Crystal.Stepped:Connect(function()
+        local titleHeight = ImageTitle.TextBounds.Y
+        local descHeight = math.max(ImageDesc.TextBounds.Y, 14)
+        local totalHeight = titleHeight + descHeight + ConfigImage.Acreage + 60
+        ImageElement.Size = UDim2.new(1, -8, 0, totalHeight)
+        ImageDesc.Position = UDim2.new(0, 15, 0, titleHeight + 20)
+        ImageLabel.Position = UDim2.new(0.5, 0, 0, titleHeight + descHeight + 35)
+    end)
+
+    local ImageFunc = {}
+    function ImageFunc:SetImage(NewConfig)
+        NewConfig = NewConfig or {}
+        ImageTitle.Text = NewConfig.Title or ImageTitle.Text
+        ImageDesc.Text = NewConfig.Description or ImageDesc.Text
+        ImageLabel.Image = NewConfig.Icon or ImageLabel.Image
+        local newAcreage = NewConfig.Acreage or ConfigImage.Acreage
+        
+        Crystal.TweenObject({ImageLabel, 0.3, "Size", UDim2.new(0, newAcreage, 0, newAcreage)})
+        ConfigImage.Acreage = newAcreage
+    end
+
+    function ImageFunc:Destroy()
+        ImageElement:Destroy()
+    end
+
+    return ImageFunc
+end
+
+function TabObject:AddKeybind(ConfigKeybind)
+    ConfigKeybind = ConfigKeybind or {}
+    ConfigKeybind.Title = ConfigKeybind.Title or "Keybind"
+    ConfigKeybind.Description = ConfigKeybind.Description or ""
+    ConfigKeybind.Default = ConfigKeybind.Default or Enum.KeyCode.Unknown
+    ConfigKeybind.IconKeybind = ConfigKeybind.IconKeybind or "rbxassetid://18558566660"
+    ConfigKeybind.Callback = ConfigKeybind.Callback or function() end
+    ConfigKeybind.Toggle = ConfigKeybind.Toggle or false
+
+    local Keybind = Instance.new("Frame")
+    local KeybindTitle = Instance.new("TextLabel")
+    local UICorner_12 = Instance.new("UICorner")
+    local KeybindContent = Instance.new("TextLabel")
+    local KeybindImage = Instance.new("ImageLabel")
+    local KeybindFrame = Instance.new("Frame")
+    local UICorner_13 = Instance.new("UICorner")
+    local KeybindButton = Instance.new("TextButton")
+    local KeybindText = Instance.new("TextLabel")
+    local ToggleKeybind = Instance.new("TextLabel")
+
+    Keybind.Name = ConfigKeybind.Title
+    Keybind.Parent = ScrollLayers
+    Keybind.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Keybind.BackgroundTransparency = 0.970
+    Keybind.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Keybind.BorderSizePixel = 0
+    Keybind.Size = UDim2.new(1, -8, 0, 45)
+
+    KeybindTitle.Name = "KeybindTitle"
+    KeybindTitle.Parent = Keybind
+    KeybindTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    KeybindTitle.BackgroundTransparency = 0.999
+    KeybindTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    KeybindTitle.BorderSizePixel = 0
+    KeybindTitle.Position = UDim2.new(0, 40, 0, 11)
+    KeybindTitle.Size = UDim2.new(1, -158, 0, 12)
+    KeybindTitle.Font = Enum.Font.Arcade
+    KeybindTitle.Text = ConfigKeybind.Title
+    KeybindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    KeybindTitle.TextSize = 12
+    KeybindTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    UICorner_12.CornerRadius = UDim.new(0, 4)
+    UICorner_12.Parent = Keybind
+
+    KeybindContent.Name = "KeybindContent"
+    KeybindContent.Parent = Keybind
+    KeybindContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    KeybindContent.BackgroundTransparency = 0.999
+    KeybindContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    KeybindContent.BorderSizePixel = 0
+    KeybindContent.Position = UDim2.new(0, 40, 0, 21)
+    KeybindContent.Size = UDim2.new(1, -158, 0, 11)
+    KeybindContent.Font = Enum.Font.Arcade
+    KeybindContent.Text = ConfigKeybind.Description
+    KeybindContent.TextWrapped = true
+    KeybindContent.TextYAlignment = Enum.TextYAlignment.Top
+    KeybindContent.TextColor3 = Color3.fromRGB(160, 160, 160)
+    KeybindContent.TextSize = 11
+    KeybindContent.TextTransparency = 0.600
+    KeybindContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    KeybindImage.Name = "KeybindImage"
+    KeybindImage.Parent = Keybind
+    KeybindImage.AnchorPoint = Vector2.new(0, 0.5)
+    KeybindImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    KeybindImage.BackgroundTransparency = 0.999
+    KeybindImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    KeybindImage.BorderSizePixel = 0
+    KeybindImage.Position = UDim2.new(0, 12, 0.5, 0)
+    KeybindImage.Size = UDim2.new(0, 16, 0, 16)
+    KeybindImage.Image = ConfigKeybind.IconKeybind
+    KeybindImage.ImageColor3 = Color3.fromRGB(160, 160, 160)
+
+    KeybindFrame.Name = "KeybindFrame"
+    KeybindFrame.Parent = Keybind
+    KeybindFrame.AnchorPoint = Vector2.new(1, 0.5)
+    KeybindFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    KeybindFrame.BackgroundTransparency = 0.960
+    KeybindFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    KeybindFrame.BorderSizePixel = 0
+    KeybindFrame.Position = UDim2.new(1, -9, 0.5, 0)
+    KeybindFrame.Size = UDim2.new(0, 60, 0, 26)
+
+    UICorner_13.CornerRadius = UDim.new(0, 3)
+    UICorner_13.Parent = KeybindFrame
+
+    KeybindButton.Name = "KeybindButton"
+    KeybindButton.Parent = KeybindFrame
+    KeybindButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    KeybindButton.BackgroundTransparency = 0.999
+    KeybindButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    KeybindButton.BorderSizePixel = 0
+    KeybindButton.Size = UDim2.new(1, 0, 1, 0)
+    KeybindButton.Font = Enum.Font.SourceSans
+    KeybindButton.Text = ""
+    KeybindButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    KeybindButton.TextSize = 14
+
+    KeybindText.Name = "KeybindText"
+    KeybindText.Parent = KeybindFrame
+    KeybindText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    KeybindText.BackgroundTransparency = 0.999
+    KeybindText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    KeybindText.BorderSizePixel = 0
+    KeybindText.Position = UDim2.new(0, 5, 0, 0)
+    KeybindText.Size = UDim2.new(1, -10, 1, 0)
+    KeybindText.Font = Enum.Font.Arcade
+    KeybindText.Text = ConfigKeybind.Default.Name or "None"
+    KeybindText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    KeybindText.TextSize = 11
+    KeybindText.TextXAlignment = Enum.TextXAlignment.Center
+
+    if ConfigKeybind.Toggle then
+        ToggleKeybind.Name = "ToggleKeybind"
+        ToggleKeybind.Parent = Keybind
+        ToggleKeybind.AnchorPoint = Vector2.new(1, 0.5)
+        ToggleKeybind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ToggleKeybind.BackgroundTransparency = 0.999
+        ToggleKeybind.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ToggleKeybind.BorderSizePixel = 0
+        ToggleKeybind.Position = UDim2.new(1, -75, 0.5, 0)
+        ToggleKeybind.Size = UDim2.new(0, 30, 0, 12)
+        ToggleKeybind.Font = Enum.Font.Arcade
+        ToggleKeybind.Text = "False"
+        ToggleKeybind.TextColor3 = Color3.fromRGB(160, 160, 160)
+        ToggleKeybind.TextSize = 11
+        ToggleKeybind.TextXAlignment = Enum.TextXAlignment.Right
+
+        KeybindFrame.Position = UDim2.new(1, -45, 0.5, 0)
+        KeybindFrame.Size = UDim2.new(0, 40, 0, 26)
+    end
+
+    Crystal.Mouseto(KeybindFrame, function()
+        Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.935})
+    end, function()
+        Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.960})
+    end)
+
+    local waitingForKey = false
+    local isToggled = false
+
+    Crystal.Click(KeybindButton, function()
+        waitingForKey = true
+        KeybindText.Text = "..."
+        Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.920})
+    end)
+
+    Crystal.UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+        if waitingForKey and not gameProcessedEvent and input.UserInputType == Enum.UserInputType.Keyboard then
+            waitingForKey = false
+            KeybindFunc.Value = input.KeyCode
+            KeybindText.Text = input.KeyCode.Name
+            Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.960})
+        end
+        
+        if not waitingForKey and not gameProcessedEvent and input.KeyCode == KeybindFunc.Value then
+            if ConfigKeybind.Toggle then
+                isToggled = not isToggled
+                
+                if isToggled then
+                    ToggleKeybind.Text = "True"
+                    ToggleKeybind.TextColor3 = Color3.fromRGB(0, 162, 255)
+                else
+                    ToggleKeybind.Text = "False"
+                    ToggleKeybind.TextColor3 = Color3.fromRGB(160, 160, 160)
+                end
+                
+                ConfigKeybind.Callback(isToggled, input.KeyCode)
+            else
+                ConfigKeybind.Callback(true, input.KeyCode)
+            end
+        end
+    end)
+
+    if KeybindContent.Text == '' then
+        KeybindTitle.Size = UDim2.new(1, -158, 1, 0)
+        KeybindTitle.Position = UDim2.new(0, 40, 0, 0)
+    end
+
+    Crystal.Stepped:Connect(function()
+        local contentHeight = math.max(KeybindContent.TextBounds.Y + 10, 30)
+        Keybind.Size = UDim2.new(1, -8, 0, contentHeight + 18)
+        KeybindContent.Size = UDim2.new(1, -158, 0, contentHeight + 10)
+    end)
+
+    local KeybindFunc = {
+        Value = ConfigKeybind.Default,
+        Toggled = false
+    }
+
+    function KeybindFunc:Set(NewKey)
+        KeybindFunc.Value = NewKey or KeybindFunc.Value
+        KeybindText.Text = KeybindFunc.Value.Name or "None"
+    end
+
+    function KeybindFunc:Get()
+        return KeybindFunc.Value
+    end
+
+    function KeybindFunc:SetToggle(State)
+        if ConfigKeybind.Toggle and ToggleKeybind then
+            isToggled = State
+            
+            if State then
+                ToggleKeybind.Text = "True"
+                ToggleKeybind.TextColor3 = Color3.fromRGB(0, 162, 255)
+            else
+                ToggleKeybind.Text = "False"
+                ToggleKeybind.TextColor3 = Color3.fromRGB(160, 160, 160)
+            end
+            
+            ConfigKeybind.Callback(State, KeybindFunc.Value)
+        end
+    end
+
+    function KeybindFunc:GetToggle()
+        return isToggled
+    end
+
+    function KeybindFunc:Destroy()
+        Keybind:Destroy()
+    end
+
+    return KeybindFunc
+end
 
 TabCount = TabCount + 1
 return TabObject
