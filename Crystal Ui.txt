@@ -2462,7 +2462,6 @@ function TabObject:AddParagraph(ConfigParagraph)
     local Paragraph = Instance.new("Frame")
     local UICorner_Para = Instance.new("UICorner")
     local UIStroke_Para = Instance.new("UIStroke")
-    local ParagraphGradient = Instance.new("UIGradient")
     local ParagraphTitle = Instance.new("TextLabel")
     local ParagraphContent = Instance.new("TextLabel")
     local ParagraphIcon = Instance.new("ImageLabel")
@@ -2471,27 +2470,20 @@ function TabObject:AddParagraph(ConfigParagraph)
 
     Paragraph.Name = ConfigParagraph.Title
     Paragraph.Parent = ScrollLayers
-    Paragraph.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    Paragraph.BackgroundTransparency = 0.05
+    Paragraph.BackgroundColor3 = Color3.fromRGB(15, 15, 15) -- Màu đen
+    Paragraph.BackgroundTransparency = 0.1
     Paragraph.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Paragraph.BorderSizePixel = 0
     Paragraph.Size = UDim2.new(1, -8, 0, 80)
     Paragraph.ClipsDescendants = true
 
-    UICorner_Para.CornerRadius = UDim.new(0, 12)
+    UICorner_Para.CornerRadius = UDim.new(0, 8)
     UICorner_Para.Parent = Paragraph
 
     UIStroke_Para.Parent = Paragraph
-    UIStroke_Para.Color = Color3.fromRGB(45, 45, 45)
-    UIStroke_Para.Thickness = 1.5
+    UIStroke_Para.Color = Color3.fromRGB(80, 160, 200) -- Viền xanh nhẹ
+    UIStroke_Para.Thickness = 1.2
     UIStroke_Para.Transparency = 0.3
-
-    ParagraphGradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(93, 197, 248)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(138, 43, 226))
-    })
-    ParagraphGradient.Rotation = 45
-    ParagraphGradient.Parent = UIStroke_Para
 
     ParagraphIcon.Name = "ParagraphIcon"
     ParagraphIcon.Parent = Paragraph
@@ -2500,7 +2492,7 @@ function TabObject:AddParagraph(ConfigParagraph)
     ParagraphIcon.Position = UDim2.new(0.5, 0, 0, 15)
     ParagraphIcon.Size = UDim2.new(0, 24, 0, 24)
     ParagraphIcon.Image = ConfigParagraph.IconLabel
-    ParagraphIcon.ImageColor3 = Color3.fromRGB(93, 197, 248)
+    ParagraphIcon.ImageColor3 = Color3.fromRGB(80, 160, 200) -- Icon xanh nhẹ
 
     ParagraphTitle.Name = "ParagraphTitle"
     ParagraphTitle.Parent = Paragraph
@@ -2517,8 +2509,8 @@ function TabObject:AddParagraph(ConfigParagraph)
     DecorativeLine.Name = "DecorativeLine"
     DecorativeLine.Parent = Paragraph
     DecorativeLine.AnchorPoint = Vector2.new(0.5, 0)
-    DecorativeLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-    DecorativeLine.BackgroundTransparency = 0.7
+    DecorativeLine.BackgroundColor3 = Color3.fromRGB(80, 160, 200) -- Line xanh nhẹ
+    DecorativeLine.BackgroundTransparency = 0.6
     DecorativeLine.BorderSizePixel = 0
     DecorativeLine.Position = UDim2.new(0.5, 0, 0, 40)
     DecorativeLine.Size = UDim2.new(0, 30, 0, 2)
@@ -2589,7 +2581,7 @@ function TabObject:AddSeperator(Text)
         LeftLine.Name = "LeftLine"
         LeftLine.Parent = Seperator
         LeftLine.AnchorPoint = Vector2.new(1, 0.5)
-        LeftLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        LeftLine.BackgroundColor3 = Color3.fromRGB(80, 160, 200) -- Xanh nhẹ
         LeftLine.BackgroundTransparency = 0.6
         LeftLine.BorderSizePixel = 0
         LeftLine.Position = UDim2.new(0.5, -5, 0.5, 0)
@@ -2606,14 +2598,14 @@ function TabObject:AddSeperator(Text)
         SeperatorText.Size = UDim2.new(0, 0, 0, 16)
         SeperatorText.Font = Enum.Font.Arcade
         SeperatorText.Text = Text
-        SeperatorText.TextColor3 = Color3.fromRGB(93, 197, 248)
+        SeperatorText.TextColor3 = Color3.fromRGB(80, 160, 200) -- Xanh nhẹ
         SeperatorText.TextSize = 12
         SeperatorText.TextTransparency = 0.4
 
         RightLine.Name = "RightLine"
         RightLine.Parent = Seperator
         RightLine.AnchorPoint = Vector2.new(0, 0.5)
-        RightLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        RightLine.BackgroundColor3 = Color3.fromRGB(80, 160, 200) -- Xanh nhẹ
         RightLine.BackgroundTransparency = 0.6
         RightLine.BorderSizePixel = 0
         RightLine.Position = UDim2.new(0.5, 5, 0.5, 0)
@@ -2634,7 +2626,7 @@ function TabObject:AddSeperator(Text)
         LeftLine.Name = "FullLine"
         LeftLine.Parent = Seperator
         LeftLine.AnchorPoint = Vector2.new(0.5, 0.5)
-        LeftLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        LeftLine.BackgroundColor3 = Color3.fromRGB(80, 160, 200) -- Xanh nhẹ
         LeftLine.BackgroundTransparency = 0.4
         LeftLine.BorderSizePixel = 0
         LeftLine.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -2653,7 +2645,7 @@ function TabObject:AddSeperator(Text)
     end
 
     function SeperatorFunc:SetColor(NewColor)
-        local color = NewColor or Color3.fromRGB(93, 197, 248)
+        local color = NewColor or Color3.fromRGB(80, 160, 200)
         if LeftLine then
             LeftLine.BackgroundColor3 = color
         end
@@ -2671,6 +2663,7 @@ function TabObject:AddSeperator(Text)
 
     return SeperatorFunc
 end
+
 TabCount = TabCount + 1
 return TabObject
     end
