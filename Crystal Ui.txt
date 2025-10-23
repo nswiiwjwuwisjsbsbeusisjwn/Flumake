@@ -1472,6 +1472,7 @@ Crystal.Window = function(self, WindowConfig)
         
         local TabObject = {}
         
+
 function TabObject:AddButton(ButtonConfig)
     ButtonConfig = ButtonConfig or {}
     ButtonConfig.Title = ButtonConfig.Title or "Button"
@@ -1480,7 +1481,6 @@ function TabObject:AddButton(ButtonConfig)
 
     local Button = Instance.new("Frame")
     local ButtonCorner = Instance.new("UICorner")
-    local ButtonStroke = Instance.new("UIStroke")
     local ButtonTitle = Instance.new("TextLabel")
     local ButtonDescription = Instance.new("TextLabel")
     local ButtonClick = Instance.new("TextButton")
@@ -1488,39 +1488,34 @@ function TabObject:AddButton(ButtonConfig)
 
     Button.Name = ButtonConfig.Title
     Button.Parent = ScrollLayers
-    Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Button.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
     Button.BackgroundTransparency = 0.900
     Button.BorderSizePixel = 0
-    Button.Size = UDim2.new(1, 0, 0, 45)
+    Button.Size = UDim2.new(1, 0, 0, 35)
 
-    ButtonCorner.CornerRadius = UDim.new(0, 8)
+    ButtonCorner.CornerRadius = UDim.new(0, 6)
     ButtonCorner.Parent = Button
-
-    ButtonStroke.Parent = Button
-    ButtonStroke.Color = Color3.fromRGB(93, 197, 248)
-    ButtonStroke.Thickness = 1.2
-    ButtonStroke.Transparency = 0.7
 
     ButtonTitle.Name = "ButtonTitle"
     ButtonTitle.Parent = Button
     ButtonTitle.BackgroundTransparency = 1
-    ButtonTitle.Position = UDim2.new(0, 12, 0, 8)
-    ButtonTitle.Size = UDim2.new(1, -50, 0, 14)
+    ButtonTitle.Position = UDim2.new(0, 10, 0, 6)
+    ButtonTitle.Size = UDim2.new(1, -40, 0, 12)
     ButtonTitle.Font = Enum.Font.Arcade
     ButtonTitle.Text = ButtonConfig.Title
     ButtonTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonTitle.TextSize = 13
+    ButtonTitle.TextSize = 11
     ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
 
     ButtonDescription.Name = "ButtonDescription"
     ButtonDescription.Parent = Button
     ButtonDescription.BackgroundTransparency = 1
-    ButtonDescription.Position = UDim2.new(0, 12, 0, 24)
-    ButtonDescription.Size = UDim2.new(1, -50, 0, 10)
+    ButtonDescription.Position = UDim2.new(0, 10, 0, 19)
+    ButtonDescription.Size = UDim2.new(1, -40, 0, 8)
     ButtonDescription.Font = Enum.Font.Arcade
     ButtonDescription.Text = ButtonConfig.Description
     ButtonDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
-    ButtonDescription.TextSize = 9
+    ButtonDescription.TextSize = 8
     ButtonDescription.TextTransparency = 0.4
     ButtonDescription.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1528,10 +1523,10 @@ function TabObject:AddButton(ButtonConfig)
     ButtonIcon.Parent = Button
     ButtonIcon.AnchorPoint = Vector2.new(1, 0.5)
     ButtonIcon.BackgroundTransparency = 1
-    ButtonIcon.Position = UDim2.new(1, -10, 0.5, 0)
-    ButtonIcon.Size = UDim2.new(0, 20, 0, 20)
+    ButtonIcon.Position = UDim2.new(1, -8, 0.5, 0)
+    ButtonIcon.Size = UDim2.new(0, 16, 0, 16)
     ButtonIcon.Image = "rbxassetid://18558566660"
-    ButtonIcon.ImageColor3 = Color3.fromRGB(93, 197, 248)
+    ButtonIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
 
     ButtonClick.Name = "ButtonClick"
     ButtonClick.Parent = Button
@@ -1542,12 +1537,10 @@ function TabObject:AddButton(ButtonConfig)
 
     Crystal.Mouseto(Button, function()
         Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.850})
-        Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(120, 210, 255)})
-        Crystal.TweenObject({ButtonStroke, 0.2, "Transparency", 0.4})
+        Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
     end, function()
         Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.900})
-        Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
-        Crystal.TweenObject({ButtonStroke, 0.2, "Transparency", 0.7})
+        Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
     end)
 
     Crystal.Click(ButtonClick, function()
@@ -1562,6 +1555,7 @@ function TabObject:AddButton(ButtonConfig)
 
     return Button
 end
+
 
         
         return TabObject
