@@ -2569,9 +2569,11 @@ function TabObject:AddSeperator(Text)
     Text = Text or ""
 
     local Seperator = Instance.new("Frame")
-    local SeperatorLine = Instance.new("Frame")
-    local UICorner_Line = Instance.new("UICorner")
+    local LeftLine = Instance.new("Frame")
+    local RightLine = Instance.new("Frame")
     local SeperatorText = Instance.new("TextLabel")
+    local UICorner_Left = Instance.new("UICorner")
+    local UICorner_Right = Instance.new("UICorner")
 
     Seperator.Name = "Seperator_" .. Text
     Seperator.Parent = ScrollLayers
@@ -2579,57 +2581,72 @@ function TabObject:AddSeperator(Text)
     Seperator.BackgroundTransparency = 0.999
     Seperator.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Seperator.BorderSizePixel = 0
-    Seperator.Size = UDim2.new(1, -8, 0, 20)
+    Seperator.Size = UDim2.new(1, -8, 0, 25)
 
-    if Text ~= "" then
-        -- Có text - line với text ở giữa
-        SeperatorLine.Name = "SeperatorLine"
-        SeperatorLine.Parent = Seperator
-        SeperatorLine.AnchorPoint = Vector2.new(0.5, 0.5)
-        SeperatorLine.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-        SeperatorLine.BackgroundTransparency = 0.800
-        SeperatorLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        SeperatorLine.BorderSizePixel = 0
-        SeperatorLine.Position = UDim2.new(0.5, 0, 0.5, 0)
-        SeperatorLine.Size = UDim2.new(1, 0, 0, 1)
+    if Text ~= "" and Text ~= " " then
+        -- Có text - layout với line 2 bên và text ở giữa
+        LeftLine.Name = "LeftLine"
+        LeftLine.Parent = Seperator
+        LeftLine.AnchorPoint = Vector2.new(1, 0.5)
+        LeftLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        LeftLine.BackgroundTransparency = 0.700
+        LeftLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        LeftLine.BorderSizePixel = 0
+        LeftLine.Position = UDim2.new(0.5, -8, 0.5, 0)
+        LeftLine.Size = UDim2.new(0, 60, 0, 1)
 
-        UICorner_Line.CornerRadius = UDim.new(1, 0)
-        UICorner_Line.Parent = SeperatorLine
+        UICorner_Left.CornerRadius = UDim.new(1, 0)
+        UICorner_Left.Parent = LeftLine
 
         SeperatorText.Name = "SeperatorText"
         SeperatorText.Parent = Seperator
         SeperatorText.AnchorPoint = Vector2.new(0.5, 0.5)
-        SeperatorText.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        SeperatorText.BackgroundTransparency = 0.970
+        SeperatorText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        SeperatorText.BackgroundTransparency = 0.999
         SeperatorText.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SeperatorText.BorderSizePixel = 0
         SeperatorText.Position = UDim2.new(0.5, 0, 0.5, 0)
-        SeperatorText.Size = UDim2.new(0, 0, 0, 16)
+        SeperatorText.Size = UDim2.new(0, 0, 0, 14)
         SeperatorText.Font = Enum.Font.Arcade
         SeperatorText.Text = Text
-        SeperatorText.TextColor3 = Color3.fromRGB(160, 160, 160)
+        SeperatorText.TextColor3 = Color3.fromRGB(140, 140, 140)
         SeperatorText.TextSize = 11
-        SeperatorText.TextTransparency = 0.600
+        SeperatorText.TextTransparency = 0.500
 
-        -- Auto resize text width với padding
+        RightLine.Name = "RightLine"
+        RightLine.Parent = Seperator
+        RightLine.AnchorPoint = Vector2.new(0, 0.5)
+        RightLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        RightLine.BackgroundTransparency = 0.700
+        RightLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        RightLine.BorderSizePixel = 0
+        RightLine.Position = UDim2.new(0.5, 8, 0.5, 0)
+        RightLine.Size = UDim2.new(0, 60, 0, 1)
+
+        UICorner_Right.CornerRadius = UDim.new(1, 0)
+        UICorner_Right.Parent = RightLine
+
+        -- Auto resize text width
         Crystal.Stepped:Connect(function()
-            local textWidth = SeperatorText.TextBounds.X + 20
-            SeperatorText.Size = UDim2.new(0, textWidth, 0, 16)
+            local textWidth = SeperatorText.TextBounds.X + 16
+            SeperatorText.Size = UDim2.new(0, textWidth, 0, 14)
+            LeftLine.Position = UDim2.new(0.5, -(textWidth/2 + 12), 0.5, 0)
+            RightLine.Position = UDim2.new(0.5, textWidth/2 + 12, 0.5, 0)
         end)
     else
         -- Không có text - chỉ line đơn giản
-        SeperatorLine.Name = "SeperatorLine"
-        SeperatorLine.Parent = Seperator
-        SeperatorLine.AnchorPoint = Vector2.new(0.5, 0.5)
-        SeperatorLine.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-        SeperatorLine.BackgroundTransparency = 0.800
-        SeperatorLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        SeperatorLine.BorderSizePixel = 0
-        SeperatorLine.Position = UDim2.new(0.5, 0, 0.5, 0)
-        SeperatorLine.Size = UDim2.new(1, 0, 0, 1)
+        LeftLine.Name = "FullLine"
+        LeftLine.Parent = Seperator
+        LeftLine.AnchorPoint = Vector2.new(0.5, 0.5)
+        LeftLine.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        LeftLine.BackgroundTransparency = 0.700
+        LeftLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        LeftLine.BorderSizePixel = 0
+        LeftLine.Position = UDim2.new(0.5, 0, 0.5, 0)
+        LeftLine.Size = UDim2.new(1, -20, 0, 1)
 
-        UICorner_Line.CornerRadius = UDim.new(1, 0)
-        UICorner_Line.Parent = SeperatorLine
+        UICorner_Left.CornerRadius = UDim.new(1, 0)
+        UICorner_Left.Parent = LeftLine
     end
 
     local SeperatorFunc = {}
@@ -2637,6 +2654,19 @@ function TabObject:AddSeperator(Text)
     function SeperatorFunc:SetText(NewText)
         if SeperatorText then
             SeperatorText.Text = NewText
+        end
+    end
+
+    function SeperatorFunc:SetColor(NewColor)
+        local color = NewColor or Color3.fromRGB(80, 80, 80)
+        if LeftLine then
+            LeftLine.BackgroundColor3 = color
+        end
+        if RightLine then
+            RightLine.BackgroundColor3 = color
+        end
+        if SeperatorText then
+            SeperatorText.TextColor3 = color
         end
     end
 
