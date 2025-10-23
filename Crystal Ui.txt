@@ -2217,7 +2217,7 @@ function TabObject:AddInput(ConfigInput)
     ConfigInput = ConfigInput or {}
     ConfigInput.Title = ConfigInput.Title or "Input"
     ConfigInput.Description = ConfigInput.Description or ""
-    ConfigInput.IconInput = ConfigInput.IconInput or "rbxassetid://18558566660" -- Icon mặc định đẹp hơn
+    ConfigInput.IconInput = ConfigInput.IconInput or "rbxassetid://18558566660"
     ConfigInput.Placeholder = ConfigInput.Placeholder or "Enter text..."
     ConfigInput.Default = ConfigInput.Default or ""
     ConfigInput.Numeric = ConfigInput.Numeric or false
@@ -2228,153 +2228,128 @@ function TabObject:AddInput(ConfigInput)
 
     local TextInput = Instance.new("Frame")
     local UICorner_20 = Instance.new("UICorner")
-    local UIStroke_Input = Instance.new("UIStroke")
-    local InputGradient = Instance.new("UIGradient")
     local InputTitle = Instance.new("TextLabel")
     local InputContent = Instance.new("TextLabel")
     local InputImage = Instance.new("ImageLabel")
     local InputFrame = Instance.new("Frame")
     local UICorner_21 = Instance.new("UICorner")
-    local UIStroke_InputFrame = Instance.new("UIStroke")
+    local InputDecide = Instance.new("Frame")
+    local UICorner_22 = Instance.new("UICorner")
+    local UIStroke_9 = Instance.new("UIStroke")
     local InputBoxFrame = Instance.new("Frame")
     local InputBox = Instance.new("TextBox")
-    local InputFocusLine = Instance.new("Frame")
-    local UICorner_Focus = Instance.new("UICorner")
 
-    -- Main Input Frame
     TextInput.Name = "TextInput"
     TextInput.Parent = ScrollLayers
-    TextInput.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    TextInput.BackgroundTransparency = 0.05
+    TextInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    TextInput.BackgroundTransparency = 0.970
     TextInput.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TextInput.BorderSizePixel = 0
-    TextInput.Size = UDim2.new(1, -8, 0, 55)
-    TextInput.ClipsDescendants = true
+    TextInput.Size = UDim2.new(1, -8, 0, 45)
 
-    UICorner_20.CornerRadius = UDim.new(0, 8)
+    UICorner_20.CornerRadius = UDim.new(0, 4)
     UICorner_20.Parent = TextInput
 
-    UIStroke_Input.Parent = TextInput
-    UIStroke_Input.Color = Color3.fromRGB(45, 45, 45)
-    UIStroke_Input.Thickness = 1.5
-    UIStroke_Input.Transparency = 0.3
+    InputTitle.Name = "InputTitle"
+    InputTitle.Parent = TextInput
+    InputTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputTitle.BackgroundTransparency = 0.999
+    InputTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputTitle.BorderSizePixel = 0
+    InputTitle.Position = UDim2.new(0, 40, 0, 11)
+    InputTitle.Size = UDim2.new(1, -190, 0, 12)
+    InputTitle.Font = Enum.Font.Arcade
+    InputTitle.Text = ConfigInput.Title
+    InputTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InputTitle.TextSize = 12.000
+    InputTitle.TextXAlignment = Enum.TextXAlignment.Left
 
-    InputGradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(93, 197, 248)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(138, 43, 226))
-    })
-    InputGradient.Rotation = 45
-    InputGradient.Parent = UIStroke_Input
+    InputContent.Name = "InputContent"
+    InputContent.Parent = TextInput
+    InputContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputContent.BackgroundTransparency = 0.999
+    InputContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputContent.BorderSizePixel = 0
+    InputContent.Position = UDim2.new(0, 40, 0, 21)
+    InputContent.Size = UDim2.new(1, -190, 0, 11)
+    InputContent.Font = Enum.Font.Arcade
+    InputContent.Text = ConfigInput.Description
+    InputContent.TextColor3 = Color3.fromRGB(160, 160, 160)
+    InputContent.TextSize = 11.000
+    InputContent.TextWrapped = true
+    InputContent.TextYAlignment = Enum.TextYAlignment.Top
+    InputContent.TextTransparency = 0.600
+    InputContent.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Input Icon
     InputImage.Name = "InputImage"
     InputImage.Parent = TextInput
     InputImage.AnchorPoint = Vector2.new(0, 0.5)
     InputImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    InputImage.BackgroundTransparency = 1
+    InputImage.BackgroundTransparency = 0.999
     InputImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
     InputImage.BorderSizePixel = 0
-    InputImage.Position = UDim2.new(0, 15, 0.3, 0)
-    InputImage.Size = UDim2.new(0, 20, 0, 20)
+    InputImage.Position = UDim2.new(0, 12, 0.5, 0)
+    InputImage.Size = UDim2.new(0, 16, 0, 16)
     InputImage.Image = ConfigInput.IconInput
-    InputImage.ImageColor3 = Color3.fromRGB(93, 197, 248)
-    InputImage.ScaleType = Enum.ScaleType.Fit
+    InputImage.ImageColor3 = Color3.fromRGB(160, 160, 160)
 
-    -- Input Title
-    InputTitle.Name = "InputTitle"
-    InputTitle.Parent = TextInput
-    InputTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    InputTitle.BackgroundTransparency = 1
-    InputTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputTitle.BorderSizePixel = 0
-    InputTitle.Position = UDim2.new(0, 45, 0, 12)
-    InputTitle.Size = UDim2.new(1, -160, 0, 16)
-    InputTitle.Font = Enum.Font.GothamBold
-    InputTitle.Text = ConfigInput.Title
-    InputTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    InputTitle.TextSize = 14
-    InputTitle.TextXAlignment = Enum.TextXAlignment.Left
-    InputTitle.TextTransparency = 0.1
-
-    -- Input Description
-    InputContent.Name = "InputContent"
-    InputContent.Parent = TextInput
-    InputContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    InputContent.BackgroundTransparency = 1
-    InputContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputContent.BorderSizePixel = 0
-    InputContent.Position = UDim2.new(0, 45, 0, 28)
-    InputContent.Size = UDim2.new(1, -160, 0, 14)
-    InputContent.Font = Enum.Font.Gotham
-    InputContent.Text = ConfigInput.Description
-    InputContent.TextColor3 = Color3.fromRGB(180, 180, 180)
-    InputContent.TextSize = 11
-    InputContent.TextWrapped = true
-    InputContent.TextYAlignment = Enum.TextYAlignment.Top
-    InputContent.TextTransparency = 0.3
-    InputContent.TextXAlignment = Enum.TextXAlignment.Left
-
-    -- Input Frame (Textbox container)
     InputFrame.Name = "InputFrame"
     InputFrame.Parent = TextInput
     InputFrame.AnchorPoint = Vector2.new(1, 0.5)
-    InputFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    InputFrame.BackgroundTransparency = 0.1
+    InputFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputFrame.BackgroundTransparency = 0.960
     InputFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     InputFrame.BorderSizePixel = 0
     InputFrame.ClipsDescendants = true
-    InputFrame.Position = UDim2.new(1, -12, 0.5, 0)
-    InputFrame.Size = UDim2.new(0, 140, 0, 32)
+    InputFrame.Position = UDim2.new(1, -9, 0.5, 0)
+    InputFrame.Size = UDim2.new(0, 125, 0, 26)
 
-    UICorner_21.CornerRadius = UDim.new(0, 6)
+    UICorner_21.CornerRadius = UDim.new(0, 3)
     UICorner_21.Parent = InputFrame
 
-    UIStroke_InputFrame.Parent = InputFrame
-    UIStroke_InputFrame.Color = Color3.fromRGB(60, 60, 60)
-    UIStroke_InputFrame.Thickness = 1.2
+    InputDecide.Name = "InputDecide"
+    InputDecide.Parent = InputFrame
+    InputDecide.AnchorPoint = Vector2.new(0.5, 1)
+    InputDecide.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    InputDecide.BackgroundTransparency = 0.950
+    InputDecide.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputDecide.BorderSizePixel = 0
+    InputDecide.Position = UDim2.new(0.5, 0, 1, 0)
+    InputDecide.Size = UDim2.new(1, -2, 0, 1)
 
-    -- Input Box Frame
+    UICorner_22.CornerRadius = UDim.new(0, 5)
+    UICorner_22.Parent = InputDecide
+
+    UIStroke_9.Parent = InputDecide
+    UIStroke_9.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke_9.Transparency = 0.950
+    UIStroke_9.Thickness = 0.600
+
     InputBoxFrame.Name = "InputBoxFrame"
     InputBoxFrame.Parent = InputFrame
     InputBoxFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    InputBoxFrame.BackgroundTransparency = 1
+    InputBoxFrame.BackgroundTransparency = 0.999
     InputBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     InputBoxFrame.BorderSizePixel = 0
     InputBoxFrame.ClipsDescendants = true
-    InputBoxFrame.Position = UDim2.new(0, 8, 0, 0)
-    InputBoxFrame.Size = UDim2.new(1, -16, 1, 0)
+    InputBoxFrame.Position = UDim2.new(0, 6, 0, 0)
+    InputBoxFrame.Size = UDim2.new(1, -12, 0, 24)
 
-    -- Focus Line (animation)
-    InputFocusLine.Name = "InputFocusLine"
-    InputFocusLine.Parent = InputFrame
-    InputFocusLine.AnchorPoint = Vector2.new(0.5, 1)
-    InputFocusLine.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-    InputFocusLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputFocusLine.BorderSizePixel = 0
-    InputFocusLine.Position = UDim2.new(0.5, 0, 1, 0)
-    InputFocusLine.Size = UDim2.new(0, 0, 0, 2)
-    InputFocusLine.Visible = false
-
-    UICorner_Focus.CornerRadius = UDim.new(0, 2)
-    UICorner_Focus.Parent = InputFocusLine
-
-    -- Input TextBox
     InputBox.Name = "InputBox"
     InputBox.Parent = InputBoxFrame
     InputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    InputBox.BackgroundTransparency = 1
+    InputBox.BackgroundTransparency = 0.999
     InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     InputBox.BorderSizePixel = 0
-    InputBox.Size = UDim2.new(1, 0, 1, 0)
-    InputBox.Font = Enum.Font.GothamMedium
-    InputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+    InputBox.Position = UDim2.new(0, 1, 0, 0)
+    InputBox.Size = UDim2.new(1, -1, 1, 0)
+    InputBox.Font = Enum.Font.Arcade
+    InputBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
     InputBox.PlaceholderText = ConfigInput.Placeholder
     InputBox.Text = ConfigInput.Default
     InputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    InputBox.TextSize = 12
+    InputBox.TextSize = 11.000
     InputBox.TextXAlignment = Enum.TextXAlignment.Left
-    InputBox.ClearTextOnFocus = ConfigInput.ClearTextOnFocus
-    InputBox.MaxVisibleGraphemes = ConfigInput.MaxLength
 
     -- Numeric input validation
     if ConfigInput.Numeric then
@@ -2382,21 +2357,15 @@ function TabObject:AddInput(ConfigInput)
         InputBox.PlaceholderText = "Enter number..."
     end
 
-    -- Focus events với animation
+    -- Focus events
     InputBox.Focused:Connect(function()
-        InputFocusLine.Visible = true
-        Crystal.TweenObject({InputFocusLine, 0.3, "Size", UDim2.new(1, -4, 0, 2)})
-        Crystal.TweenObject({UIStroke_InputFrame, 0.3, "Color", Color3.fromRGB(93, 197, 248)})
-        Crystal.TweenObject({InputFrame, 0.3, "BackgroundTransparency", 0})
+        Crystal.TweenObject({InputDecide, 0.3, "BackgroundTransparency", 0})
+        Crystal.TweenObject({UIStroke_9, 0.3, "Transparency", 0})
     end)
 
     InputBox.FocusLost:Connect(function(enterPressed)
-        Crystal.TweenObject({InputFocusLine, 0.3, "Size", UDim2.new(0, 0, 0, 2)})
-        Crystal.TweenObject({UIStroke_InputFrame, 0.3, "Color", Color3.fromRGB(60, 60, 60)})
-        Crystal.TweenObject({InputFrame, 0.3, "BackgroundTransparency", 0.1})
-        
-        task.wait(0.1)
-        InputFocusLine.Visible = false
+        Crystal.TweenObject({InputDecide, 0.3, "BackgroundTransparency", 0.950})
+        Crystal.TweenObject({UIStroke_9, 0.3, "Transparency", 0.950})
         
         if ConfigInput.Finished then
             if enterPressed then
@@ -2444,26 +2413,21 @@ function TabObject:AddInput(ConfigInput)
     -- Auto resize
     Crystal.Stepped:Connect(function()
         local contentHeight = math.max(InputContent.TextBounds.Y + 10, 30)
-        TextInput.Size = UDim2.new(1, -8, 0, contentHeight + 25)
-        InputContent.Size = UDim2.new(1, -160, 0, contentHeight + 5)
+        TextInput.Size = UDim2.new(1, -8, 0, contentHeight + 18)
+        InputContent.Size = UDim2.new(1, -190, 0, contentHeight + 10)
     end)
 
     -- Hide description if empty
     if InputContent.Text == "" then
-        InputTitle.Size = UDim2.new(1, -160, 1, 0)
-        InputTitle.Position = UDim2.new(0, 45, 0, 0)
-        InputImage.Position = UDim2.new(0, 15, 0.5, 0)
+        InputTitle.Size = UDim2.new(1, -190, 1, 0)
+        InputTitle.Position = UDim2.new(0, 40, 0, 0)
     end
 
     -- Hover effects
     Crystal.Mouseto(InputFrame, function()
-        Crystal.TweenObject({InputFrame, 0.2, "BackgroundTransparency", 0})
-        Crystal.TweenObject({UIStroke_InputFrame, 0.2, "Color", Color3.fromRGB(80, 80, 80)})
+        Crystal.TweenObject({InputFrame, 0.2, "BackgroundTransparency", 0.935})
     end, function()
-        if not InputBox:IsFocused() then
-            Crystal.TweenObject({InputFrame, 0.2, "BackgroundTransparency", 0.1})
-            Crystal.TweenObject({UIStroke_InputFrame, 0.2, "Color", Color3.fromRGB(60, 60, 60)})
-        end
+        Crystal.TweenObject({InputFrame, 0.2, "BackgroundTransparency", 0.960})
     end)
 
     -- Return functions
