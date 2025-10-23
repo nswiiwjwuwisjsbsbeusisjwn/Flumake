@@ -1494,17 +1494,15 @@ function TabSystem:AddButton(ConfigButton)
     ConfigButton.Description = ConfigButton.Description or ""
     ConfigButton.Callback = ConfigButton.Callback or function() end
     
-    ScrollLayers = Crystal.LayersFolder:FindFirstChild("CurrentTab") or Crystal.LayersFolder:GetChildren()[1]
-    
-    Button = Instance.new("Frame")
-    UICorner_18 = Instance.new("UICorner")
-    ButtonContent = Instance.new("TextLabel")
-    ButtonImage = Instance.new("ImageLabel")
-    ButtonTitle = Instance.new("TextLabel")
-    ButtonFrame = Instance.new("Frame")
-    UICorner_19 = Instance.new("UICorner")
-    ButtonButton = Instance.new("TextButton")
-    UIStroke = Instance.new("UIStroke")
+    local Button = Instance.new("Frame")
+    local UICorner_18 = Instance.new("UICorner")
+    local ButtonContent = Instance.new("TextLabel")
+    local ButtonImage = Instance.new("ImageLabel")
+    local ButtonTitle = Instance.new("TextLabel")
+    local ButtonFrame = Instance.new("Frame")
+    local UICorner_19 = Instance.new("UICorner")
+    local ButtonButton = Instance.new("TextButton")
+    local UIStroke = Instance.new("UIStroke")
     
     Button.Name = ConfigButton.Title
     Button.Parent = ScrollLayers
@@ -1604,7 +1602,7 @@ function TabSystem:AddButton(ConfigButton)
     
     Crystal.Stepped:Connect(function()
         if ConfigButton.Description ~= "" then
-            contentHeight = math.max(ButtonContent.TextBounds.Y, 14)
+            local contentHeight = math.max(ButtonContent.TextBounds.Y, 14)
             Button.Size = UDim2.new(1, -8, 0, contentHeight + 36)
             ButtonContent.Size = UDim2.new(1, -185, 0, contentHeight)
         else
@@ -1615,13 +1613,10 @@ function TabSystem:AddButton(ConfigButton)
         end
     end)
     
-    -- Click Animation & Callback
     Crystal.Click(ButtonButton, function()
-        -- Click animation
         ButtonFrame.BackgroundTransparency = 0.3
         Crystal.TweenObject({ButtonFrame, 0.15, "BackgroundTransparency", 0.1})
         
-        -- Ripple effect
         local Ripple = Instance.new("Frame")
         Ripple.AnchorPoint = Vector2.new(0.5, 0.5)
         Ripple.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1645,7 +1640,6 @@ function TabSystem:AddButton(ConfigButton)
         ConfigButton.Callback()
     end)
     
-    -- Return button object for further modifications
     local ButtonObject = {}
     
     function ButtonObject:SetTitle(newTitle)
