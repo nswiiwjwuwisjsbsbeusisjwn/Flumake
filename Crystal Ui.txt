@@ -1486,7 +1486,6 @@ Crystal.Window = function(self, WindowConfig)
                 JumpTo(ScrollLayers.LayoutOrder, TabName.Text)
             end
         end)
-        
 
         TabCount = TabCount + 1
         return ScrollLayers
