@@ -37,7 +37,6 @@ Crystal.Types = {
     }
 }
 
--- Utility Functions
 Crystal.TweenObject = function(config)
     config.Object = config.Object or config[1]
     config.Time = config.Time or config[2]
@@ -170,7 +169,6 @@ Crystal.GetMidPos = function(mainFrame)
     return UDim2.new(0, (Crystal.ViewportSize.X/2 - mainFrame.Size.X.Offset/2), 0, (Crystal.ViewportSize.Y/2 - mainFrame.Size.Y.Offset/2))
 end
 
--- Notification System
 Crystal.Notify = function(self, NotifyConfig)
     NotifyConfig = NotifyConfig or {}
     NotifyConfig.Title = NotifyConfig.Title or "Crystal Hub"
@@ -444,11 +442,10 @@ Crystal.Notify = function(self, NotifyConfig)
     return NotifyFunc
 end
 
--- Window Creation
 Crystal.Window = function(self, WindowConfig)
     WindowConfig = WindowConfig or {}
     WindowConfig.Title = WindowConfig.Title or "Crystal Hub"
-    WindowConfig.Description = WindowConfig.Description or "Premium Edition"
+    WindowConfig.Description = WindowConfig.Description or ""
     WindowConfig.User = WindowConfig.User
     WindowConfig.IconUser = WindowConfig.IconUser or ""
     WindowConfig.UseAcrylic = WindowConfig.UseAcrylic or false
@@ -819,17 +816,6 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.PlayerName.TextSize = 12.000
     CrystalHub.PlayerName.TextWrapped = true
     CrystalHub.PlayerName.TextXAlignment = Enum.TextXAlignment.Left
-
-    CrystalHub.PlayerUsername.Name = "UsernameLabel"
-    CrystalHub.PlayerUsername.Parent = CrystalHub.PlayerInfo
-    CrystalHub.PlayerUsername.BackgroundTransparency = 1
-    CrystalHub.PlayerUsername.Position = UDim2.new(0, 46, 0, 24)
-    CrystalHub.PlayerUsername.Size = UDim2.new(1, -50, 0, 10)
-    CrystalHub.PlayerUsername.Font = Enum.Font.Arcade
-    CrystalHub.PlayerUsername.Text = tostring(Crystal.Player.Name)
-    CrystalHub.PlayerUsername.TextColor3 = Color3.fromRGB(160, 160, 160)
-    CrystalHub.PlayerUsername.TextSize = 9.000
-    CrystalHub.PlayerUsername.TextXAlignment = Enum.TextXAlignment.Left
 
     CrystalHub.PlayerDescription.Name = "DescriptionPlayer"
     CrystalHub.PlayerDescription.Parent = CrystalHub.PlayerInfo
