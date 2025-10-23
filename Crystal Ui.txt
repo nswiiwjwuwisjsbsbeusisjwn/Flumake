@@ -1811,8 +1811,8 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownSelectReal.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropdownSelectReal.BorderSizePixel = 0
     DropdownSelectReal.ClipsDescendants = true
-    DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)
-    DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#ConfigDropdown.Values * 30 + 40, 200))
+    DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, 0)  -- Fix: Set initial position tạm thời, update sau khi parent Dropdown
+    DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#ConfigDropdown.Values * 30 + 40, 200))  -- Fix: Wrap trong UDim2.new
 
     UICorner_41.CornerRadius = UDim.new(0, 8)
     UICorner_41.Parent = DropdownSelectReal
@@ -1889,7 +1889,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     Crystal.Stepped:Connect(function()
         ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
-        -- Update position của DropdownSelectReal khi window resize
+        -- Update position của DropdownSelectReal khi window resize hoặc sau khi parent
         if DropMore.Visible then
             DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)
         end
@@ -1917,12 +1917,16 @@ function TabObject:AddDropdown(ConfigDropdown)
     end)
 
     Dropdown.Name = ConfigDropdown.Title
-    Dropdown.Parent = ScrollLayers
+    Dropdown.Parent = ScrollLayers  -- Parent trước
     Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Dropdown.BackgroundTransparency = 0.970
     Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Dropdown.BorderSizePixel = 0
     Dropdown.Size = UDim2.new(1, -8, 0, 45)
+
+    -- Fix: Set Position và Size cho DropdownSelectReal sau khi parent Dropdown
+    DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)
+    DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#ConfigDropdown.Values * 30 + 40, 200))
 
     DropdownTitle.Name = "DropdownTitle"
     DropdownTitle.Parent = Dropdown
@@ -2075,7 +2079,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                         Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.950})
                         Crystal.TweenObject({chooseFrame, 0.4, "Size", UDim2.new(0, 1, 0, 10)})
                     end
-                else
+else
                     optionSelecting.TextColor3 = Color3.fromRGB(255, 255, 255)
                     local chooseFrame = v:FindFirstChild("ChooseFrame")
                     if chooseFrame then
