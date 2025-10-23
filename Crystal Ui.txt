@@ -2813,6 +2813,14 @@ function TabObject:AddKeybind(ConfigKeybind)
     local KeybindText = Instance.new("TextLabel")
     local ToggleKeybind = Instance.new("TextLabel")
 
+    local waitingForKey = false
+    local isToggled = false
+    local KeybindFunc = {
+        Value = ConfigKeybind.Default,
+        Toggled = false
+    }
+
+    -- Main Keybind Frame
     Keybind.Name = ConfigKeybind.Title
     Keybind.Parent = ScrollLayers
     Keybind.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -2824,11 +2832,11 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindTitle.Name = "KeybindTitle"
     KeybindTitle.Parent = Keybind
     KeybindTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    KeybindTitle.BackgroundTransparency = 0.999
+    KeybindTitle.BackgroundTransparency = 1
     KeybindTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
     KeybindTitle.BorderSizePixel = 0
     KeybindTitle.Position = UDim2.new(0, 40, 0, 11)
-    KeybindTitle.Size = UDim2.new(1, -158, 0, 12)
+    KeybindTitle.Size = UDim2.new(1, -180, 0, 12)
     KeybindTitle.Font = Enum.Font.Arcade
     KeybindTitle.Text = ConfigKeybind.Title
     KeybindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -2841,16 +2849,16 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindContent.Name = "KeybindContent"
     KeybindContent.Parent = Keybind
     KeybindContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    KeybindContent.BackgroundTransparency = 0.999
+    KeybindContent.BackgroundTransparency = 1
     KeybindContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
     KeybindContent.BorderSizePixel = 0
     KeybindContent.Position = UDim2.new(0, 40, 0, 21)
-    KeybindContent.Size = UDim2.new(1, -158, 0, 11)
+    KeybindContent.Size = UDim2.new(1, -180, 0, 11)
     KeybindContent.Font = Enum.Font.Arcade
     KeybindContent.Text = ConfigKeybind.Description
     KeybindContent.TextWrapped = true
     KeybindContent.TextYAlignment = Enum.TextYAlignment.Top
-    KeybindContent.TextColor3 = Color3.fromRGB(160, 160, 160)
+    KeybindContent.TextColor3 = Color3.fromRGB(255, 255, 255)
     KeybindContent.TextSize = 11
     KeybindContent.TextTransparency = 0.600
     KeybindContent.TextXAlignment = Enum.TextXAlignment.Left
@@ -2859,14 +2867,34 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindImage.Parent = Keybind
     KeybindImage.AnchorPoint = Vector2.new(0, 0.5)
     KeybindImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    KeybindImage.BackgroundTransparency = 0.999
+    KeybindImage.BackgroundTransparency = 1
     KeybindImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
     KeybindImage.BorderSizePixel = 0
     KeybindImage.Position = UDim2.new(0, 12, 0.5, 0)
     KeybindImage.Size = UDim2.new(0, 16, 0, 16)
     KeybindImage.Image = ConfigKeybind.IconKeybind
-    KeybindImage.ImageColor3 = Color3.fromRGB(160, 160, 160)
+    KeybindImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
 
+    -- Toggle Label (if Toggle mode is enabled)
+    if ConfigKeybind.Toggle then
+        ToggleKeybind.Name = "ToggleKeybind"
+        ToggleKeybind.Parent = Keybind
+        ToggleKeybind.AnchorPoint = Vector2.new(1, 0.5)
+        ToggleKeybind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ToggleKeybind.BackgroundTransparency = 1
+        ToggleKeybind.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ToggleKeybind.BorderSizePixel = 0
+        ToggleKeybind.Position = UDim2.new(1, -80, 0.5, 0)
+        ToggleKeybind.Size = UDim2.new(0, 40, 0, 12)
+        ToggleKeybind.Font = Enum.Font.Arcade
+        ToggleKeybind.Text = "False"
+        ToggleKeybind.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ToggleKeybind.TextSize = 11
+        ToggleKeybind.TextTransparency = 0.5
+        ToggleKeybind.TextXAlignment = Enum.TextXAlignment.Right
+    end
+
+    -- Keybind Display Frame
     KeybindFrame.Name = "KeybindFrame"
     KeybindFrame.Parent = Keybind
     KeybindFrame.AnchorPoint = Vector2.new(1, 0.5)
@@ -2875,15 +2903,15 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     KeybindFrame.BorderSizePixel = 0
     KeybindFrame.Position = UDim2.new(1, -9, 0.5, 0)
-    KeybindFrame.Size = UDim2.new(0, 60, 0, 26)
+    KeybindFrame.Size = ConfigKeybind.Toggle and UDim2.new(0, 45, 0, 26) or UDim2.new(0, 65, 0, 26)
 
-    UICorner_13.CornerRadius = UDim.new(0, 3)
+    UICorner_13.CornerRadius = UDim.new(0, 4)
     UICorner_13.Parent = KeybindFrame
 
     KeybindButton.Name = "KeybindButton"
     KeybindButton.Parent = KeybindFrame
     KeybindButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    KeybindButton.BackgroundTransparency = 0.999
+    KeybindButton.BackgroundTransparency = 1
     KeybindButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     KeybindButton.BorderSizePixel = 0
     KeybindButton.Size = UDim2.new(1, 0, 1, 0)
@@ -2891,102 +2919,128 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindButton.Text = ""
     KeybindButton.TextColor3 = Color3.fromRGB(0, 0, 0)
     KeybindButton.TextSize = 14
+    KeybindButton.AutoButtonColor = false
 
     KeybindText.Name = "KeybindText"
     KeybindText.Parent = KeybindFrame
     KeybindText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    KeybindText.BackgroundTransparency = 0.999
+    KeybindText.BackgroundTransparency = 1
     KeybindText.BorderColor3 = Color3.fromRGB(0, 0, 0)
     KeybindText.BorderSizePixel = 0
-    KeybindText.Position = UDim2.new(0, 5, 0, 0)
-    KeybindText.Size = UDim2.new(1, -10, 1, 0)
+    KeybindText.Position = UDim2.new(0, 0, 0, 0)
+    KeybindText.Size = UDim2.new(1, 0, 1, 0)
     KeybindText.Font = Enum.Font.Arcade
     KeybindText.Text = ConfigKeybind.Default.Name or "None"
     KeybindText.TextColor3 = Color3.fromRGB(255, 255, 255)
     KeybindText.TextSize = 11
     KeybindText.TextXAlignment = Enum.TextXAlignment.Center
 
-    if ConfigKeybind.Toggle then
-        ToggleKeybind.Name = "ToggleKeybind"
-        ToggleKeybind.Parent = Keybind
-        ToggleKeybind.AnchorPoint = Vector2.new(1, 0.5)
-        ToggleKeybind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ToggleKeybind.BackgroundTransparency = 0.999
-        ToggleKeybind.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        ToggleKeybind.BorderSizePixel = 0
-        ToggleKeybind.Position = UDim2.new(1, -75, 0.5, 0)
-        ToggleKeybind.Size = UDim2.new(0, 30, 0, 12)
-        ToggleKeybind.Font = Enum.Font.Arcade
-        ToggleKeybind.Text = "False"
-        ToggleKeybind.TextColor3 = Color3.fromRGB(160, 160, 160)
-        ToggleKeybind.TextSize = 11
-        ToggleKeybind.TextXAlignment = Enum.TextXAlignment.Right
-
-        KeybindFrame.Position = UDim2.new(1, -45, 0.5, 0)
-        KeybindFrame.Size = UDim2.new(0, 40, 0, 26)
-    end
-
+    -- Hover effect
     Crystal.Mouseto(KeybindFrame, function()
-        Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.935})
+        if not waitingForKey then
+            Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.920})
+        end
     end, function()
-        Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.960})
-    end)
-
-    local waitingForKey = false
-    local isToggled = false
-
-    Crystal.Click(KeybindButton, function()
-        waitingForKey = true
-        KeybindText.Text = "..."
-        Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.920})
-    end)
-
-    Crystal.UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-        if waitingForKey and not gameProcessedEvent and input.UserInputType == Enum.UserInputType.Keyboard then
-            waitingForKey = false
-            KeybindFunc.Value = input.KeyCode
-            KeybindText.Text = input.KeyCode.Name
+        if not waitingForKey then
             Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.960})
         end
+    end)
+
+    -- Auto-resize based on description
+    if KeybindContent.Text == '' then
+        KeybindTitle.Size = UDim2.new(1, -180, 1, 0)
+        KeybindTitle.Position = UDim2.new(0, 40, 0.5, -6)
+        KeybindTitle.TextYAlignment = Enum.TextYAlignment.Center
+    end
+
+    Crystal.Stepped:Connect(function()
+        local contentHeight = math.max(KeybindContent.TextBounds.Y, 10)
+        Keybind.Size = UDim2.new(1, -8, 0, contentHeight + 30)
+        KeybindContent.Size = UDim2.new(1, -180, 0, contentHeight)
         
-        if not waitingForKey and not gameProcessedEvent and input.KeyCode == KeybindFunc.Value then
+        -- Auto-adjust positions based on Toggle mode
+        if ConfigKeybind.Toggle and ToggleKeybind then
+            local toggleTextWidth = ToggleKeybind.TextBounds.X
+            ToggleKeybind.Size = UDim2.new(0, math.max(toggleTextWidth + 4, 35), 0, 12)
+            ToggleKeybind.Position = UDim2.new(1, -(KeybindFrame.Size.X.Offset + 14 + ToggleKeybind.Size.X.Offset), 0.5, 0)
+        end
+    end)
+
+    -- Click to change keybind
+    Crystal.Click(KeybindButton, function()
+        if waitingForKey then return end
+        
+        waitingForKey = true
+        KeybindText.Text = "..."
+        KeybindText.TextColor3 = Color3.fromRGB(0, 162, 255)
+        Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.880})
+    end)
+
+    -- Input detection
+    local inputConnection
+    inputConnection = Crystal.UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+        if gameProcessedEvent then return end
+        
+        -- Waiting for key assignment
+        if waitingForKey and input.UserInputType == Enum.UserInputType.Keyboard then
+            waitingForKey = false
+            
+            -- Handle special keys
+            if input.KeyCode == Enum.KeyCode.Escape or input.KeyCode == Enum.KeyCode.Backspace then
+                KeybindFunc.Value = Enum.KeyCode.Unknown
+                KeybindText.Text = "None"
+            else
+                KeybindFunc.Value = input.KeyCode
+                KeybindText.Text = input.KeyCode.Name
+            end
+            
+            KeybindText.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Crystal.TweenObject({KeybindFrame, 0.2, "BackgroundTransparency", 0.960})
+            return
+        end
+        
+        -- Key pressed to trigger callback
+        if not waitingForKey and input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == KeybindFunc.Value then
+            if KeybindFunc.Value == Enum.KeyCode.Unknown then return end
+            
             if ConfigKeybind.Toggle then
+                -- Toggle mode
                 isToggled = not isToggled
+                KeybindFunc.Toggled = isToggled
                 
                 if isToggled then
                     ToggleKeybind.Text = "True"
                     ToggleKeybind.TextColor3 = Color3.fromRGB(0, 162, 255)
+                    ToggleKeybind.TextTransparency = 0
                 else
                     ToggleKeybind.Text = "False"
-                    ToggleKeybind.TextColor3 = Color3.fromRGB(160, 160, 160)
+                    ToggleKeybind.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    ToggleKeybind.TextTransparency = 0.5
                 end
+                
+                -- Visual feedback
+                Crystal.TweenObject({KeybindFrame, 0.15, "BackgroundTransparency", 0.880})
+                task.wait(0.15)
+                Crystal.TweenObject({KeybindFrame, 0.15, "BackgroundTransparency", 0.960})
                 
                 ConfigKeybind.Callback(isToggled, input.KeyCode)
             else
+                -- Press mode
+                Crystal.TweenObject({KeybindFrame, 0.15, "BackgroundTransparency", 0.880})
+                task.wait(0.15)
+                Crystal.TweenObject({KeybindFrame, 0.15, "BackgroundTransparency", 0.960})
+                
                 ConfigKeybind.Callback(true, input.KeyCode)
             end
         end
     end)
 
-    if KeybindContent.Text == '' then
-        KeybindTitle.Size = UDim2.new(1, -158, 1, 0)
-        KeybindTitle.Position = UDim2.new(0, 40, 0, 0)
-    end
-
-    Crystal.Stepped:Connect(function()
-        local contentHeight = math.max(KeybindContent.TextBounds.Y + 10, 30)
-        Keybind.Size = UDim2.new(1, -8, 0, contentHeight + 18)
-        KeybindContent.Size = UDim2.new(1, -158, 0, contentHeight + 10)
-    end)
-
-    local KeybindFunc = {
-        Value = ConfigKeybind.Default,
-        Toggled = false
-    }
-
+    -- Functions
     function KeybindFunc:Set(NewKey)
-        KeybindFunc.Value = NewKey or KeybindFunc.Value
-        KeybindText.Text = KeybindFunc.Value.Name or "None"
+        if typeof(NewKey) == "EnumItem" and NewKey.EnumType == Enum.KeyCode then
+            KeybindFunc.Value = NewKey
+            KeybindText.Text = NewKey.Name == "Unknown" and "None" or NewKey.Name
+        end
     end
 
     function KeybindFunc:Get()
@@ -2994,32 +3048,63 @@ function TabObject:AddKeybind(ConfigKeybind)
     end
 
     function KeybindFunc:SetToggle(State)
-        if ConfigKeybind.Toggle and ToggleKeybind then
-            isToggled = State
-            
-            if State then
-                ToggleKeybind.Text = "True"
-                ToggleKeybind.TextColor3 = Color3.fromRGB(0, 162, 255)
-            else
-                ToggleKeybind.Text = "False"
-                ToggleKeybind.TextColor3 = Color3.fromRGB(160, 160, 160)
-            end
-            
-            ConfigKeybind.Callback(State, KeybindFunc.Value)
+        if not ConfigKeybind.Toggle or not ToggleKeybind then return end
+        
+        isToggled = State
+        KeybindFunc.Toggled = State
+        
+        if State then
+            ToggleKeybind.Text = "True"
+            ToggleKeybind.TextColor3 = Color3.fromRGB(0, 162, 255)
+            ToggleKeybind.TextTransparency = 0
+        else
+            ToggleKeybind.Text = "False"
+            ToggleKeybind.TextColor3 = Color3.fromRGB(255, 255, 255)
+            ToggleKeybind.TextTransparency = 0.5
         end
+        
+        ConfigKeybind.Callback(State, KeybindFunc.Value)
     end
 
     function KeybindFunc:GetToggle()
         return isToggled
     end
 
+    function KeybindFunc:SetCallback(newCallback)
+        ConfigKeybind.Callback = newCallback or function() end
+    end
+
+    function KeybindFunc:SetVisibility(visible)
+        Keybind.Visible = visible
+    end
+
+    function KeybindFunc:UpdateTitle(newTitle)
+        KeybindTitle.Text = newTitle
+    end
+
+    function KeybindFunc:UpdateDescription(newDescription)
+        KeybindContent.Text = newDescription
+        
+        if newDescription == "" then
+            KeybindTitle.Size = UDim2.new(1, -180, 1, 0)
+            KeybindTitle.Position = UDim2.new(0, 40, 0.5, -6)
+            KeybindTitle.TextYAlignment = Enum.TextYAlignment.Center
+        else
+            KeybindTitle.Size = UDim2.new(1, -180, 0, 12)
+            KeybindTitle.Position = UDim2.new(0, 40, 0, 11)
+            KeybindTitle.TextYAlignment = Enum.TextYAlignment.Top
+        end
+    end
+
     function KeybindFunc:Destroy()
+        if inputConnection then
+            inputConnection:Disconnect()
+        end
         Keybind:Destroy()
     end
 
     return KeybindFunc
 end
-
 TabCount = TabCount + 1
 return TabObject
     end
