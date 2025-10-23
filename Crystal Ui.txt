@@ -1480,11 +1480,11 @@ function TabObject:AddButton(ButtonConfig)
 
     local Button = Instance.new("Frame")
     local ButtonCorner = Instance.new("UICorner")
+    local ButtonStroke = Instance.new("UIStroke")
     local ButtonTitle = Instance.new("TextLabel")
     local ButtonDescription = Instance.new("TextLabel")
     local ButtonClick = Instance.new("TextButton")
     local ButtonIcon = Instance.new("ImageLabel")
-    local ButtonStroke = Instance.new("UIStroke")
 
     Button.Name = ButtonConfig.Title
     Button.Parent = ScrollLayers
@@ -1498,9 +1498,8 @@ function TabObject:AddButton(ButtonConfig)
 
     ButtonStroke.Parent = Button
     ButtonStroke.Color = Color3.fromRGB(93, 197, 248)
-    ButtonStroke.Thickness = 1
-    ButtonStroke.Transparency = 0.5
-    ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ButtonStroke.Thickness = 1.2
+    ButtonStroke.Transparency = 0.7
 
     ButtonTitle.Name = "ButtonTitle"
     ButtonTitle.Parent = Button
@@ -1544,19 +1543,17 @@ function TabObject:AddButton(ButtonConfig)
     Crystal.Mouseto(Button, function()
         Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.850})
         Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(120, 210, 255)})
-        Crystal.TweenObject({ButtonStroke, 0.2, "Transparency", 0.3})
+        Crystal.TweenObject({ButtonStroke, 0.2, "Transparency", 0.4})
     end, function()
         Crystal.TweenObject({Button, 0.2, "BackgroundTransparency", 0.900})
         Crystal.TweenObject({ButtonIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
-        Crystal.TweenObject({ButtonStroke, 0.2, "Transparency", 0.5})
+        Crystal.TweenObject({ButtonStroke, 0.2, "Transparency", 0.7})
     end)
 
     Crystal.Click(ButtonClick, function()
         Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.800})
-        Crystal.TweenObject({ButtonStroke, 0.1, "Transparency", 0.2})
         task.wait(0.1)
         Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.900})
-        Crystal.TweenObject({ButtonStroke, 0.1, "Transparency", 0.5})
         
         pcall(function()
             ButtonConfig.Callback()
