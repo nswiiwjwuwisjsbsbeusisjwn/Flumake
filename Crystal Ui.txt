@@ -1573,7 +1573,8 @@ function TabObject:AddToggle(ConfigToggles)
     local UICorner_14 = Instance.new("UICorner")
     local UIStroke_6 = Instance.new("UIStroke")
     local ToggleButton = Instance.new("TextButton")
-    local ToggleOnOff = Instance.new("TextLabel")
+    local StatusIndicator = Instance.new("Frame")
+    local StatusCorner = Instance.new("UICorner")
     local ToggleFunc = { Enabled = ConfigToggles.Default }
 
     Toggle.Name = ConfigToggles.Title
@@ -1662,17 +1663,17 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleButton.TextSize = 14
     ToggleButton.ZIndex = 2
 
-    ToggleOnOff.Name = "ToggleOnOff"
-    ToggleOnOff.Parent = Toggle
-    ToggleOnOff.AnchorPoint = Vector2.new(1, 0.5)
-    ToggleOnOff.BackgroundTransparency = 1
-    ToggleOnOff.Position = UDim2.new(1, -70, 0.5, 0)
-    ToggleOnOff.Size = UDim2.new(0, 30, 0, 12)
-    ToggleOnOff.Font = Enum.Font.Arcade
-    ToggleOnOff.Text = ConfigToggles.Default and "On" or "Off"
-    ToggleOnOff.TextColor3 = ConfigToggles.Default and Color3.fromRGB(50, 150, 255) or Color3.fromRGB(180, 180, 180)
-    ToggleOnOff.TextSize = 12
-    ToggleOnOff.TextXAlignment = Enum.TextXAlignment.Right
+    StatusIndicator.Name = "StatusIndicator"
+    StatusIndicator.Parent = Toggle
+    StatusIndicator.AnchorPoint = Vector2.new(1, 0.5)
+    StatusIndicator.BackgroundColor3 = ConfigToggles.Default and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+    StatusIndicator.BorderSizePixel = 0
+    StatusIndicator.Position = UDim2.new(1, -70, 0.5, 0)
+    StatusIndicator.Size = UDim2.new(0, 12, 0, 12)
+    StatusIndicator.ZIndex = 3
+
+    StatusCorner.CornerRadius = UDim.new(1, 0)
+    StatusCorner.Parent = StatusIndicator
 
     if ToggleContent.Text == "" then
         ToggleTitle.Position = UDim2.new(0, 40, 0, 0)
@@ -1694,8 +1695,7 @@ function TabObject:AddToggle(ConfigToggles)
             Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Size", NewValue = UDim2.new(0, 16, 0, 16)})
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(50, 150, 255)})
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0})
-            Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(50, 150, 255)})
-            ToggleOnOff.Text = "On"
+            StatusIndicator.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
         else
             Crystal.TweenObject({Object = ToggleSwitch, Time = 0.3, OldValue = "BackgroundTransparency", NewValue = 0.999})
             Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "BackgroundColor3", NewValue = Color3.fromRGB(113, 111, 112)})
@@ -1703,8 +1703,7 @@ function TabObject:AddToggle(ConfigToggles)
             Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Size", NewValue = UDim2.new(0, 12, 0, 12)})
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(113, 111, 112)})
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0.5})
-            Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(180, 180, 180)})
-            ToggleOnOff.Text = "Off"
+            StatusIndicator.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
         end
         pcall(ConfigToggles.Callback, ToggleFunc.Enabled)
     end
@@ -1719,6 +1718,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleFunc:SetValue(ToggleFunc.Enabled)
     return ToggleFunc
 end
+
         
         return TabObject
     end
