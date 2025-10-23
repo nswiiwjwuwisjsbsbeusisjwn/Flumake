@@ -2461,83 +2461,76 @@ function TabObject:AddParagraph(ConfigParagraph)
 
     local Paragraph = Instance.new("Frame")
     local UICorner_Para = Instance.new("UICorner")
-    local UIStroke_Para = Instance.new("UIStroke")
     local ParagraphTitle = Instance.new("TextLabel")
     local ParagraphContent = Instance.new("TextLabel")
-    local ParagraphIcon = Instance.new("ImageLabel")
-    local DecorativeLine = Instance.new("Frame")
-    local UICorner_Line = Instance.new("UICorner")
+    local ParagraphImage = Instance.new("ImageLabel")
 
     Paragraph.Name = ConfigParagraph.Title
     Paragraph.Parent = ScrollLayers
-    Paragraph.BackgroundColor3 = Color3.fromRGB(15, 15, 15) -- Màu đen
-    Paragraph.BackgroundTransparency = 0.1
+    Paragraph.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Paragraph.BackgroundTransparency = 0.970
     Paragraph.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Paragraph.BorderSizePixel = 0
-    Paragraph.Size = UDim2.new(1, -8, 0, 80)
-    Paragraph.ClipsDescendants = true
+    Paragraph.Size = UDim2.new(1, -8, 0, 45)
 
-    UICorner_Para.CornerRadius = UDim.new(0, 8)
+    UICorner_Para.CornerRadius = UDim.new(0, 4)
     UICorner_Para.Parent = Paragraph
-
-    UIStroke_Para.Parent = Paragraph
-    UIStroke_Para.Color = Color3.fromRGB(80, 160, 200) -- Viền xanh nhẹ
-    UIStroke_Para.Thickness = 1.2
-    UIStroke_Para.Transparency = 0.3
-
-    ParagraphIcon.Name = "ParagraphIcon"
-    ParagraphIcon.Parent = Paragraph
-    ParagraphIcon.AnchorPoint = Vector2.new(0.5, 0)
-    ParagraphIcon.BackgroundTransparency = 1
-    ParagraphIcon.Position = UDim2.new(0.5, 0, 0, 15)
-    ParagraphIcon.Size = UDim2.new(0, 24, 0, 24)
-    ParagraphIcon.Image = ConfigParagraph.IconLabel
-    ParagraphIcon.ImageColor3 = Color3.fromRGB(80, 160, 200) -- Icon xanh nhẹ
 
     ParagraphTitle.Name = "ParagraphTitle"
     ParagraphTitle.Parent = Paragraph
-    ParagraphTitle.BackgroundTransparency = 1
-    ParagraphTitle.Position = UDim2.new(0, 15, 0, 45)
-    ParagraphTitle.Size = UDim2.new(1, -30, 0, 18)
+    ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphTitle.BackgroundTransparency = 0.999
+    ParagraphTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphTitle.BorderSizePixel = 0
+    ParagraphTitle.Position = UDim2.new(0, 40, 0, 11)
+    ParagraphTitle.Size = UDim2.new(1, -52, 0, 12)
     ParagraphTitle.Font = Enum.Font.Arcade
     ParagraphTitle.Text = ConfigParagraph.Title
     ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ParagraphTitle.TextSize = 14
-    ParagraphTitle.TextTransparency = 0.1
-    ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Center
-
-    DecorativeLine.Name = "DecorativeLine"
-    DecorativeLine.Parent = Paragraph
-    DecorativeLine.AnchorPoint = Vector2.new(0.5, 0)
-    DecorativeLine.BackgroundColor3 = Color3.fromRGB(80, 160, 200) -- Line xanh nhẹ
-    DecorativeLine.BackgroundTransparency = 0.6
-    DecorativeLine.BorderSizePixel = 0
-    DecorativeLine.Position = UDim2.new(0.5, 0, 0, 40)
-    DecorativeLine.Size = UDim2.new(0, 30, 0, 2)
-
-    UICorner_Line.CornerRadius = UDim.new(1, 0)
-    UICorner_Line.Parent = DecorativeLine
+    ParagraphTitle.TextSize = 12.000
+    ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
 
     ParagraphContent.Name = "ParagraphContent"
     ParagraphContent.Parent = Paragraph
-    ParagraphContent.BackgroundTransparency = 1
-    ParagraphContent.Position = UDim2.new(0, 20, 0, 65)
-    ParagraphContent.Size = UDim2.new(1, -40, 0, 0)
+    ParagraphContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphContent.BackgroundTransparency = 0.999
+    ParagraphContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphContent.BorderSizePixel = 0
+    ParagraphContent.Position = UDim2.new(0, 40, 0, 21)
+    ParagraphContent.Size = UDim2.new(1, -52, 0, 11)
     ParagraphContent.Font = Enum.Font.Arcade
     ParagraphContent.Text = ConfigParagraph.Content
-    ParagraphContent.TextColor3 = Color3.fromRGB(180, 180, 180)
-    ParagraphContent.TextSize = 11
-    ParagraphContent.TextTransparency = 0.3
+    ParagraphContent.TextColor3 = Color3.fromRGB(160, 160, 160)
+    ParagraphContent.TextSize = 11.000
+    ParagraphContent.TextTransparency = 0.600
     ParagraphContent.TextWrapped = true
     ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
-    ParagraphContent.TextXAlignment = Enum.TextXAlignment.Center
+    ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    ParagraphImage.Name = "ParagraphImage"
+    ParagraphImage.Parent = Paragraph
+    ParagraphImage.AnchorPoint = Vector2.new(0, 0.5)
+    ParagraphImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphImage.BackgroundTransparency = 0.999
+    ParagraphImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphImage.BorderSizePixel = 0
+    ParagraphImage.Position = UDim2.new(0, 12, 0.5, 0)
+    ParagraphImage.Size = UDim2.new(0, 16, 0, 16)
+    ParagraphImage.Image = ConfigParagraph.IconLabel
+    ParagraphImage.ImageColor3 = Color3.fromRGB(160, 160, 160)
 
     -- Auto resize
     Crystal.Stepped:Connect(function()
-        local contentHeight = math.max(ParagraphContent.TextBounds.Y + 10, 20)
-        ParagraphContent.Size = UDim2.new(1, -40, 0, contentHeight)
-        Paragraph.Size = UDim2.new(1, -8, 0, 80 + contentHeight)
+        local contentHeight = math.max(ParagraphContent.TextBounds.Y + 10, 30)
+        Paragraph.Size = UDim2.new(1, -8, 0, contentHeight + 18)
+        ParagraphContent.Size = UDim2.new(1, -52, 0, contentHeight + 10)
     end)
+
+    -- Hide description if empty
+    if ParagraphContent.Text == "" then
+        ParagraphTitle.Size = UDim2.new(1, -52, 1, 0)
+        ParagraphTitle.Position = UDim2.new(0, 40, 0, 0)
+    end
 
     local ParagraphFunc = {}
 
@@ -2547,10 +2540,22 @@ function TabObject:AddParagraph(ConfigParagraph)
 
     function ParagraphFunc:SetDesc(NewDesc)
         ParagraphContent.Text = NewDesc
+        -- Update size when description changes
+        local contentHeight = math.max(ParagraphContent.TextBounds.Y + 10, 30)
+        Paragraph.Size = UDim2.new(1, -8, 0, contentHeight + 18)
+        ParagraphContent.Size = UDim2.new(1, -52, 0, contentHeight + 10)
+        
+        if NewDesc == "" then
+            ParagraphTitle.Size = UDim2.new(1, -52, 1, 0)
+            ParagraphTitle.Position = UDim2.new(0, 40, 0, 0)
+        else
+            ParagraphTitle.Size = UDim2.new(1, -52, 0, 12)
+            ParagraphTitle.Position = UDim2.new(0, 40, 0, 11)
+        end
     end
 
     function ParagraphFunc:SetIcon(NewIcon)
-        ParagraphIcon.Image = NewIcon
+        ParagraphImage.Image = NewIcon
     end
 
     function ParagraphFunc:Destroy()
@@ -2564,76 +2569,67 @@ function TabObject:AddSeperator(Text)
     Text = Text or ""
 
     local Seperator = Instance.new("Frame")
-    local LeftLine = Instance.new("Frame")
-    local RightLine = Instance.new("Frame")
+    local SeperatorLine = Instance.new("Frame")
+    local UICorner_Line = Instance.new("UICorner")
     local SeperatorText = Instance.new("TextLabel")
-    local UICorner_Left = Instance.new("UICorner")
-    local UICorner_Right = Instance.new("UICorner")
 
     Seperator.Name = "Seperator_" .. Text
     Seperator.Parent = ScrollLayers
-    Seperator.BackgroundTransparency = 1
+    Seperator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Seperator.BackgroundTransparency = 0.999
+    Seperator.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Seperator.BorderSizePixel = 0
-    Seperator.Size = UDim2.new(1, -8, 0, 30)
+    Seperator.Size = UDim2.new(1, -8, 0, 20)
 
     if Text ~= "" then
-        -- Có text - layout với text ở giữa
-        LeftLine.Name = "LeftLine"
-        LeftLine.Parent = Seperator
-        LeftLine.AnchorPoint = Vector2.new(1, 0.5)
-        LeftLine.BackgroundColor3 = Color3.fromRGB(80, 160, 200) -- Xanh nhẹ
-        LeftLine.BackgroundTransparency = 0.6
-        LeftLine.BorderSizePixel = 0
-        LeftLine.Position = UDim2.new(0.5, -5, 0.5, 0)
-        LeftLine.Size = UDim2.new(0, 40, 0, 1)
+        -- Có text - line với text ở giữa
+        SeperatorLine.Name = "SeperatorLine"
+        SeperatorLine.Parent = Seperator
+        SeperatorLine.AnchorPoint = Vector2.new(0.5, 0.5)
+        SeperatorLine.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        SeperatorLine.BackgroundTransparency = 0.800
+        SeperatorLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        SeperatorLine.BorderSizePixel = 0
+        SeperatorLine.Position = UDim2.new(0.5, 0, 0.5, 0)
+        SeperatorLine.Size = UDim2.new(1, 0, 0, 1)
 
-        UICorner_Left.CornerRadius = UDim.new(1, 0)
-        UICorner_Left.Parent = LeftLine
+        UICorner_Line.CornerRadius = UDim.new(1, 0)
+        UICorner_Line.Parent = SeperatorLine
 
         SeperatorText.Name = "SeperatorText"
         SeperatorText.Parent = Seperator
         SeperatorText.AnchorPoint = Vector2.new(0.5, 0.5)
-        SeperatorText.BackgroundTransparency = 1
+        SeperatorText.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        SeperatorText.BackgroundTransparency = 0.970
+        SeperatorText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        SeperatorText.BorderSizePixel = 0
         SeperatorText.Position = UDim2.new(0.5, 0, 0.5, 0)
         SeperatorText.Size = UDim2.new(0, 0, 0, 16)
         SeperatorText.Font = Enum.Font.Arcade
         SeperatorText.Text = Text
-        SeperatorText.TextColor3 = Color3.fromRGB(80, 160, 200) -- Xanh nhẹ
-        SeperatorText.TextSize = 12
-        SeperatorText.TextTransparency = 0.4
+        SeperatorText.TextColor3 = Color3.fromRGB(160, 160, 160)
+        SeperatorText.TextSize = 11
+        SeperatorText.TextTransparency = 0.600
 
-        RightLine.Name = "RightLine"
-        RightLine.Parent = Seperator
-        RightLine.AnchorPoint = Vector2.new(0, 0.5)
-        RightLine.BackgroundColor3 = Color3.fromRGB(80, 160, 200) -- Xanh nhẹ
-        RightLine.BackgroundTransparency = 0.6
-        RightLine.BorderSizePixel = 0
-        RightLine.Position = UDim2.new(0.5, 5, 0.5, 0)
-        RightLine.Size = UDim2.new(0, 40, 0, 1)
-
-        UICorner_Right.CornerRadius = UDim.new(1, 0)
-        UICorner_Right.Parent = RightLine
-
-        -- Auto resize text width
+        -- Auto resize text width với padding
         Crystal.Stepped:Connect(function()
-            local textWidth = SeperatorText.TextBounds.X + 10
+            local textWidth = SeperatorText.TextBounds.X + 20
             SeperatorText.Size = UDim2.new(0, textWidth, 0, 16)
-            LeftLine.Position = UDim2.new(0.5, -(textWidth/2 + 5), 0.5, 0)
-            RightLine.Position = UDim2.new(0.5, textWidth/2 + 5, 0.5, 0)
         end)
     else
         -- Không có text - chỉ line đơn giản
-        LeftLine.Name = "FullLine"
-        LeftLine.Parent = Seperator
-        LeftLine.AnchorPoint = Vector2.new(0.5, 0.5)
-        LeftLine.BackgroundColor3 = Color3.fromRGB(80, 160, 200) -- Xanh nhẹ
-        LeftLine.BackgroundTransparency = 0.4
-        LeftLine.BorderSizePixel = 0
-        LeftLine.Position = UDim2.new(0.5, 0, 0.5, 0)
-        LeftLine.Size = UDim2.new(1, -20, 0, 1)
+        SeperatorLine.Name = "SeperatorLine"
+        SeperatorLine.Parent = Seperator
+        SeperatorLine.AnchorPoint = Vector2.new(0.5, 0.5)
+        SeperatorLine.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        SeperatorLine.BackgroundTransparency = 0.800
+        SeperatorLine.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        SeperatorLine.BorderSizePixel = 0
+        SeperatorLine.Position = UDim2.new(0.5, 0, 0.5, 0)
+        SeperatorLine.Size = UDim2.new(1, 0, 0, 1)
 
-        UICorner_Left.CornerRadius = UDim.new(1, 0)
-        UICorner_Left.Parent = LeftLine
+        UICorner_Line.CornerRadius = UDim.new(1, 0)
+        UICorner_Line.Parent = SeperatorLine
     end
 
     local SeperatorFunc = {}
@@ -2641,19 +2637,6 @@ function TabObject:AddSeperator(Text)
     function SeperatorFunc:SetText(NewText)
         if SeperatorText then
             SeperatorText.Text = NewText
-        end
-    end
-
-    function SeperatorFunc:SetColor(NewColor)
-        local color = NewColor or Color3.fromRGB(80, 160, 200)
-        if LeftLine then
-            LeftLine.BackgroundColor3 = color
-        end
-        if RightLine then
-            RightLine.BackgroundColor3 = color
-        end
-        if SeperatorText then
-            SeperatorText.TextColor3 = color
         end
     end
 
