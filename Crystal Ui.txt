@@ -2218,6 +2218,8 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionCounts = 0
     end
 
+  
+
     function DropFunc:Destroy()
         outsideConnection:Disconnect()
         DropMore:Destroy()
