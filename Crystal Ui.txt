@@ -3124,6 +3124,397 @@ function TabObject:AddImage(ConfigImage)
 
     return ImageFunc
 end
+function TabObject:AddSlider(ConfigSlider)
+    ConfigSlider = ConfigSlider or {}
+    ConfigSlider.Title = ConfigSlider.Title or "Slider"
+    ConfigSlider.Description = ConfigSlider.Description or ""
+    ConfigSlider.Max = ConfigSlider.Max or 100
+    ConfigSlider.Min = ConfigSlider.Min or 0
+    ConfigSlider.IconSlider = ConfigSlider.IconSlider or "rbxassetid://18558566660"
+    ConfigSlider.Default = ConfigSlider.Default or ConfigSlider.Min
+    ConfigSlider.Increment = ConfigSlider.Increment or 1
+    ConfigSlider.Suffix = ConfigSlider.Suffix or ""
+    ConfigSlider.Prefix = ConfigSlider.Prefix or ""
+    ConfigSlider.Callback = ConfigSlider.Callback or function() end
+
+    local Slider = Instance.new("Frame")
+    local SliderTitle = Instance.new("TextLabel")
+    local UICorner_23 = Instance.new("UICorner")
+    local SliderContent = Instance.new("TextLabel")
+    local SliderImage = Instance.new("ImageLabel")
+    local SliderFrame = Instance.new("Frame")
+    local UICorner_24 = Instance.new("UICorner")
+    local UIStroke_24 = Instance.new("UIStroke")
+    local SliderDrag = Instance.new("Frame")
+    local UICorner_25 = Instance.new("UICorner")
+    local SliderCircle = Instance.new("Frame")
+    local UICorner_26 = Instance.new("UICorner")
+    local UIStroke_10 = Instance.new("UIStroke")
+    local SliderFrDrag = Instance.new("Frame")
+    local SliderNumber = Instance.new("TextLabel")
+    local SliderInput = Instance.new("TextBox")
+    local SliderInputFrame = Instance.new("Frame")
+    local SliderInputCorner = Instance.new("UICorner")
+    local MinMaxLabel = Instance.new("TextLabel")
+
+    local SliderFunc = {
+        Default = ConfigSlider.Default,
+        Values = ConfigSlider.Default,
+        Min = ConfigSlider.Min,
+        Max = ConfigSlider.Max
+    }
+
+    Slider.Name = ConfigSlider.Title
+    Slider.Parent = ScrollLayers
+    Slider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Slider.BackgroundTransparency = 0.970
+    Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Slider.BorderSizePixel = 0
+    Slider.Size = UDim2.new(1, -8, 0, 55)
+
+    Crystal.Mouseto(Slider, function()
+        Crystal.TweenObject({Slider, 0.2, "BackgroundTransparency", 0.950})
+    end, function()
+        Crystal.TweenObject({Slider, 0.2, "BackgroundTransparency", 0.970})
+    end)
+
+    SliderTitle.Name = "SliderTitle"
+    SliderTitle.Parent = Slider
+    SliderTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderTitle.BackgroundTransparency = 1
+    SliderTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderTitle.BorderSizePixel = 0
+    SliderTitle.Position = UDim2.new(0, 40, 0, 8)
+    SliderTitle.Size = UDim2.new(1, -150, 0, 12)
+    SliderTitle.Font = Enum.Font.Arcade
+    SliderTitle.Text = ConfigSlider.Title
+    SliderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SliderTitle.TextSize = 12
+    SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    UICorner_23.CornerRadius = UDim.new(0, 4)
+    UICorner_23.Parent = Slider
+
+    SliderContent.Name = "SliderContent"
+    SliderContent.Parent = Slider
+    SliderContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderContent.BackgroundTransparency = 1
+    SliderContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderContent.BorderSizePixel = 0
+    SliderContent.Position = UDim2.new(0, 40, 0, 20)
+    SliderContent.Size = UDim2.new(1, -150, 0, 10)
+    SliderContent.Font = Enum.Font.Arcade
+    SliderContent.Text = ConfigSlider.Description
+    SliderContent.TextWrapped = true
+    SliderContent.TextYAlignment = Enum.TextYAlignment.Top
+    SliderContent.TextColor3 = Color3.fromRGB(180, 180, 180)
+    SliderContent.TextSize = 10
+    SliderContent.TextTransparency = 0.600
+    SliderContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    SliderImage.Name = "SliderImage"
+    SliderImage.Parent = Slider
+    SliderImage.AnchorPoint = Vector2.new(0, 0.5)
+    SliderImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderImage.BackgroundTransparency = 1
+    SliderImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderImage.BorderSizePixel = 0
+    SliderImage.Position = UDim2.new(0, 12, 0, 20)
+    SliderImage.Size = UDim2.new(0, 16, 0, 16)
+    SliderImage.Image = ConfigSlider.IconSlider
+    SliderImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
+
+    -- Value Input Box
+    SliderInputFrame.Name = "SliderInputFrame"
+    SliderInputFrame.Parent = Slider
+    SliderInputFrame.AnchorPoint = Vector2.new(1, 0)
+    SliderInputFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    SliderInputFrame.BackgroundTransparency = 0.5
+    SliderInputFrame.BorderSizePixel = 0
+    SliderInputFrame.Position = UDim2.new(1, -12, 0, 8)
+    SliderInputFrame.Size = UDim2.new(0, 55, 0, 22)
+
+    SliderInputCorner.CornerRadius = UDim.new(0, 4)
+    SliderInputCorner.Parent = SliderInputFrame
+
+    SliderInput.Name = "SliderInput"
+    SliderInput.Parent = SliderInputFrame
+    SliderInput.BackgroundTransparency = 1
+    SliderInput.Size = UDim2.new(1, 0, 1, 0)
+    SliderInput.Font = Enum.Font.Arcade
+    SliderInput.Text = tostring(ConfigSlider.Default)
+    SliderInput.TextColor3 = Color3.fromRGB(93, 197, 248)
+    SliderInput.TextSize = 11
+    SliderInput.ClearTextOnFocus = false
+
+    SliderNumber.Name = "SliderNumber"
+    SliderNumber.Parent = SliderInputFrame
+    SliderNumber.BackgroundTransparency = 1
+    SliderNumber.Size = UDim2.new(1, 0, 1, 0)
+    SliderNumber.Font = Enum.Font.Arcade
+    SliderNumber.Text = ConfigSlider.Prefix .. tostring(ConfigSlider.Default) .. ConfigSlider.Suffix
+    SliderNumber.TextColor3 = Color3.fromRGB(93, 197, 248)
+    SliderNumber.TextSize = 11
+    SliderNumber.Visible = true
+
+    -- Min/Max Labels
+    MinMaxLabel.Name = "MinMaxLabel"
+    MinMaxLabel.Parent = Slider
+    MinMaxLabel.BackgroundTransparency = 1
+    MinMaxLabel.Position = UDim2.new(0, 12, 1, -18)
+    MinMaxLabel.Size = UDim2.new(1, -24, 0, 10)
+    MinMaxLabel.Font = Enum.Font.Arcade
+    MinMaxLabel.Text = ConfigSlider.Min .. " — " .. ConfigSlider.Max
+    MinMaxLabel.TextColor3 = Color3.fromRGB(120, 120, 120)
+    MinMaxLabel.TextSize = 9
+    MinMaxLabel.TextTransparency = 0.6
+    MinMaxLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+    -- Slider Track
+    SliderFrame.Name = "SliderFrame"
+    SliderFrame.Parent = Slider
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    SliderFrame.BackgroundTransparency = 0.3
+    SliderFrame.BorderSizePixel = 0
+    SliderFrame.Position = UDim2.new(0, 12, 1, -26)
+    SliderFrame.Size = UDim2.new(1, -24, 0, 4)
+
+    UICorner_24.CornerRadius = UDim.new(0, 2)
+    UICorner_24.Parent = SliderFrame
+
+    UIStroke_24.Parent = SliderFrame
+    UIStroke_24.Color = Color3.fromRGB(60, 60, 60)
+    UIStroke_24.Thickness = 0.5
+    UIStroke_24.Transparency = 0.7
+
+    -- Slider Fill
+    SliderDrag.Name = "SliderDrag"
+    SliderDrag.Parent = SliderFrame
+    SliderDrag.AnchorPoint = Vector2.new(0, 0.5)
+    SliderDrag.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    SliderDrag.BorderSizePixel = 0
+    SliderDrag.Position = UDim2.new(0, 0, 0.5, 0)
+    SliderDrag.Size = UDim2.new(0, 0, 1, 0)
+    SliderDrag.ZIndex = 2
+
+    UICorner_25.CornerRadius = UDim.new(0, 2)
+    UICorner_25.Parent = SliderDrag
+
+    -- Slider Handle
+    SliderCircle.Name = "SliderCircle"
+    SliderCircle.Parent = SliderDrag
+    SliderCircle.AnchorPoint = Vector2.new(1, 0.5)
+    SliderCircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderCircle.BorderSizePixel = 0
+    SliderCircle.Position = UDim2.new(1, 0, 0.5, 0)
+    SliderCircle.Size = UDim2.new(0, 12, 0, 12)
+    SliderCircle.ZIndex = 3
+
+    UICorner_26.CornerRadius = UDim.new(1, 0)
+    UICorner_26.Parent = SliderCircle
+
+    UIStroke_10.Parent = SliderCircle
+    UIStroke_10.Color = Color3.fromRGB(93, 197, 248)
+    UIStroke_10.Thickness = 2
+
+    -- Drag Area
+    SliderFrDrag.Name = "SliderFrDrag"
+    SliderFrDrag.Parent = SliderFrame
+    SliderFrDrag.BackgroundTransparency = 1
+    SliderFrDrag.BorderSizePixel = 0
+    SliderFrDrag.Position = UDim2.new(0, 0, 0, -15)
+    SliderFrDrag.Size = UDim2.new(1, 0, 0, 34)
+    SliderFrDrag.ZIndex = 4
+
+    -- Adjust layout if no description
+    if SliderContent.Text == "" then
+        SliderTitle.Size = UDim2.new(1, -150, 0, 22)
+        SliderTitle.Position = UDim2.new(0, 40, 0, 8)
+        SliderImage.Position = UDim2.new(0, 12, 0, 19)
+    end
+
+    -- Dynamic sizing
+    Crystal.Stepped:Connect(function()
+        local contentHeight = math.max(SliderContent.TextBounds.Y, 10)
+        local totalHeight = 55 + contentHeight
+        Slider.Size = UDim2.new(1, -8, 0, totalHeight)
+        SliderContent.Size = UDim2.new(1, -150, 0, contentHeight)
+        SliderFrame.Position = UDim2.new(0, 12, 1, -26)
+        MinMaxLabel.Position = UDim2.new(0, 12, 1, -18)
+    end)
+
+    local dragging = false
+    local hovering = false
+
+    -- Rounding function
+    local function Round(Number, Factor)
+        local Result = math.floor(Number / Factor + 0.5) * Factor
+        return Result
+    end
+
+    -- Format display value
+    local function FormatValue(value)
+        return ConfigSlider.Prefix .. tostring(value) .. ConfigSlider.Suffix
+    end
+
+    -- Set slider value
+    function SliderFunc:Set(Value)
+        Value = math.clamp(Round(Value, ConfigSlider.Increment), ConfigSlider.Min, ConfigSlider.Max)
+        SliderFunc.Values = Value
+        
+        SliderNumber.Text = FormatValue(Value)
+        SliderInput.Text = tostring(Value)
+        
+        local scale = (Value - ConfigSlider.Min) / (ConfigSlider.Max - ConfigSlider.Min)
+        Crystal.TweenObject({SliderDrag, 0.2, "Size", UDim2.fromScale(scale, 1)})
+        
+        pcall(function()
+            ConfigSlider.Callback(Value)
+        end)
+    end
+
+    -- Hover effects for handle
+    Crystal.Mouseto(SliderFrDrag, function()
+        hovering = true
+        Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 14, 0, 14)})
+        Crystal.TweenObject({UIStroke_10, 0.2, "Thickness", 2.5})
+    end, function()
+        hovering = false
+        if not dragging then
+            Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 12, 0, 12)})
+            Crystal.TweenObject({UIStroke_10, 0.2, "Thickness", 2})
+        end
+    end)
+
+    -- Drag functionality
+    SliderFrDrag.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            Crystal.TweenObject({SliderCircle, 0.1, "Size", UDim2.new(0, 16, 0, 16)})
+            Crystal.TweenObject({UIStroke_10, 0.1, "Thickness", 3})
+            
+            local function update(pos)
+                local SizeScale = math.clamp((pos.X - SliderFrame.AbsolutePosition.X) / SliderFrame.AbsoluteSize.X, 0, 1)
+                SliderFunc:Set(ConfigSlider.Min + ((ConfigSlider.Max - ConfigSlider.Min) * SizeScale))
+            end
+            
+            update(input.Position)
+            
+            local connection
+            connection = input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                    connection:Disconnect()
+                    if not hovering then
+                        Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 12, 0, 12)})
+                        Crystal.TweenObject({UIStroke_10, 0.2, "Thickness", 2})
+                    else
+                        Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 14, 0, 14)})
+                        Crystal.TweenObject({UIStroke_10, 0.2, "Thickness", 2.5})
+                    end
+                end
+            end)
+        end
+    end)
+
+    Crystal.UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local SizeScale = math.clamp((input.Position.X - SliderFrame.AbsolutePosition.X) / SliderFrame.AbsoluteSize.X, 0, 1)
+            SliderFunc:Set(ConfigSlider.Min + ((ConfigSlider.Max - ConfigSlider.Min) * SizeScale))
+        end
+    end)
+
+    -- Text input functionality
+    SliderInput.Focused:Connect(function()
+        SliderNumber.Visible = false
+        SliderInput.Visible = true
+        SliderInput.Text = tostring(SliderFunc.Values)
+        Crystal.TweenObject({SliderInputFrame, 0.2, "BackgroundColor3", Color3.fromRGB(50, 50, 50)})
+    end)
+
+    SliderInput.FocusLost:Connect(function(enterPressed)
+        SliderNumber.Visible = true
+        SliderInput.Visible = false
+        Crystal.TweenObject({SliderInputFrame, 0.2, "BackgroundColor3", Color3.fromRGB(40, 40, 40)})
+        
+        if enterPressed then
+            local value = tonumber(SliderInput.Text)
+            if value then
+                SliderFunc:Set(value)
+            else
+                SliderInput.Text = tostring(SliderFunc.Values)
+            end
+        end
+    end)
+
+    SliderInput:GetPropertyChangedSignal("Text"):Connect(function()
+        local text = SliderInput.Text
+        local valid = text:gsub("[^0-9%-.]", "")
+        
+        if valid ~= text then
+            SliderInput.Text = valid
+        end
+        
+        if valid ~= "" and valid ~= "-" and valid ~= "." then
+            local num = tonumber(valid)
+            if num then
+                num = math.clamp(num, ConfigSlider.Min, ConfigSlider.Max)
+                if num ~= tonumber(valid) then
+                    SliderInput.Text = tostring(num)
+                end
+            end
+        end
+    end)
+
+    -- Keyboard shortcuts
+    SliderFrDrag.InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.A then
+            SliderFunc:Set(SliderFunc.Values - ConfigSlider.Increment)
+        elseif input.KeyCode == Enum.KeyCode.Right or input.KeyCode == Enum.KeyCode.D then
+            SliderFunc:Set(SliderFunc.Values + ConfigSlider.Increment)
+        end
+    end)
+
+    -- Mouse wheel support
+    SliderFrDrag.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseWheel then
+            if input.Position.Z > 0 then
+                SliderFunc:Set(SliderFunc.Values + ConfigSlider.Increment)
+            else
+                SliderFunc:Set(SliderFunc.Values - ConfigSlider.Increment)
+            end
+        end
+    end)
+
+    -- Initialize
+    SliderInput.Visible = false
+    SliderFunc:Set(ConfigSlider.Default)
+
+    -- Additional methods
+    function SliderFunc:SetMin(min)
+        ConfigSlider.Min = min
+        SliderFunc.Min = min
+        MinMaxLabel.Text = min .. " — " .. ConfigSlider.Max
+        SliderFunc:Set(SliderFunc.Values)
+    end
+
+    function SliderFunc:SetMax(max)
+        ConfigSlider.Max = max
+        SliderFunc.Max = max
+        MinMaxLabel.Text = ConfigSlider.Min .. " — " .. max
+        SliderFunc:Set(SliderFunc.Values)
+    end
+
+    function SliderFunc:SetIncrement(increment)
+        ConfigSlider.Increment = increment
+    end
+
+    function SliderFunc:GetValue()
+        return SliderFunc.Values
+    end
+
+    return SliderFunc
+end
 TabCount = TabCount + 1
 return TabObject
     end
