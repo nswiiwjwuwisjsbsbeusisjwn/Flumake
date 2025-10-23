@@ -1753,7 +1753,6 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     local DropFunc = {List = ConfigDropdown.Values, Value = ConfigDropdown.Default}
 
-    -- Fix: Outside click connection - kiểm tra bounds của DropdownSelectReal chính xác hơn, và thêm debounce để tránh spam
     local debounce = false
     local outsideConnection = Crystal.UserInputService.InputBegan:Connect(function(input)
         if debounce or not DropMore.Visible then return end
@@ -1762,7 +1761,6 @@ function TabObject:AddDropdown(ConfigDropdown)
             local mousePos = Crystal.UserInputService:GetMouseLocation()
             local dropAbsPos = DropdownSelectReal.AbsolutePosition
             local dropAbsSize = DropdownSelectReal.AbsoluteSize
-            -- Kiểm tra nếu click ngoài bounds của DropdownSelectReal
             if mousePos.X < dropAbsPos.X or mousePos.X > dropAbsPos.X + dropAbsSize.X or
                mousePos.Y < dropAbsPos.Y or mousePos.Y > dropAbsPos.Y + dropAbsSize.Y then
                 DropMore.Visible = false
@@ -1783,11 +1781,11 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropMore.BackgroundTransparency = 0.999
     DropMore.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropMore.BorderSizePixel = 0
-    DropMore.Position = UDim2.new(0, 0, 0, 0)  -- Full screen overlay
+    DropMore.Position = UDim2.new(0, 0, 0, 0)
     DropMore.Size = UDim2.new(1, 0, 1, 0)
     DropMore.Visible = false
     DropMore.ClipsDescendants = true
-    DropMore.ZIndex = 10  -- Cao để overlay
+    DropMore.ZIndex = 10
 
     DropButton.Name = "DropButton"
     DropButton.Parent = DropMore
@@ -1811,8 +1809,8 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownSelectReal.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropdownSelectReal.BorderSizePixel = 0
     DropdownSelectReal.ClipsDescendants = true
-    DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, 0)  -- Fix: Set initial position tạm thời, update sau khi parent Dropdown
-    DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#ConfigDropdown.Values * 30 + 40, 200))  -- Fix: Wrap trong UDim2.new
+    DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, 0)
+    DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#ConfigDropdown.Values * 30 + 40, 200))
 
     UICorner_41.CornerRadius = UDim.new(0, 8)
     UICorner_41.Parent = DropdownSelectReal
@@ -1834,7 +1832,6 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownFolder.Name = "DropdownFolder"
     DropdownFolder.Parent = DropFrame
 
-    -- SearchBox cho dropdown
     SearchBoxFrame.Name = "SearchBoxFrame"
     SearchBoxFrame.Parent = DropdownFolder
     SearchBoxFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
@@ -1889,13 +1886,11 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     Crystal.Stepped:Connect(function()
         ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
-        -- Update position của DropdownSelectReal khi window resize hoặc sau khi parent
         if DropMore.Visible then
             DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)
         end
     end)
 
-    -- Filter options based on SearchBox text
     SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
         local searchText = string.lower(SearchBox.Text)
         for _, option in pairs(ScrollSelect:GetChildren()) do
@@ -1917,14 +1912,13 @@ function TabObject:AddDropdown(ConfigDropdown)
     end)
 
     Dropdown.Name = ConfigDropdown.Title
-    Dropdown.Parent = ScrollLayers  -- Parent trước
+    Dropdown.Parent = ScrollLayers
     Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Dropdown.BackgroundTransparency = 0.970
     Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Dropdown.BorderSizePixel = 0
     Dropdown.Size = UDim2.new(1, -8, 0, 45)
 
-    -- Fix: Set Position và Size cho DropdownSelectReal sau khi parent Dropdown
     DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, Dropdown.AbsolutePosition.Y.Offset + Dropdown.AbsoluteSize.Y.Offset + 5)
     DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#ConfigDropdown.Values * 30 + 40, 200))
 
@@ -2000,7 +1994,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     OptionSelecting.TextColor3 = Color3.fromRGB(255, 255, 255)
     OptionSelecting.TextSize = 11
     OptionSelecting.TextXAlignment = Enum.TextXAlignment.Left
-    OptionSelecting.TextTruncate = Enum.TextTruncate.AtEnd  -- Fix: Thêm truncate để tránh tràn text
+    OptionSelecting.TextTruncate = Enum.TextTruncate.AtEnd
 
     OptionImg.Name = "OptionImg"
     OptionImg.Parent = SelectOptionsFrame
@@ -2079,7 +2073,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                         Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.950})
                         Crystal.TweenObject({chooseFrame, 0.4, "Size", UDim2.new(0, 1, 0, 10)})
                     end
-else
+                else
                     optionSelecting.TextColor3 = Color3.fromRGB(255, 255, 255)
                     local chooseFrame = v:FindFirstChild("ChooseFrame")
                     if chooseFrame then
@@ -2105,7 +2099,6 @@ else
             displayText = ""
         else
             displayText = table.concat(DropdownValue, ", ")
-            -- Fix: Nếu text quá dài (ví dụ > 50 ký tự), cắt và thêm "..."
             if #displayText > 50 then
                 displayText = string.sub(displayText, 1, 50) .. "..."
             end
@@ -2171,7 +2164,7 @@ else
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Option
         ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
-        ChooseFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        ChooseFrame.BackgroundColor3 = Color3.fromRGB(93, 197 atividade, 248)
         ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ChooseFrame.BorderSizePixel = 0
         ChooseFrame.Position = UDim2.new(0, 2, 0.5, 0)
@@ -2199,11 +2192,9 @@ else
                     end
                     DropFunc:Set(DropFunc.Value)
                 end
-                -- Fix: Trong multi, không tự đóng, chỉ đóng khi click ngoài
             else
                 DropFunc.Value = {OptionSelecting_2.Text}
                 DropFunc:Set(DropFunc.Value)
-                -- Tự động đóng dropdown sau khi chọn (single mode)
                 DropMore.Visible = false
                 for _, v in pairs(CrystalHub.LayersFolder:GetDescendants()) do
                     if v:IsA("TextButton") then
@@ -2231,8 +2222,7 @@ else
         DropFunc:Clear()
         for _, v in pairs(NewValue) do
             DropFunc:AddValue(v)
-        end
-        -- Update size sau refresh
+        }
         DropdownSelectReal.Size = UDim2.new(0, 200, 0, math.min(#NewValue * 30 + 40, 200))
     end
 
@@ -2247,7 +2237,6 @@ else
 
     return DropFunc
 end
-
 TabCount = TabCount + 1
 return TabObject
     end
