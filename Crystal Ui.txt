@@ -1727,44 +1727,35 @@ function TabObject:AddDropdown(ConfigDropdown)
     ConfigDropdown.Default = ConfigDropdown.Default or (ConfigDropdown.Multi and {} or "")
     ConfigDropdown.Callback = ConfigDropdown.Callback or function() end
 
+    -- Instances
     local Dropdown = Instance.new("Frame")
     local DropdownTitle = Instance.new("TextLabel")
-    local DropdownCorner = Instance.new("UICorner")
+    local UICorner_27 = Instance.new("UICorner")
     local DropdownContent = Instance.new("TextLabel")
     local DropdownImage = Instance.new("ImageLabel")
     local SelectOptionsFrame = Instance.new("Frame")
-    local SelectCorner = Instance.new("UICorner")
-    local SelectStroke = Instance.new("UIStroke")
+    local UICorner_28 = Instance.new("UICorner")
+    local UIStroke_28 = Instance.new("UIStroke")
     local OptionSelecting = Instance.new("TextLabel")
     local OptionImg = Instance.new("ImageLabel")
-    local DropButton = Instance.new("TextButton")
     local DropMore = Instance.new("Frame")
-    local DropMoreButton = Instance.new("TextButton")
+    local DropButton = Instance.new("TextButton")
     local DropdownSelectReal = Instance.new("Frame")
-    local DropRealCorner = Instance.new("UICorner")
-    local DropRealStroke = Instance.new("UIStroke")
-    local DropShadowHolder = Instance.new("Frame")
-    local DropShadow = Instance.new("ImageLabel")
+    local UICorner_41 = Instance.new("UICorner")
+    local UIStroke_16 = Instance.new("UIStroke")
     local DropFrame = Instance.new("Frame")
-    local DropHeader = Instance.new("Frame")
-    local DropHeaderCorner = Instance.new("UICorner")
-    local DropHeaderTitle = Instance.new("TextLabel")
-    local CloseDropButton = Instance.new("TextButton")
-    local CloseDropIcon = Instance.new("ImageLabel")
+    local DropdownFolder = Instance.new("Folder")
+    local ScrollSelect = Instance.new("ScrollingFrame")
+    local UIListLayout_6 = Instance.new("UIListLayout")
+    local DropdownButton = Instance.new("TextButton")
     local SearchBoxFrame = Instance.new("Frame")
     local SearchBoxCorner = Instance.new("UICorner")
-    local SearchImage = Instance.new("ImageLabel")
     local SearchBox = Instance.new("TextBox")
+    local SearchImage = Instance.new("ImageLabel")
     local SearchDecide = Instance.new("Frame")
     local SearchDecideCorner = Instance.new("UICorner")
     local SearchDecideActive = Instance.new("Frame")
     local SearchDecideActiveCorner = Instance.new("UICorner")
-    local ScrollSelect = Instance.new("ScrollingFrame")
-    local ScrollLayout = Instance.new("UIListLayout")
-    local ConfirmButtonFrame = Instance.new("Frame")
-    local ConfirmButtonCorner = Instance.new("UICorner")
-    local ConfirmButton = Instance.new("TextButton")
-    local SelectCounter = Instance.new("TextLabel")
 
     local DropFunc = {
         List = ConfigDropdown.Values, 
@@ -1772,6 +1763,164 @@ function TabObject:AddDropdown(ConfigDropdown)
         Multi = ConfigDropdown.Multi,
         Selected = {}
     }
+
+    -- Overlay Background
+    DropMore.Name = "DropMore"
+    DropMore.Parent = CrystalHub.Layers
+    DropMore.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    DropMore.BackgroundTransparency = 1
+    DropMore.BorderSizePixel = 0
+    DropMore.Position = UDim2.new(0, 0, 0, 30)
+    DropMore.Size = UDim2.new(1, 0, 1, -30)
+    DropMore.Visible = false
+    DropMore.ZIndex = 100
+
+    -- Background Button (Click outside to close)
+    DropButton.Name = "DropButton"
+    DropButton.Parent = DropMore
+    DropButton.BackgroundTransparency = 1
+    DropButton.BorderSizePixel = 0
+    DropButton.Size = UDim2.new(1, 0, 1, 0)
+    DropButton.Text = ""
+    DropButton.ZIndex = 100
+
+    -- Dropdown Panel
+    DropdownSelectReal.Name = "DropdownSelectReal"
+    DropdownSelectReal.Parent = DropMore
+    DropdownSelectReal.AnchorPoint = Vector2.new(0.5, 0.5)
+    DropdownSelectReal.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+    DropdownSelectReal.BackgroundTransparency = 0.050
+    DropdownSelectReal.BorderSizePixel = 0
+    DropdownSelectReal.ClipsDescendants = true
+    DropdownSelectReal.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DropdownSelectReal.Size = UDim2.new(0, 320, 0, 420)
+    DropdownSelectReal.ZIndex = 101
+
+    UICorner_41.CornerRadius = UDim.new(0, 12)
+    UICorner_41.Parent = DropdownSelectReal
+
+    UIStroke_16.Parent = DropdownSelectReal
+    UIStroke_16.Color = Color3.fromRGB(60, 60, 60)
+    UIStroke_16.Thickness = 1.5
+
+    -- Content Frame
+    DropFrame.Name = "DropFrame"
+    DropFrame.Parent = DropdownSelectReal
+    DropFrame.BackgroundTransparency = 1
+    DropFrame.Size = UDim2.new(1, 0, 1, 0)
+    DropFrame.ZIndex = 101
+
+    DropdownFolder.Name = "DropdownFolder"
+    DropdownFolder.Parent = DropFrame
+
+    -- Header Title
+    local HeaderTitle = Instance.new("TextLabel")
+    HeaderTitle.Name = "HeaderTitle"
+    HeaderTitle.Parent = DropFrame
+    HeaderTitle.BackgroundTransparency = 1
+    HeaderTitle.Position = UDim2.new(0, 18, 0, 15)
+    HeaderTitle.Size = UDim2.new(1, -36, 0, 20)
+    HeaderTitle.Font = Enum.Font.Arcade
+    HeaderTitle.Text = ConfigDropdown.Title
+    HeaderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    HeaderTitle.TextSize = 14
+    HeaderTitle.TextXAlignment = Enum.TextXAlignment.Left
+    HeaderTitle.ZIndex = 102
+
+    -- Search Box
+    SearchBoxFrame.Name = "SearchBoxFrame"
+    SearchBoxFrame.Parent = DropdownFolder
+    SearchBoxFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    SearchBoxFrame.BackgroundTransparency = 0.300
+    SearchBoxFrame.BorderSizePixel = 0
+    SearchBoxFrame.Position = UDim2.new(0, 15, 0, 50)
+    SearchBoxFrame.Size = UDim2.new(1, -30, 0, 38)
+    SearchBoxFrame.ZIndex = 102
+
+    SearchBoxCorner.CornerRadius = UDim.new(0, 8)
+    SearchBoxCorner.Parent = SearchBoxFrame
+
+    SearchImage.Name = "SearchImage"
+    SearchImage.Parent = SearchBoxFrame
+    SearchImage.AnchorPoint = Vector2.new(0, 0.5)
+    SearchImage.BackgroundTransparency = 1
+    SearchImage.Position = UDim2.new(0, 12, 0.5, 0)
+    SearchImage.Size = UDim2.new(0, 18, 0, 18)
+    SearchImage.Image = "rbxassetid://18557078698"
+    SearchImage.ImageColor3 = Color3.fromRGB(93, 197, 248)
+    SearchImage.ZIndex = 103
+
+    SearchBox.Name = "SearchBox"
+    SearchBox.Parent = SearchBoxFrame
+    SearchBox.BackgroundTransparency = 1
+    SearchBox.Position = UDim2.new(0, 40, 0, 0)
+    SearchBox.Size = UDim2.new(1, -45, 1, 0)
+    SearchBox.Font = Enum.Font.Arcade
+    SearchBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
+    SearchBox.PlaceholderText = "Search options..."
+    SearchBox.Text = ""
+    SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SearchBox.TextSize = 12
+    SearchBox.TextXAlignment = Enum.TextXAlignment.Left
+    SearchBox.ZIndex = 103
+
+    SearchDecide.Name = "SearchDecide"
+    SearchDecide.Parent = SearchBoxFrame
+    SearchDecide.AnchorPoint = Vector2.new(0.5, 1)
+    SearchDecide.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    SearchDecide.BackgroundTransparency = 0.800
+    SearchDecide.BorderSizePixel = 0
+    SearchDecide.Position = UDim2.new(0.5, 0, 1, 0)
+    SearchDecide.Size = UDim2.new(1, -8, 0, 2)
+    SearchDecide.ZIndex = 103
+
+    SearchDecideCorner.CornerRadius = UDim.new(0, 10)
+    SearchDecideCorner.Parent = SearchDecide
+
+    SearchDecideActive.Name = "SearchDecideActive"
+    SearchDecideActive.Parent = SearchDecide
+    SearchDecideActive.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    SearchDecideActive.BackgroundTransparency = 1
+    SearchDecideActive.BorderSizePixel = 0
+    SearchDecideActive.Size = UDim2.new(1, 0, 1, 0)
+    SearchDecideActive.ZIndex = 104
+
+    SearchDecideActiveCorner.CornerRadius = UDim.new(0, 10)
+    SearchDecideActiveCorner.Parent = SearchDecideActive
+
+    -- Search Box Focus Effects
+    SearchBox.Focused:Connect(function()
+        Crystal.TweenObject({SearchDecideActive, 0.3, "BackgroundTransparency", 0})
+        Crystal.TweenObject({SearchBoxFrame, 0.3, "BackgroundTransparency", 0.150})
+    end)
+
+    SearchBox.FocusLost:Connect(function()
+        Crystal.TweenObject({SearchDecideActive, 0.3, "BackgroundTransparency", 1})
+        Crystal.TweenObject({SearchBoxFrame, 0.3, "BackgroundTransparency", 0.300})
+    end)
+
+    -- Scrolling Options List
+    ScrollSelect.Name = "ScrollSelect"
+    ScrollSelect.Parent = DropdownFolder
+    ScrollSelect.Active = true
+    ScrollSelect.BackgroundTransparency = 1
+    ScrollSelect.BorderSizePixel = 0
+    ScrollSelect.Position = UDim2.new(0, 15, 0, 98)
+    ScrollSelect.Size = UDim2.new(1, -30, 1, -113)
+    ScrollSelect.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
+    ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, 0)
+    ScrollSelect.ScrollBarImageTransparency = 0.500
+    ScrollSelect.ScrollBarThickness = 4
+    ScrollSelect.ZIndex = 102
+
+    UIListLayout_6.Parent = ScrollSelect
+    UIListLayout_6.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout_6.Padding = UDim.new(0, 6)
+
+    -- Auto-resize canvas
+    Crystal.Stepped:Connect(function()
+        ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
+    end)
 
     -- Main Dropdown Frame
     Dropdown.Name = ConfigDropdown.Title
@@ -1781,8 +1930,8 @@ function TabObject:AddDropdown(ConfigDropdown)
     Dropdown.BorderSizePixel = 0
     Dropdown.Size = UDim2.new(1, 0, 0, 50)
 
-    DropdownCorner.CornerRadius = UDim.new(0, 8)
-    DropdownCorner.Parent = Dropdown
+    UICorner_27.CornerRadius = UDim.new(0, 8)
+    UICorner_27.Parent = Dropdown
 
     Crystal.Mouseto(Dropdown, function()
         Crystal.TweenObject({Dropdown, 0.2, "BackgroundTransparency", 0.850})
@@ -1824,6 +1973,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownImage.Image = ConfigDropdown.IconDrop
     DropdownImage.ImageColor3 = Color3.fromRGB(93, 197, 248)
 
+    -- Select Button Frame
     SelectOptionsFrame.Name = "SelectOptionsFrame"
     SelectOptionsFrame.Parent = Dropdown
     SelectOptionsFrame.AnchorPoint = Vector2.new(1, 0.5)
@@ -1834,21 +1984,21 @@ function TabObject:AddDropdown(ConfigDropdown)
     SelectOptionsFrame.Size = UDim2.new(0, 135, 0, 28)
     SelectOptionsFrame.ClipsDescendants = true
 
-    SelectCorner.CornerRadius = UDim.new(0, 6)
-    SelectCorner.Parent = SelectOptionsFrame
+    UICorner_28.CornerRadius = UDim.new(0, 6)
+    UICorner_28.Parent = SelectOptionsFrame
 
-    SelectStroke.Parent = SelectOptionsFrame
-    SelectStroke.Color = Color3.fromRGB(60, 60, 60)
-    SelectStroke.Thickness = 1.2
-    SelectStroke.Transparency = 0.600
+    UIStroke_28.Parent = SelectOptionsFrame
+    UIStroke_28.Color = Color3.fromRGB(60, 60, 60)
+    UIStroke_28.Thickness = 1.2
+    UIStroke_28.Transparency = 0.600
 
     Crystal.Mouseto(SelectOptionsFrame, function()
         Crystal.TweenObject({SelectOptionsFrame, 0.2, "BackgroundTransparency", 0.100})
-        Crystal.TweenObject({SelectStroke, 0.2, "Transparency", 0.400})
+        Crystal.TweenObject({UIStroke_28, 0.2, "Transparency", 0.400})
         Crystal.TweenObject({OptionImg, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
     end, function()
         Crystal.TweenObject({SelectOptionsFrame, 0.2, "BackgroundTransparency", 0.200})
-        Crystal.TweenObject({SelectStroke, 0.2, "Transparency", 0.600})
+        Crystal.TweenObject({UIStroke_28, 0.2, "Transparency", 0.600})
         Crystal.TweenObject({OptionImg, 0.2, "ImageColor3", Color3.fromRGB(180, 180, 180)})
     end)
 
@@ -1874,268 +2024,25 @@ function TabObject:AddDropdown(ConfigDropdown)
     OptionImg.Image = "rbxassetid://18558566660"
     OptionImg.ImageColor3 = Color3.fromRGB(180, 180, 180)
 
-    DropButton.Name = "DropButton"
-    DropButton.Parent = SelectOptionsFrame
-    DropButton.BackgroundTransparency = 1
-    DropButton.Size = UDim2.new(1, 0, 1, 0)
-    DropButton.Text = ""
-    DropButton.Font = Enum.Font.SourceSans
+    DropdownButton.Name = "DropdownButton"
+    DropdownButton.Parent = SelectOptionsFrame
+    DropdownButton.BackgroundTransparency = 1
+    DropdownButton.Size = UDim2.new(1, 0, 1, 0)
+    DropdownButton.Text = ""
+    DropdownButton.Font = Enum.Font.SourceSans
 
-    -- Popup Modal
-    DropMore.Name = "DropMore"
-    DropMore.Parent = CrystalHub.Layers
-    DropMore.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    DropMore.BackgroundTransparency = 1
-    DropMore.BorderSizePixel = 0
-    DropMore.Position = UDim2.new(0, 0, 0, 30)
-    DropMore.Size = UDim2.new(1, 0, 1, -30)
-    DropMore.Visible = false
-    DropMore.ZIndex = 150
-
-    DropMoreButton.Name = "DropMoreButton"
-    DropMoreButton.Parent = DropMore
-    DropMoreButton.BackgroundTransparency = 1
-    DropMoreButton.Size = UDim2.new(1, 0, 1, 0)
-    DropMoreButton.Text = ""
-    DropMoreButton.ZIndex = 150
-
-    DropShadowHolder.Name = "DropShadowHolder"
-    DropShadowHolder.Parent = DropMore
-    DropShadowHolder.BackgroundTransparency = 1
-    DropShadowHolder.BorderSizePixel = 0
-    DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
-    DropShadowHolder.ZIndex = 150
-
-    DropShadow.Name = "DropShadow"
-    DropShadow.Parent = DropShadowHolder
-    DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    DropShadow.BackgroundTransparency = 1
-    DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    DropShadow.Size = UDim2.new(1, 50, 1, 50)
-    DropShadow.ZIndex = 150
-    DropShadow.Image = "rbxassetid://6015897843"
-    DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    DropShadow.ImageTransparency = 0.600
-    DropShadow.ScaleType = Enum.ScaleType.Slice
-    DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-
-    DropdownSelectReal.Name = "DropdownSelectReal"
-    DropdownSelectReal.Parent = DropShadowHolder
-    DropdownSelectReal.AnchorPoint = Vector2.new(0.5, 0.5)
-    DropdownSelectReal.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-    DropdownSelectReal.BackgroundTransparency = 0.050
-    DropdownSelectReal.BorderSizePixel = 0
-    DropdownSelectReal.ClipsDescendants = true
-    DropdownSelectReal.Position = UDim2.new(0.5, 0, -0.5, 0)
-    DropdownSelectReal.Size = UDim2.new(0, 320, 0, 420)
-    DropdownSelectReal.ZIndex = 151
-
-    DropRealCorner.CornerRadius = UDim.new(0, 12)
-    DropRealCorner.Parent = DropdownSelectReal
-
-    DropRealStroke.Parent = DropdownSelectReal
-    DropRealStroke.Color = Color3.fromRGB(60, 60, 60)
-    DropRealStroke.Thickness = 1.5
-
-    DropFrame.Name = "DropFrame"
-    DropFrame.Parent = DropdownSelectReal
-    DropFrame.BackgroundTransparency = 1
-    DropFrame.Position = UDim2.new(0, 0, 0, 0)
-    DropFrame.Size = UDim2.new(1, 0, 1, 0)
-    DropFrame.ZIndex = 151
-
-    -- Header
-    DropHeader.Name = "DropHeader"
-    DropHeader.Parent = DropFrame
-    DropHeader.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    DropHeader.BackgroundTransparency = 0.500
-    DropHeader.BorderSizePixel = 0
-    DropHeader.Size = UDim2.new(1, 0, 0, 50)
-    DropHeader.ZIndex = 152
-
-    DropHeaderCorner.CornerRadius = UDim.new(0, 12)
-    DropHeaderCorner.Parent = DropHeader
-
-    DropHeaderTitle.Name = "DropHeaderTitle"
-    DropHeaderTitle.Parent = DropHeader
-    DropHeaderTitle.BackgroundTransparency = 1
-    DropHeaderTitle.Position = UDim2.new(0, 18, 0, 0)
-    DropHeaderTitle.Size = UDim2.new(1, -80, 1, 0)
-    DropHeaderTitle.Font = Enum.Font.Arcade
-    DropHeaderTitle.Text = ConfigDropdown.Title
-    DropHeaderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    DropHeaderTitle.TextSize = 14
-    DropHeaderTitle.TextXAlignment = Enum.TextXAlignment.Left
-    DropHeaderTitle.ZIndex = 153
-
-    CloseDropButton.Name = "CloseDropButton"
-    CloseDropButton.Parent = DropHeader
-    CloseDropButton.AnchorPoint = Vector2.new(1, 0.5)
-    CloseDropButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    CloseDropButton.BackgroundTransparency = 0.300
-    CloseDropButton.BorderSizePixel = 0
-    CloseDropButton.Position = UDim2.new(1, -15, 0.5, 0)
-    CloseDropButton.Size = UDim2.new(0, 32, 0, 32)
-    CloseDropButton.Text = ""
-    CloseDropButton.ZIndex = 153
-
-    local CloseCorner = Instance.new("UICorner")
-    CloseCorner.CornerRadius = UDim.new(0, 8)
-    CloseCorner.Parent = CloseDropButton
-
-    Crystal.Mouseto(CloseDropButton, function()
-        Crystal.TweenObject({CloseDropButton, 0.2, "BackgroundTransparency", 0.100})
-    end, function()
-        Crystal.TweenObject({CloseDropButton, 0.2, "BackgroundTransparency", 0.300})
+    -- Dynamic sizing for description
+    Crystal.Stepped:Connect(function()
+        if DropdownContent.Text ~= "" then
+            local contentHeight = math.max(DropdownContent.TextBounds.Y + 10, 20)
+            Dropdown.Size = UDim2.new(1, 0, 0, contentHeight + 32)
+            DropdownContent.Size = UDim2.new(1, -200, 0, contentHeight)
+        else
+            Dropdown.Size = UDim2.new(1, 0, 0, 50)
+            DropdownTitle.Position = UDim2.new(0, 45, 0, 0)
+            DropdownTitle.Size = UDim2.new(1, -200, 1, 0)
+        end
     end)
-
-    CloseDropIcon.Name = "CloseDropIcon"
-    CloseDropIcon.Parent = CloseDropButton
-    CloseDropIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-    CloseDropIcon.BackgroundTransparency = 1
-    CloseDropIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-    CloseDropIcon.Size = UDim2.new(0, 18, 0, 18)
-    CloseDropIcon.Image = "rbxassetid://18556800637"
-    CloseDropIcon.ImageColor3 = Color3.fromRGB(230, 230, 230)
-    CloseDropIcon.ZIndex = 154
-
-    -- Search Box
-    SearchBoxFrame.Name = "SearchBoxFrame"
-    SearchBoxFrame.Parent = DropFrame
-    SearchBoxFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    SearchBoxFrame.BackgroundTransparency = 0.300
-    SearchBoxFrame.BorderSizePixel = 0
-    SearchBoxFrame.Position = UDim2.new(0, 15, 0, 60)
-    SearchBoxFrame.Size = UDim2.new(1, -30, 0, 38)
-    SearchBoxFrame.ZIndex = 152
-
-    SearchBoxCorner.CornerRadius = UDim.new(0, 8)
-    SearchBoxCorner.Parent = SearchBoxFrame
-
-    SearchImage.Name = "SearchImage"
-    SearchImage.Parent = SearchBoxFrame
-    SearchImage.AnchorPoint = Vector2.new(0, 0.5)
-    SearchImage.BackgroundTransparency = 1
-    SearchImage.Position = UDim2.new(0, 12, 0.5, 0)
-    SearchImage.Size = UDim2.new(0, 18, 0, 18)
-    SearchImage.Image = "rbxassetid://18557078698"
-    SearchImage.ImageColor3 = Color3.fromRGB(93, 197, 248)
-    SearchImage.ZIndex = 153
-
-    SearchBox.Name = "SearchBox"
-    SearchBox.Parent = SearchBoxFrame
-    SearchBox.BackgroundTransparency = 1
-    SearchBox.Position = UDim2.new(0, 40, 0, 0)
-    SearchBox.Size = UDim2.new(1, -45, 1, 0)
-    SearchBox.Font = Enum.Font.Arcade
-    SearchBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
-    SearchBox.PlaceholderText = "Search options..."
-    SearchBox.Text = ""
-    SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SearchBox.TextSize = 12
-    SearchBox.TextXAlignment = Enum.TextXAlignment.Left
-    SearchBox.ZIndex = 153
-
-    SearchDecide.Name = "SearchDecide"
-    SearchDecide.Parent = SearchBoxFrame
-    SearchDecide.AnchorPoint = Vector2.new(0.5, 1)
-    SearchDecide.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    SearchDecide.BackgroundTransparency = 0.800
-    SearchDecide.BorderSizePixel = 0
-    SearchDecide.Position = UDim2.new(0.5, 0, 1, 0)
-    SearchDecide.Size = UDim2.new(1, -8, 0, 2)
-    SearchDecide.ZIndex = 153
-
-    SearchDecideCorner.CornerRadius = UDim.new(0, 10)
-    SearchDecideCorner.Parent = SearchDecide
-
-    SearchDecideActive.Name = "SearchDecideActive"
-    SearchDecideActive.Parent = SearchDecide
-    SearchDecideActive.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-    SearchDecideActive.BackgroundTransparency = 1
-    SearchDecideActive.BorderSizePixel = 0
-    SearchDecideActive.Size = UDim2.new(1, 0, 1, 0)
-    SearchDecideActive.ZIndex = 154
-
-    SearchDecideActiveCorner.CornerRadius = UDim.new(0, 10)
-    SearchDecideActiveCorner.Parent = SearchDecideActive
-
-    SearchBox.Focused:Connect(function()
-        Crystal.TweenObject({SearchDecideActive, 0.3, "BackgroundTransparency", 0})
-        Crystal.TweenObject({SearchBoxFrame, 0.3, "BackgroundTransparency", 0.150})
-    end)
-
-    SearchBox.FocusLost:Connect(function()
-        Crystal.TweenObject({SearchDecideActive, 0.3, "BackgroundTransparency", 1})
-        Crystal.TweenObject({SearchBoxFrame, 0.3, "BackgroundTransparency", 0.300})
-    end)
-
-    -- Scrolling Frame
-    ScrollSelect.Name = "ScrollSelect"
-    ScrollSelect.Parent = DropFrame
-    ScrollSelect.Active = true
-    ScrollSelect.BackgroundTransparency = 1
-    ScrollSelect.BorderSizePixel = 0
-    ScrollSelect.Position = UDim2.new(0, 15, 0, 108)
-    ScrollSelect.Size = UDim2.new(1, -30, 1, ConfigDropdown.Multi and -170 or -120)
-    ScrollSelect.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
-    ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, 0)
-    ScrollSelect.ScrollBarImageTransparency = 0.500
-    ScrollSelect.ScrollBarThickness = 4
-    ScrollSelect.ZIndex = 152
-
-    ScrollLayout.Parent = ScrollSelect
-    ScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    ScrollLayout.Padding = UDim.new(0, 6)
-
-    -- Confirm Button (Multi mode)
-    if ConfigDropdown.Multi then
-        ConfirmButtonFrame.Name = "ConfirmButtonFrame"
-        ConfirmButtonFrame.Parent = DropFrame
-        ConfirmButtonFrame.AnchorPoint = Vector2.new(0.5, 1)
-        ConfirmButtonFrame.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
-        ConfirmButtonFrame.BorderSizePixel = 0
-        ConfirmButtonFrame.Position = UDim2.new(0.5, 0, 1, -15)
-        ConfirmButtonFrame.Size = UDim2.new(1, -30, 0, 42)
-        ConfirmButtonFrame.ZIndex = 152
-
-        ConfirmButtonCorner.CornerRadius = UDim.new(0, 8)
-        ConfirmButtonCorner.Parent = ConfirmButtonFrame
-
-        Crystal.Mouseto(ConfirmButtonFrame, function()
-            Crystal.TweenObject({ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(30, 180, 255)})
-        end, function()
-            Crystal.TweenObject({ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(0, 162, 255)})
-        end)
-
-        ConfirmButton.Name = "ConfirmButton"
-        ConfirmButton.Parent = ConfirmButtonFrame
-        ConfirmButton.BackgroundTransparency = 1
-        ConfirmButton.Size = UDim2.new(1, 0, 1, 0)
-        ConfirmButton.Font = Enum.Font.Arcade
-        ConfirmButton.Text = "Confirm Selection"
-        ConfirmButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        ConfirmButton.TextSize = 13
-        ConfirmButton.ZIndex = 153
-
-        SelectCounter.Name = "SelectCounter"
-        SelectCounter.Parent = DropHeader
-        SelectCounter.AnchorPoint = Vector2.new(1, 0.5)
-        SelectCounter.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
-        SelectCounter.BackgroundTransparency = 0.200
-        SelectCounter.BorderSizePixel = 0
-        SelectCounter.Position = UDim2.new(1, -55, 0.5, 0)
-        SelectCounter.Size = UDim2.new(0, 35, 0, 24)
-        SelectCounter.Font = Enum.Font.Arcade
-        SelectCounter.Text = "0"
-        SelectCounter.TextColor3 = Color3.fromRGB(255, 255, 255)
-        SelectCounter.TextSize = 12
-        SelectCounter.ZIndex = 153
-
-        local CounterCorner = Instance.new("UICorner")
-        CounterCorner.CornerRadius = UDim.new(0, 6)
-        CounterCorner.Parent = SelectCounter
-    end
 
     -- Helper Functions
     local function UpdateSelectedDisplay()
@@ -2143,10 +2050,6 @@ function TabObject:AddDropdown(ConfigDropdown)
             local selectedCount = 0
             for _, _ in pairs(DropFunc.Selected) do
                 selectedCount = selectedCount + 1
-            end
-            
-            if SelectCounter then
-                SelectCounter.Text = tostring(selectedCount)
             end
             
             if selectedCount == 0 then
@@ -2188,7 +2091,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionFrame.BackgroundTransparency = 0.400
         OptionFrame.BorderSizePixel = 0
         OptionFrame.Size = UDim2.new(1, 0, 0, 38)
-        OptionFrame.ZIndex = 153
+        OptionFrame.ZIndex = 103
 
         OptionCorner.CornerRadius = UDim.new(0, 8)
         OptionCorner.Parent = OptionFrame
@@ -2200,7 +2103,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         CheckFrame.BackgroundTransparency = 1
         CheckFrame.Position = UDim2.new(1, -10, 0.5, 0)
         CheckFrame.Size = UDim2.new(0, 22, 0, 22)
-        CheckFrame.ZIndex = 154
+        CheckFrame.ZIndex = 104
 
         CheckCorner.CornerRadius = UDim.new(0, 6)
         CheckCorner.Parent = CheckFrame
@@ -2214,7 +2117,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         CheckMark.Image = "rbxassetid://18558566660"
         CheckMark.ImageColor3 = Color3.fromRGB(255, 255, 255)
         CheckMark.ImageTransparency = 1
-        CheckMark.ZIndex = 155
+        CheckMark.ZIndex = 105
 
         OptionLabel.Name = "OptionLabel"
         OptionLabel.Parent = OptionFrame
@@ -2227,15 +2130,16 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionLabel.TextSize = 12
         OptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         OptionLabel.TextTruncate = Enum.TextTruncate.AtEnd
-        OptionLabel.ZIndex = 154
+        OptionLabel.ZIndex = 104
 
         OptionButton.Name = "OptionButton"
         OptionButton.Parent = OptionFrame
         OptionButton.BackgroundTransparency = 1
         OptionButton.Size = UDim2.new(1, 0, 1, 0)
         OptionButton.Text = ""
-        OptionButton.ZIndex = 155
+        OptionButton.ZIndex = 105
 
+        -- Check if selected by default
         local isSelected = false
         if ConfigDropdown.Multi then
             if type(ConfigDropdown.Default) == "table" then
@@ -2293,11 +2197,19 @@ function TabObject:AddDropdown(ConfigDropdown)
                 end
 
                 UpdateSelectedDisplay()
+                
+                -- Callback with array of selected values
+                local selectedValues = {}
+                for val, _ in pairs(DropFunc.Selected) do
+                    table.insert(selectedValues, val)
+                end
+                pcall(ConfigDropdown.Callback, selectedValues)
             else
+                -- Single select - unselect all others
                 for _, option in pairs(ScrollSelect:GetChildren()) do
                     if option:IsA("Frame") and option.Name ~= "UIListLayout" then
                         local check = option:FindFirstChild("CheckFrame")
-                        local checkMark = option:FindFirstChild("CheckFrame") and option.CheckFrame:FindFirstChild("CheckMark")
+                        local checkMark = check and check:FindFirstChild("CheckMark")
                         local label = option:FindFirstChild("OptionLabel")
                         if check and checkMark and label then
                             Crystal.TweenObject({check, 0.2, "BackgroundTransparency", 1})
@@ -2309,6 +2221,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                     end
                 end
 
+                -- Select this option
                 isSelected = true
                 DropFunc.Value = value
                 Crystal.TweenObject({CheckFrame, 0.2, "BackgroundTransparency", 0})
@@ -2320,6 +2233,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                 UpdateSelectedDisplay()
                 pcall(ConfigDropdown.Callback, value)
 
+                -- Auto close for single select
                 task.wait(0.15)
                 CloseDropdown()
             end
@@ -2364,21 +2278,6 @@ function TabObject:AddDropdown(ConfigDropdown)
         CreateOption(value)
     end
 
-    -- Dynamic sizing
-    Crystal.Stepped:Connect(function()
-        ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, ScrollLayout.AbsoluteContentSize.Y + 10)
-        
-        if DropdownContent.Text ~= "" then
-            local contentHeight = math.max(DropdownContent.TextBounds.Y + 10, 20)
-            Dropdown.Size = UDim2.new(1, 0, 0, contentHeight + 32)
-            DropdownContent.Size = UDim2.new(1, -200, 0, contentHeight)
-        else
-            Dropdown.Size = UDim2.new(1, 0, 0, 50)
-            DropdownTitle.Position = UDim2.new(0, 45, 0, 0)
-            DropdownTitle.Size = UDim2.new(1, -200, 1, 0)
-        end
-    end)
-
     -- Search functionality
     SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
         local searchText = string.lower(SearchBox.Text)
@@ -2388,7 +2287,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                 if optionLabel then
                     local optionText = string.lower(optionLabel.Text)
                     if searchText == "" or string.find(optionText, searchText, 1, true) then
-                        option.Visible = true
+                    option.Visible = true
                     else
                         option.Visible = false
                     end
@@ -2397,36 +2296,21 @@ function TabObject:AddDropdown(ConfigDropdown)
         end
     end)
 
-    -- Button events
-    Crystal.Click(DropButton, function()
+    -- Button Events
+    Crystal.Click(DropdownButton, function()
         OpenDropdown()
     end)
 
-    Crystal.Click(CloseDropButton, function()
+    Crystal.Click(DropButton, function()
         CloseDropdown()
     end)
 
-    Crystal.Click(DropMoreButton, function()
-        CloseDropdown()
-    end)
-
-    if ConfigDropdown.Multi then
-        Crystal.Click(ConfirmButton, function()
-            local selectedValues = {}
-            for val, _ in pairs(DropFunc.Selected) do
-                table.insert(selectedValues, val)
-            end
-            DropFunc.Value = selectedValues
-            
-            pcall(ConfigDropdown.Callback, selectedValues)
-            CloseDropdown()
-        end)
-    end
-
+    -- Initialize selected display
     UpdateSelectedDisplay()
 
-    -- Public methods
+    -- Public Methods
     function DropFunc:Refresh(newValues)
+        -- Clear existing options
         for _, child in pairs(ScrollSelect:GetChildren()) do
             if child:IsA("Frame") then
                 child:Destroy()
@@ -2437,6 +2321,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         DropFunc.Selected = {}
         DropFunc.Value = ConfigDropdown.Multi and {} or ""
         
+        -- Create new options
         for _, value in ipairs(newValues) do
             CreateOption(value)
         end
@@ -2457,6 +2342,7 @@ function TabObject:AddDropdown(ConfigDropdown)
             DropFunc.Value = value
         end
         
+        -- Update visual state of all options
         for _, option in pairs(ScrollSelect:GetChildren()) do
             if option:IsA("Frame") then
                 local check = option:FindFirstChild("CheckFrame")
@@ -2503,6 +2389,7 @@ function TabObject:AddDropdown(ConfigDropdown)
             DropFunc.Value = ""
         end
         
+        -- Reset all options to unselected state
         for _, option in pairs(ScrollSelect:GetChildren()) do
             if option:IsA("Frame") then
                 local check = option:FindFirstChild("CheckFrame")
@@ -2516,6 +2403,37 @@ function TabObject:AddDropdown(ConfigDropdown)
                     option.BackgroundTransparency = 0.400
                     label.TextColor3 = Color3.fromRGB(200, 200, 200)
                 end
+            end
+        end
+        
+        UpdateSelectedDisplay()
+    end
+
+    function DropFunc:AddValue(newValue)
+        table.insert(DropFunc.List, newValue)
+        CreateOption(newValue)
+    end
+
+    function DropFunc:RemoveValue(value)
+        for i, v in ipairs(DropFunc.List) do
+            if v == value then
+                table.remove(DropFunc.List, i)
+                break
+            end
+        end
+        
+        for _, option in pairs(ScrollSelect:GetChildren()) do
+            if option:IsA("Frame") and option.Name == value then
+                option:Destroy()
+                break
+            end
+        end
+        
+        if ConfigDropdown.Multi then
+            DropFunc.Selected[value] = nil
+        else
+            if DropFunc.Value == value then
+                DropFunc.Value = ""
             end
         end
         
