@@ -2310,6 +2310,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     return DropFunc
 end
 		Counts = Counts + 1
+		return AddTab
 	end
 	return TabSystem
 end
