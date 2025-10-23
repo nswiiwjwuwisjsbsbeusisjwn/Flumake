@@ -451,7 +451,6 @@ Crystal.Window = function(self, WindowConfig)
     WindowConfig.UseAcrylic = WindowConfig.UseAcrylic or false
     WindowConfig.Size = WindowConfig.Size or UDim2.new(0, 450, 0, 320)
     WindowConfig.DiscordStatus = WindowConfig.DiscordStatus or "love you hipp"
-    WindowConfig.DisplayNameDiscord = WindowConfig.DisplayNameDiscord or ""
     WindowConfig.DiscordDescription = WindowConfig.DiscordDescription or ""
     WindowConfig.KeyCode = WindowConfig.KeyCode or Enum.KeyCode.RightControl
 
