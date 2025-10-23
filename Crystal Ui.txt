@@ -1752,6 +1752,8 @@ function TabObject:AddDropdown(ConfigDropdown)
     local SearchBoxCorner = Instance.new("UICorner")
     local SearchBox = Instance.new("TextBox")
     local SearchImage = Instance.new("ImageLabel")
+    local CloseButton = Instance.new("TextButton")  -- Nút X để tắt
+    local CloseImage = Instance.new("ImageLabel")
 
     local DropFunc = {List = ConfigDropdown.Values, Value = ConfigDropdown.Default}
 
@@ -1790,7 +1792,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownSelectReal.BorderSizePixel = 0
     DropdownSelectReal.ClipsDescendants = true
     DropdownSelectReal.Position = UDim2.new(0.5, 0, 0, 7)
-    DropdownSelectReal.Size = UDim2.new(0, 200, 0.8, 0)
+    DropdownSelectReal.Size = UDim2.new(0, 250, 0.9, 0)  -- Làm to và dài hơn
 
     UICorner_41.CornerRadius = UDim.new(0, 8)
     UICorner_41.Parent = DropdownSelectReal
@@ -1798,6 +1800,32 @@ function TabObject:AddDropdown(ConfigDropdown)
     UIStroke_16.Parent = DropdownSelectReal
     UIStroke_16.Color = Color3.fromRGB(10, 10, 10)
     UIStroke_16.Thickness = 2.5
+
+    -- Nút X để tắt dropdown
+    CloseButton.Name = "CloseButton"
+    CloseButton.Parent = DropdownSelectReal
+    CloseButton.AnchorPoint = Vector2.new(1, 0)
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.BorderSizePixel = 0
+    CloseButton.Position = UDim2.new(1, -5, 0, 5)
+    CloseButton.Size = UDim2.new(0, 20, 0, 20)
+    CloseButton.Font = Enum.Font.SourceSans
+    CloseButton.Text = ""
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.TextSize = 14
+
+    CloseImage.Name = "CloseImage"
+    CloseImage.Parent = CloseButton
+    CloseImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CloseImage.BackgroundTransparency = 1
+    CloseImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CloseImage.Size = UDim2.new(1, 0, 1, 0)
+    CloseImage.Image = "rbxassetid://18556800637"  -- Icon X
+    CloseImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
+
+    Crystal.Click(CloseButton, function()
+        DropMore.Visible = false
+    end)
 
     DropFrame.Name = "DropFrame"
     DropFrame.Parent = DropdownSelectReal
@@ -1929,7 +1957,6 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownContent.TextSize = 11
     DropdownContent.TextTransparency = 0.600
     DropdownContent.TextXAlignment = Enum.TextXAlignment.Left
-
     DropdownImage.Name = "DropdownImage"
     DropdownImage.Parent = Dropdown
     DropdownImage.AnchorPoint = Vector2.new(0, 0.5)
@@ -1999,6 +2026,10 @@ function TabObject:AddDropdown(ConfigDropdown)
         local contentHeight = math.max(DropdownContent.TextBounds.Y + 10, 30)
         Dropdown.Size = UDim2.new(1, -8, 0, contentHeight + 18)
         DropdownContent.Size = UDim2.new(1, -180, 0, contentHeight + 10)
+        -- Adjust SelectOptionsFrame size if OptionSelecting text is long
+        if #OptionSelecting.Text > 20 then
+            SelectOptionsFrame.Size = UDim2.new(0, 150, 0, 26)  -- Làm rộng hơn nếu text dài
+        end
     end)
 
     if DropdownContent.Text == "" then
@@ -2051,16 +2082,16 @@ function TabObject:AddDropdown(ConfigDropdown)
                         chooseFrame.UIStroke.Enabled = true
                         Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.950})
                         Crystal.TweenObject({chooseFrame, 0.4, "Size", UDim2.new(0, 1, 0, 10)})
-                        v.BackgroundColor3 = Color3.fromRGB(0, 162, 255)  -- Màu xanh khi selected
                     end
+                    optionSelecting.TextColor3 = Color3.fromRGB(0, 162, 255)  -- Đổi chữ màu xanh khi selected
                 else
                     local chooseFrame = v:FindFirstChild("ChooseFrame")
                     if chooseFrame then
                         Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.999})
                         Crystal.TweenObject({chooseFrame, 0.4, "Size", UDim2.new(0, 1, 0, 0)})
                         chooseFrame.UIStroke.Enabled = false
-                        v.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  -- Màu cũ khi không selected
                     end
+                    optionSelecting.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Màu cũ khi không selected
                 end
             end
         end
@@ -2098,7 +2129,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
         Option.Name = "Option"
         Option.Parent = ScrollSelect
-        Option.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  -- Màu cũ
+        Option.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         Option.BackgroundTransparency = 0.999
         Option.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Option.BorderSizePixel = 0
@@ -2119,9 +2150,10 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionSelecting_2.Size = UDim2.new(1, -20, 1, 0)
         OptionSelecting_2.Font = Enum.Font.Arcade
         OptionSelecting_2.Text = NameValue
-        OptionSelecting_2.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Màu cũ cho option text
+        OptionSelecting_2.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Màu cũ ban đầu
         OptionSelecting_2.TextSize = 11
         OptionSelecting_2.TextXAlignment = Enum.TextXAlignment.Left
+        OptionSelecting_2.TextWrapped = true  -- Wrap text để hiển thị đầy đủ nếu dài
 
         OptionButton.Name = "OptionButton"
         OptionButton.Parent = Option
