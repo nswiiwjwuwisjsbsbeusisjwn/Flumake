@@ -3124,6 +3124,7 @@ function TabObject:AddImage(ConfigImage)
 
     return ImageFunc
 end
+
 function TabObject:AddSlider(ConfigSlider)
     ConfigSlider = ConfigSlider or {}
     ConfigSlider.Title = ConfigSlider.Title or "Slider"
@@ -3133,8 +3134,6 @@ function TabObject:AddSlider(ConfigSlider)
     ConfigSlider.IconSlider = ConfigSlider.IconSlider or "rbxassetid://18558566660"
     ConfigSlider.Default = ConfigSlider.Default or ConfigSlider.Min
     ConfigSlider.Increment = ConfigSlider.Increment or 1
-    ConfigSlider.Suffix = ConfigSlider.Suffix or ""
-    ConfigSlider.Prefix = ConfigSlider.Prefix or ""
     ConfigSlider.Callback = ConfigSlider.Callback or function() end
 
     local Slider = Instance.new("Frame")
@@ -3155,7 +3154,6 @@ function TabObject:AddSlider(ConfigSlider)
     local SliderInput = Instance.new("TextBox")
     local SliderInputFrame = Instance.new("Frame")
     local SliderInputCorner = Instance.new("UICorner")
-    local MinMaxLabel = Instance.new("TextLabel")
 
     local SliderFunc = {
         Default = ConfigSlider.Default,
@@ -3170,7 +3168,7 @@ function TabObject:AddSlider(ConfigSlider)
     Slider.BackgroundTransparency = 0.970
     Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Slider.BorderSizePixel = 0
-    Slider.Size = UDim2.new(1, -8, 0, 55)
+    Slider.Size = UDim2.new(1, -8, 0, 50)
 
     Crystal.Mouseto(Slider, function()
         Crystal.TweenObject({Slider, 0.2, "BackgroundTransparency", 0.950})
@@ -3228,14 +3226,20 @@ function TabObject:AddSlider(ConfigSlider)
     SliderInputFrame.Name = "SliderInputFrame"
     SliderInputFrame.Parent = Slider
     SliderInputFrame.AnchorPoint = Vector2.new(1, 0)
-    SliderInputFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    SliderInputFrame.BackgroundTransparency = 0.5
+    SliderInputFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    SliderInputFrame.BackgroundTransparency = 0.2
     SliderInputFrame.BorderSizePixel = 0
     SliderInputFrame.Position = UDim2.new(1, -12, 0, 8)
     SliderInputFrame.Size = UDim2.new(0, 55, 0, 22)
 
     SliderInputCorner.CornerRadius = UDim.new(0, 4)
     SliderInputCorner.Parent = SliderInputFrame
+
+    local SliderInputStroke = Instance.new("UIStroke")
+    SliderInputStroke.Parent = SliderInputFrame
+    SliderInputStroke.Color = Color3.fromRGB(93, 197, 248)
+    SliderInputStroke.Thickness = 1
+    SliderInputStroke.Transparency = 0.7
 
     SliderInput.Name = "SliderInput"
     SliderInput.Parent = SliderInputFrame
@@ -3252,42 +3256,29 @@ function TabObject:AddSlider(ConfigSlider)
     SliderNumber.BackgroundTransparency = 1
     SliderNumber.Size = UDim2.new(1, 0, 1, 0)
     SliderNumber.Font = Enum.Font.Arcade
-    SliderNumber.Text = ConfigSlider.Prefix .. tostring(ConfigSlider.Default) .. ConfigSlider.Suffix
+    SliderNumber.Text = tostring(ConfigSlider.Default)
     SliderNumber.TextColor3 = Color3.fromRGB(93, 197, 248)
     SliderNumber.TextSize = 11
     SliderNumber.Visible = true
 
-    -- Min/Max Labels
-    MinMaxLabel.Name = "MinMaxLabel"
-    MinMaxLabel.Parent = Slider
-    MinMaxLabel.BackgroundTransparency = 1
-    MinMaxLabel.Position = UDim2.new(0, 12, 1, -18)
-    MinMaxLabel.Size = UDim2.new(1, -24, 0, 10)
-    MinMaxLabel.Font = Enum.Font.Arcade
-    MinMaxLabel.Text = ConfigSlider.Min .. " — " .. ConfigSlider.Max
-    MinMaxLabel.TextColor3 = Color3.fromRGB(120, 120, 120)
-    MinMaxLabel.TextSize = 9
-    MinMaxLabel.TextTransparency = 0.6
-    MinMaxLabel.TextXAlignment = Enum.TextXAlignment.Center
-
-    -- Slider Track
+    -- Slider Track (Black with Cyan Border)
     SliderFrame.Name = "SliderFrame"
     SliderFrame.Parent = Slider
-    SliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    SliderFrame.BackgroundTransparency = 0.3
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+    SliderFrame.BackgroundTransparency = 0.1
     SliderFrame.BorderSizePixel = 0
-    SliderFrame.Position = UDim2.new(0, 12, 1, -26)
+    SliderFrame.Position = UDim2.new(0, 12, 1, -22)
     SliderFrame.Size = UDim2.new(1, -24, 0, 4)
 
     UICorner_24.CornerRadius = UDim.new(0, 2)
     UICorner_24.Parent = SliderFrame
 
     UIStroke_24.Parent = SliderFrame
-    UIStroke_24.Color = Color3.fromRGB(60, 60, 60)
-    UIStroke_24.Thickness = 0.5
-    UIStroke_24.Transparency = 0.7
+    UIStroke_24.Color = Color3.fromRGB(93, 197, 248)
+    UIStroke_24.Thickness = 1
+    UIStroke_24.Transparency = 0.5
 
-    -- Slider Fill
+    -- Slider Fill (Cyan)
     SliderDrag.Name = "SliderDrag"
     SliderDrag.Parent = SliderFrame
     SliderDrag.AnchorPoint = Vector2.new(0, 0.5)
@@ -3300,7 +3291,7 @@ function TabObject:AddSlider(ConfigSlider)
     UICorner_25.CornerRadius = UDim.new(0, 2)
     UICorner_25.Parent = SliderDrag
 
-    -- Slider Handle
+    -- Slider Handle (White with Cyan Border)
     SliderCircle.Name = "SliderCircle"
     SliderCircle.Parent = SliderDrag
     SliderCircle.AnchorPoint = Vector2.new(1, 0.5)
@@ -3336,11 +3327,10 @@ function TabObject:AddSlider(ConfigSlider)
     -- Dynamic sizing
     Crystal.Stepped:Connect(function()
         local contentHeight = math.max(SliderContent.TextBounds.Y, 10)
-        local totalHeight = 55 + contentHeight
+        local totalHeight = 50 + contentHeight
         Slider.Size = UDim2.new(1, -8, 0, totalHeight)
         SliderContent.Size = UDim2.new(1, -150, 0, contentHeight)
-        SliderFrame.Position = UDim2.new(0, 12, 1, -26)
-        MinMaxLabel.Position = UDim2.new(0, 12, 1, -18)
+        SliderFrame.Position = UDim2.new(0, 12, 1, -22)
     end)
 
     local dragging = false
@@ -3352,17 +3342,12 @@ function TabObject:AddSlider(ConfigSlider)
         return Result
     end
 
-    -- Format display value
-    local function FormatValue(value)
-        return ConfigSlider.Prefix .. tostring(value) .. ConfigSlider.Suffix
-    end
-
     -- Set slider value
     function SliderFunc:Set(Value)
         Value = math.clamp(Round(Value, ConfigSlider.Increment), ConfigSlider.Min, ConfigSlider.Max)
         SliderFunc.Values = Value
         
-        SliderNumber.Text = FormatValue(Value)
+        SliderNumber.Text = tostring(Value)
         SliderInput.Text = tostring(Value)
         
         local scale = (Value - ConfigSlider.Min) / (ConfigSlider.Max - ConfigSlider.Min)
@@ -3378,11 +3363,13 @@ function TabObject:AddSlider(ConfigSlider)
         hovering = true
         Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 14, 0, 14)})
         Crystal.TweenObject({UIStroke_10, 0.2, "Thickness", 2.5})
+        Crystal.TweenObject({UIStroke_24, 0.2, "Transparency", 0.3})
     end, function()
         hovering = false
         if not dragging then
             Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 12, 0, 12)})
             Crystal.TweenObject({UIStroke_10, 0.2, "Thickness", 2})
+            Crystal.TweenObject({UIStroke_24, 0.2, "Transparency", 0.5})
         end
     end)
 
@@ -3392,6 +3379,7 @@ function TabObject:AddSlider(ConfigSlider)
             dragging = true
             Crystal.TweenObject({SliderCircle, 0.1, "Size", UDim2.new(0, 16, 0, 16)})
             Crystal.TweenObject({UIStroke_10, 0.1, "Thickness", 3})
+            Crystal.TweenObject({UIStroke_24, 0.1, "Transparency", 0.2})
             
             local function update(pos)
                 local SizeScale = math.clamp((pos.X - SliderFrame.AbsolutePosition.X) / SliderFrame.AbsoluteSize.X, 0, 1)
@@ -3408,9 +3396,11 @@ function TabObject:AddSlider(ConfigSlider)
                     if not hovering then
                         Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 12, 0, 12)})
                         Crystal.TweenObject({UIStroke_10, 0.2, "Thickness", 2})
+                        Crystal.TweenObject({UIStroke_24, 0.2, "Transparency", 0.5})
                     else
                         Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 14, 0, 14)})
                         Crystal.TweenObject({UIStroke_10, 0.2, "Thickness", 2.5})
+                        Crystal.TweenObject({UIStroke_24, 0.2, "Transparency", 0.3})
                     end
                 end
             end)
@@ -3429,13 +3419,15 @@ function TabObject:AddSlider(ConfigSlider)
         SliderNumber.Visible = false
         SliderInput.Visible = true
         SliderInput.Text = tostring(SliderFunc.Values)
-        Crystal.TweenObject({SliderInputFrame, 0.2, "BackgroundColor3", Color3.fromRGB(50, 50, 50)})
+        Crystal.TweenObject({SliderInputStroke, 0.2, "Transparency", 0.3})
+        Crystal.TweenObject({SliderInputFrame, 0.2, "BackgroundColor3", Color3.fromRGB(25, 25, 25)})
     end)
 
     SliderInput.FocusLost:Connect(function(enterPressed)
         SliderNumber.Visible = true
         SliderInput.Visible = false
-        Crystal.TweenObject({SliderInputFrame, 0.2, "BackgroundColor3", Color3.fromRGB(40, 40, 40)})
+        Crystal.TweenObject({SliderInputStroke, 0.2, "Transparency", 0.7})
+        Crystal.TweenObject({SliderInputFrame, 0.2, "BackgroundColor3", Color3.fromRGB(20, 20, 20)})
         
         if enterPressed then
             local value = tonumber(SliderInput.Text)
@@ -3494,14 +3486,12 @@ function TabObject:AddSlider(ConfigSlider)
     function SliderFunc:SetMin(min)
         ConfigSlider.Min = min
         SliderFunc.Min = min
-        MinMaxLabel.Text = min .. " — " .. ConfigSlider.Max
         SliderFunc:Set(SliderFunc.Values)
     end
 
     function SliderFunc:SetMax(max)
         ConfigSlider.Max = max
         SliderFunc.Max = max
-        MinMaxLabel.Text = ConfigSlider.Min .. " — " .. max
         SliderFunc:Set(SliderFunc.Values)
     end
 
@@ -3515,6 +3505,7 @@ function TabObject:AddSlider(ConfigSlider)
 
     return SliderFunc
 end
+
 TabCount = TabCount + 1
 return TabObject
     end
