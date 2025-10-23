@@ -1554,7 +1554,6 @@ function TabObject:AddButton(ButtonConfig)
 
     return Button
 end
-local TweenService = game:GetService("RunService")
 
 function TabObject:AddToggle(ConfigToggles)
     ConfigToggles = ConfigToggles or {}
