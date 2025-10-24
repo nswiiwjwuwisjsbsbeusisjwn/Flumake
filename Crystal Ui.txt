@@ -4182,7 +4182,7 @@ function TabObject:AddToggle(ConfigToggles)
 
     return SettingFunctions
 end
-
+end
 TabCount = TabCount + 1
 return TabObject
     end
