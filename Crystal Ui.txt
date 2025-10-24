@@ -4017,7 +4017,6 @@ function ToggleFunc:AddSetting()
 
     return SettingFunctions
 end
-
 TabCount = TabCount + 1
 return TabObject
     end
