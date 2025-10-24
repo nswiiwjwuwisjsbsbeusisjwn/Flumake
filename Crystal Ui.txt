@@ -529,7 +529,7 @@ Crystal.Window = function(self, WindowConfig)
 
     CrystalHub.MainFrame.Name = "Window11"
     CrystalHub.MainFrame.Parent = CrystalHub.Window
-    CrystalHub.MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    CrystalHub.MainFrame.BackgroundColor3 = Color3.fromRGB(40, 20, 60) 
     CrystalHub.MainFrame.BackgroundTransparency = 0.050
     CrystalHub.MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.MainFrame.BorderSizePixel = 0
