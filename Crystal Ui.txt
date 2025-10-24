@@ -3341,6 +3341,7 @@ function TabObject:AddSlider(ConfigSlider)
 
     return SliderFunc
 end
+
 function TabObject:AddToggle(ConfigToggles)
     ConfigToggles = ConfigToggles or {}
     ConfigToggles.Title = ConfigToggles.Title or "Toggle"
@@ -3371,9 +3372,9 @@ function TabObject:AddToggle(ConfigToggles)
     Toggle.Size = UDim2.new(1, -8, 0, 45)
 
     Crystal.Mouseto(Toggle, function()
-        Crystal.TweenObject({Object = Toggle, Time = 0.2, OldValue = "BackgroundTransparency", NewValue = 0.950})
+        Crystal.TweenObject({Toggle, 0.2, "BackgroundTransparency", 0.950})
     end, function()
-        Crystal.TweenObject({Object = Toggle, Time = 0.2, OldValue = "BackgroundTransparency", NewValue = 0.970})
+        Crystal.TweenObject({Toggle, 0.2, "BackgroundTransparency", 0.970})
     end)
 
     ToggleTitle.Name = "ToggleTitle"
@@ -3399,7 +3400,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleContent.Text = ConfigToggles.Description
     ToggleContent.TextWrapped = true
     ToggleContent.TextYAlignment = Enum.TextYAlignment.Top
-    ToggleContent.TextColor3 = Color3.fromRGB(160, 160, 160)
+    ToggleContent.TextColor3 = Color3.fromRGB(180, 180, 180)
     ToggleContent.TextSize = 11
     ToggleContent.TextTransparency = 0.600
     ToggleContent.TextXAlignment = Enum.TextXAlignment.Left
@@ -3411,12 +3412,12 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleImage.Position = UDim2.new(0, 12, 0.5, 0)
     ToggleImage.Size = UDim2.new(0, 16, 0, 16)
     ToggleImage.Image = ConfigToggles.IconToggle
-    ToggleImage.ImageColor3 = Color3.fromRGB(160, 160, 160)
+    ToggleImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
 
     ToggleSwitch.Name = "ToggleSwitch"
     ToggleSwitch.Parent = Toggle
     ToggleSwitch.AnchorPoint = Vector2.new(1, 0.5)
-    ToggleSwitch.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+    ToggleSwitch.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
     ToggleSwitch.BackgroundTransparency = ConfigToggles.Default and 0 or 0.999
     ToggleSwitch.Position = UDim2.new(1, -25, 0.5, 0)
     ToggleSwitch.Size = UDim2.new(0, 40, 0, 20)
@@ -3428,6 +3429,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleCircle.Parent = ToggleSwitch
     ToggleCircle.AnchorPoint = Vector2.new(0, 0.5)
     ToggleCircle.BackgroundColor3 = ConfigToggles.Default and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(113, 111, 112)
+    ToggleCircle.BorderSizePixel = 0
     ToggleCircle.Position = ConfigToggles.Default and UDim2.new(0, 24, 0.5, 0) or UDim2.new(0, 4, 0.5, 0)
     ToggleCircle.Size = ConfigToggles.Default and UDim2.new(0, 16, 0, 16) or UDim2.new(0, 12, 0, 12)
 
@@ -3435,7 +3437,7 @@ function TabObject:AddToggle(ConfigToggles)
     UICorner_14.Parent = ToggleCircle
 
     UIStroke_6.Parent = ToggleSwitch
-    UIStroke_6.Color = ConfigToggles.Default and Color3.fromRGB(0, 162, 255) or Color3.fromRGB(113, 111, 112)
+    UIStroke_6.Color = ConfigToggles.Default and Color3.fromRGB(93, 197, 248) or Color3.fromRGB(113, 111, 112)
     UIStroke_6.Thickness = 1.5
     UIStroke_6.Transparency = ConfigToggles.Default and 0 or 0.5
 
@@ -3457,7 +3459,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleOnOff.Size = UDim2.new(0, 30, 0, 12)
     ToggleOnOff.Font = Enum.Font.Arcade
     ToggleOnOff.Text = ConfigToggles.Default and "True" or "False"
-    ToggleOnOff.TextColor3 = ConfigToggles.Default and Color3.fromRGB(0, 162, 255) or Color3.fromRGB(160, 160, 160)
+    ToggleOnOff.TextColor3 = ConfigToggles.Default and Color3.fromRGB(93, 197, 248) or Color3.fromRGB(180, 180, 180)
     ToggleOnOff.TextSize = 11
     ToggleOnOff.TextXAlignment = Enum.TextXAlignment.Right
 
@@ -3475,31 +3477,31 @@ function TabObject:AddToggle(ConfigToggles)
     function ToggleFunc:SetValue(boolean)
         ToggleFunc.Enabled = boolean
         if boolean then
-            Crystal.TweenObject({Object = ToggleSwitch, Time = 0.3, OldValue = "BackgroundTransparency", NewValue = 0})
-            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "BackgroundColor3", NewValue = Color3.fromRGB(255, 255, 255)})
-            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Position", NewValue = UDim2.new(0, 24, 0.5, 0)})
-            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Size", NewValue = UDim2.new(0, 16, 0, 16)})
-            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(0, 162, 255)})
-            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0})
-            Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(0, 162, 255)})
+            Crystal.TweenObject({ToggleSwitch, 0.3, "BackgroundTransparency", 0})
+            Crystal.TweenObject({ToggleCircle, 0.3, "BackgroundColor3", Color3.fromRGB(255, 255, 255)})
+            Crystal.TweenObject({ToggleCircle, 0.3, "Position", UDim2.new(0, 24, 0.5, 0)})
+            Crystal.TweenObject({ToggleCircle, 0.3, "Size", UDim2.new(0, 16, 0, 16)})
+            Crystal.TweenObject({UIStroke_6, 0.3, "Color", Color3.fromRGB(93, 197, 248)})
+            Crystal.TweenObject({UIStroke_6, 0.3, "Transparency", 0})
+            Crystal.TweenObject({ToggleOnOff, 0.3, "TextColor3", Color3.fromRGB(93, 197, 248)})
             ToggleOnOff.Text = "True"
         else
-            Crystal.TweenObject({Object = ToggleSwitch, Time = 0.3, OldValue = "BackgroundTransparency", NewValue = 0.999})
-            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "BackgroundColor3", NewValue = Color3.fromRGB(113, 111, 112)})
-            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Position", NewValue = UDim2.new(0, 4, 0.5, 0)})
-            Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Size", NewValue = UDim2.new(0, 12, 0, 12)})
-            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(113, 111, 112)})
-            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0.5})
-            Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(160, 160, 160)})
+            Crystal.TweenObject({ToggleSwitch, 0.3, "BackgroundTransparency", 0.999})
+            Crystal.TweenObject({ToggleCircle, 0.3, "BackgroundColor3", Color3.fromRGB(113, 111, 112)})
+            Crystal.TweenObject({ToggleCircle, 0.3, "Position", UDim2.new(0, 4, 0.5, 0)})
+            Crystal.TweenObject({ToggleCircle, 0.3, "Size", UDim2.new(0, 12, 0, 12)})
+            Crystal.TweenObject({UIStroke_6, 0.3, "Color", Color3.fromRGB(113, 111, 112)})
+            Crystal.TweenObject({UIStroke_6, 0.3, "Transparency", 0.5})
+            Crystal.TweenObject({ToggleOnOff, 0.3, "TextColor3", Color3.fromRGB(180, 180, 180)})
             ToggleOnOff.Text = "False"
         end
         pcall(ConfigToggles.Callback, ToggleFunc.Enabled)
     end
 
     ToggleButton.Activated:Connect(function()
-        Crystal.TweenObject({Object = Toggle, Time = 0.1, OldValue = "BackgroundTransparency", NewValue = 0.920})
+        Crystal.TweenObject({Toggle, 0.1, "BackgroundTransparency", 0.920})
         task.wait(0.1)
-        Crystal.TweenObject({Object = Toggle, Time = 0.1, OldValue = "BackgroundTransparency", NewValue = 0.970})
+        Crystal.TweenObject({Toggle, 0.1, "BackgroundTransparency", 0.970})
         ToggleFunc:SetValue(not ToggleFunc.Enabled)
     end)
 
@@ -3511,18 +3513,29 @@ function TabObject:AddToggle(ConfigToggles)
         local SettingIcon = Instance.new("ImageLabel")
         local SettingUICorner = Instance.new("UICorner")
 
+        -- Adjust toggle layout to make room for setting button
+        ToggleSwitch.Position = UDim2.new(1, -50, 0.5, 0)
+        ToggleOnOff.Position = UDim2.new(1, -95, 0.5, 0)
+
         SettingFrame.Name = "SettingFrame"
         SettingFrame.Parent = Toggle
         SettingFrame.AnchorPoint = Vector2.new(1, 0.5)
-        SettingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        SettingFrame.BackgroundTransparency = 0.950
+        SettingFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+        SettingFrame.BackgroundTransparency = 0.800
         SettingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SettingFrame.BorderSizePixel = 0
-        SettingFrame.Position = UDim2.new(1, -75, 0.5, 0)
-        SettingFrame.Size = UDim2.new(0, 20, 0, 20)
+        SettingFrame.Position = UDim2.new(1, -20, 0.5, 0)
+        SettingFrame.Size = UDim2.new(0, 22, 0, 22)
+        SettingFrame.ZIndex = 3
 
         SettingUICorner.CornerRadius = UDim.new(0, 4)
         SettingUICorner.Parent = SettingFrame
+
+        local SettingStroke = Instance.new("UIStroke")
+        SettingStroke.Parent = SettingFrame
+        SettingStroke.Color = Color3.fromRGB(93, 197, 248)
+        SettingStroke.Thickness = 1
+        SettingStroke.Transparency = 0.7
 
         SettingIcon.Name = "SettingIcon"
         SettingIcon.Parent = SettingFrame
@@ -3534,8 +3547,9 @@ function TabObject:AddToggle(ConfigToggles)
         SettingIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
         SettingIcon.Size = UDim2.new(0, 14, 0, 14)
         SettingIcon.Image = "rbxassetid://18558566660"
-        SettingIcon.ImageColor3 = Color3.fromRGB(160, 160, 160)
+        SettingIcon.ImageColor3 = Color3.fromRGB(180, 180, 180)
         SettingIcon.Rotation = 90
+        SettingIcon.ZIndex = 4
 
         SettingButton.Name = "SettingButton"
         SettingButton.Parent = SettingFrame
@@ -3548,34 +3562,59 @@ function TabObject:AddToggle(ConfigToggles)
         SettingButton.Text = ""
         SettingButton.TextColor3 = Color3.fromRGB(0, 0, 0)
         SettingButton.TextSize = 14
+        SettingButton.ZIndex = 5
 
         Crystal.Mouseto(SettingFrame, function()
-            Crystal.TweenObject({SettingFrame, 0.2, "BackgroundTransparency", 0.920})
-            Crystal.TweenObject({SettingIcon, 0.2, "ImageColor3", Color3.fromRGB(200, 200, 200)})
+            Crystal.TweenObject({SettingFrame, 0.2, "BackgroundTransparency", 0.700})
+            Crystal.TweenObject({SettingIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
+            Crystal.TweenObject({SettingStroke, 0.2, "Transparency", 0.3})
         end, function()
-            Crystal.TweenObject({SettingFrame, 0.2, "BackgroundTransparency", 0.950})
-            Crystal.TweenObject({SettingIcon, 0.2, "ImageColor3", Color3.fromRGB(160, 160, 160)})
+            Crystal.TweenObject({SettingFrame, 0.2, "BackgroundTransparency", 0.800})
+            Crystal.TweenObject({SettingIcon, 0.2, "ImageColor3", Color3.fromRGB(180, 180, 180)})
+            Crystal.TweenObject({SettingStroke, 0.2, "Transparency", 0.7})
         end)
 
+        -- Setting Menu
         local SettingMenu = Instance.new("Frame")
-        local SettingUICorner2 = Instance.new("UICorner")
+        local SettingMenuCorner = Instance.new("UICorner")
+        local SettingMenuStroke = Instance.new("UIStroke")
         local SettingScroll = Instance.new("ScrollingFrame")
         local SettingListLayout = Instance.new("UIListLayout")
         local SettingDropShadow = Instance.new("ImageLabel")
+        local SettingOverlay = Instance.new("TextButton")
+
+        SettingOverlay.Name = "SettingOverlay"
+        SettingOverlay.Parent = CrystalHub.Layers
+        SettingOverlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        SettingOverlay.BackgroundTransparency = 1
+        SettingOverlay.BorderSizePixel = 0
+        SettingOverlay.Position = UDim2.new(0, 0, 0, 30)
+        SettingOverlay.Size = UDim2.new(1, 0, 1, -30)
+        SettingOverlay.Visible = false
+        SettingOverlay.ZIndex = 98
+        SettingOverlay.Text = ""
+        SettingOverlay.Font = Enum.Font.SourceSans
 
         SettingMenu.Name = "SettingMenu"
         SettingMenu.Parent = CrystalHub.Layers
-        SettingMenu.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        SettingMenu.AnchorPoint = Vector2.new(0.5, 0.5)
+        SettingMenu.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
         SettingMenu.BackgroundTransparency = 0.050
         SettingMenu.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SettingMenu.BorderSizePixel = 0
-        SettingMenu.Position = UDim2.new(0, 0, 0, 0)
-        SettingMenu.Size = UDim2.new(0, 200, 0, 150)
+        SettingMenu.Position = UDim2.new(0.5, 0, 0.5, 0)
+        SettingMenu.Size = UDim2.new(0, 250, 0, 0)
         SettingMenu.Visible = false
-        SettingMenu.ZIndex = 10
+        SettingMenu.ZIndex = 99
+        SettingMenu.ClipsDescendants = true
 
-        SettingUICorner2.CornerRadius = UDim.new(0, 8)
-        SettingUICorner2.Parent = SettingMenu
+        SettingMenuCorner.CornerRadius = UDim.new(0, 8)
+        SettingMenuCorner.Parent = SettingMenu
+
+        SettingMenuStroke.Parent = SettingMenu
+        SettingMenuStroke.Color = Color3.fromRGB(93, 197, 248)
+        SettingMenuStroke.Thickness = 1.5
+        SettingMenuStroke.Transparency = 0.5
 
         SettingDropShadow.Name = "SettingDropShadow"
         SettingDropShadow.Parent = SettingMenu
@@ -3584,7 +3623,7 @@ function TabObject:AddToggle(ConfigToggles)
         SettingDropShadow.BorderSizePixel = 0
         SettingDropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
         SettingDropShadow.Size = UDim2.new(1, 47, 1, 47)
-        SettingDropShadow.ZIndex = 9
+        SettingDropShadow.ZIndex = 98
         SettingDropShadow.Image = "rbxassetid://6015897843"
         SettingDropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
         SettingDropShadow.ImageTransparency = 0.300
@@ -3598,11 +3637,12 @@ function TabObject:AddToggle(ConfigToggles)
         SettingScroll.BackgroundTransparency = 1
         SettingScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SettingScroll.BorderSizePixel = 0
-        SettingScroll.Position = UDim2.new(0, 5, 0, 5)
-        SettingScroll.Size = UDim2.new(1, -10, 1, -10)
+        SettingScroll.Position = UDim2.new(0, 8, 0, 8)
+        SettingScroll.Size = UDim2.new(1, -16, 1, -16)
         SettingScroll.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
-        SettingScroll.ScrollBarImageTransparency = 0.700
+        SettingScroll.ScrollBarImageTransparency = 0.500
         SettingScroll.ScrollBarThickness = 3
+        SettingScroll.ZIndex = 100
 
         SettingListLayout.Parent = SettingScroll
         SettingListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -3613,34 +3653,43 @@ function TabObject:AddToggle(ConfigToggles)
         end)
 
         local SettingItems = {}
+        local isOpen = false
 
-        local function updateMenuPosition()
-            if SettingMenu.Visible then
-                local toggleAbsPos = Toggle.AbsolutePosition
-                local toggleAbsSize = Toggle.AbsoluteSize
-                SettingMenu.Position = UDim2.new(0, toggleAbsPos.X + toggleAbsSize.X - 200, 0, toggleAbsPos.Y + toggleAbsSize.Y + 5)
-            end
+        local function OpenSettings()
+            if isOpen then return end
+            isOpen = true
+            SettingOverlay.Visible = true
+            SettingMenu.Visible = true
+            SettingMenu.Size = UDim2.new(0, 250, 0, 0)
+            
+            local targetHeight = math.min(300, SettingListLayout.AbsoluteContentSize.Y + 26)
+            
+            Crystal.TweenObject({SettingOverlay, 0.2, "BackgroundTransparency", 0.3})
+            Crystal.TweenObject({SettingMenu, 0.3, "Size", UDim2.new(0, 250, 0, targetHeight)})
+        end
+
+        local function CloseSettings()
+            if not isOpen then return end
+            isOpen = false
+            
+            Crystal.TweenObject({SettingOverlay, 0.2, "BackgroundTransparency", 1})
+            Crystal.TweenObject({SettingMenu, 0.3, "Size", UDim2.new(0, 250, 0, 0)})
+            task.wait(0.3)
+            SettingOverlay.Visible = false
+            SettingMenu.Visible = false
         end
 
         Crystal.Click(SettingButton, function()
-            SettingMenu.Visible = not SettingMenu.Visible
-            updateMenuPosition()
-        end)
-
-        Crystal.UserInputService.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 and SettingMenu.Visible then
-                local mousePos = Crystal.UserInputService:GetMouseLocation()
-                local menuAbsPos = SettingMenu.AbsolutePosition
-                local menuAbsSize = SettingMenu.AbsoluteSize
-                
-                if mousePos.X < menuAbsPos.X or mousePos.X > menuAbsPos.X + menuAbsSize.X or
-                   mousePos.Y < menuAbsPos.Y or mousePos.Y > menuAbsPos.Y + menuAbsSize.Y then
-                    SettingMenu.Visible = false
-                end
+            if isOpen then
+                CloseSettings()
+            else
+                OpenSettings()
             end
         end)
 
-        Crystal.Stepped:Connect(updateMenuPosition)
+        Crystal.Click(SettingOverlay, function()
+            CloseSettings()
+        end)
 
         local SettingFunctions = {}
 
@@ -3651,20 +3700,26 @@ function TabObject:AddToggle(ConfigToggles)
             Config.Callback = Config.Callback or function() end
 
             local SettingToggle = Instance.new("Frame")
+            local SettingToggleCorner = Instance.new("UICorner")
             local SettingToggleTitle = Instance.new("TextLabel")
             local SettingToggleSwitch = Instance.new("Frame")
-            local SettingToggleUICorner = Instance.new("UICorner")
+            local SettingToggleSwitchCorner = Instance.new("UICorner")
+            local SettingToggleSwitchStroke = Instance.new("UIStroke")
             local SettingToggleCircle = Instance.new("Frame")
-            local SettingToggleCircleUICorner = Instance.new("UICorner")
+            local SettingToggleCircleCorner = Instance.new("UICorner")
             local SettingToggleButton = Instance.new("TextButton")
 
             SettingToggle.Name = "SettingToggle"
             SettingToggle.Parent = SettingScroll
-            SettingToggle.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-            SettingToggle.BackgroundTransparency = 0.900
+            SettingToggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            SettingToggle.BackgroundTransparency = 0.700
             SettingToggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingToggle.BorderSizePixel = 0
-            SettingToggle.Size = UDim2.new(1, 0, 0, 30)
+            SettingToggle.Size = UDim2.new(1, 0, 0, 32)
+            SettingToggle.ZIndex = 100
+
+            SettingToggleCorner.CornerRadius = UDim.new(0, 4)
+            SettingToggleCorner.Parent = SettingToggle
 
             SettingToggleTitle.Name = "SettingToggleTitle"
             SettingToggleTitle.Parent = SettingToggle
@@ -3672,36 +3727,45 @@ function TabObject:AddToggle(ConfigToggles)
             SettingToggleTitle.BackgroundTransparency = 1
             SettingToggleTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingToggleTitle.BorderSizePixel = 0
-            SettingToggleTitle.Position = UDim2.new(0, 8, 0, 0)
+            SettingToggleTitle.Position = UDim2.new(0, 10, 0, 0)
             SettingToggleTitle.Size = UDim2.new(1, -50, 1, 0)
             SettingToggleTitle.Font = Enum.Font.Arcade
             SettingToggleTitle.Text = Config.Name
             SettingToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
             SettingToggleTitle.TextSize = 11
             SettingToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
+            SettingToggleTitle.ZIndex = 101
 
             SettingToggleSwitch.Name = "SettingToggleSwitch"
             SettingToggleSwitch.Parent = SettingToggle
             SettingToggleSwitch.AnchorPoint = Vector2.new(1, 0.5)
-            SettingToggleSwitch.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+            SettingToggleSwitch.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
             SettingToggleSwitch.BackgroundTransparency = Config.Default and 0 or 0.999
             SettingToggleSwitch.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingToggleSwitch.BorderSizePixel = 0
-            SettingToggleSwitch.Position = UDim2.new(1, -8, 0.5, 0)
-            SettingToggleSwitch.Size = UDim2.new(0, 30, 0, 16)
+            SettingToggleSwitch.Position = UDim2.new(1, -10, 0.5, 0)
+            SettingToggleSwitch.Size = UDim2.new(0, 32, 0, 16)
+            SettingToggleSwitch.ZIndex = 101
 
-            SettingToggleUICorner.CornerRadius = UDim.new(0, 8)
-            SettingToggleUICorner.Parent = SettingToggleSwitch
+            SettingToggleSwitchCorner.CornerRadius = UDim.new(0, 8)
+            SettingToggleSwitchCorner.Parent = SettingToggleSwitch
+
+            SettingToggleSwitchStroke.Parent = SettingToggleSwitch
+            SettingToggleSwitchStroke.Color = Config.Default and Color3.fromRGB(93, 197, 248) or Color3.fromRGB(113, 111, 112)
+            SettingToggleSwitchStroke.Thickness = 1.5
+            SettingToggleSwitchStroke.Transparency = Config.Default and 0 or 0.5
 
             SettingToggleCircle.Name = "SettingToggleCircle"
             SettingToggleCircle.Parent = SettingToggleSwitch
             SettingToggleCircle.AnchorPoint = Vector2.new(0, 0.5)
             SettingToggleCircle.BackgroundColor3 = Config.Default and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(113, 111, 112)
-            SettingToggleCircle.Position = Config.Default and UDim2.new(0, 16, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
+            SettingToggleCircle.BorderSizePixel = 0
+            SettingToggleCircle.Position = Config.Default and UDim2.new(0, 18, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
             SettingToggleCircle.Size = Config.Default and UDim2.new(0, 12, 0, 12) or UDim2.new(0, 10, 0, 10)
+            SettingToggleCircle.ZIndex = 102
 
-            SettingToggleCircleUICorner.CornerRadius = UDim.new(0, 6)
-            SettingToggleCircleUICorner.Parent = SettingToggleCircle
+            SettingToggleCircleCorner.CornerRadius = UDim.new(0, 6)
+            SettingToggleCircleCorner.Parent = SettingToggleCircle
 
             SettingToggleButton.Name = "SettingToggleButton"
             SettingToggleButton.Parent = SettingToggle
@@ -3714,6 +3778,13 @@ function TabObject:AddToggle(ConfigToggles)
             SettingToggleButton.Text = ""
             SettingToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
             SettingToggleButton.TextSize = 14
+            SettingToggleButton.ZIndex = 103
+
+            Crystal.Mouseto(SettingToggle, function()
+                Crystal.TweenObject({SettingToggle, 0.2, "BackgroundTransparency", 0.600})
+            end, function()
+                Crystal.TweenObject({SettingToggle, 0.2, "BackgroundTransparency", 0.700})
+            end)
 
             local SettingToggleFunc = { Value = Config.Default }
 
@@ -3722,13 +3793,17 @@ function TabObject:AddToggle(ConfigToggles)
                 if Value then
                     Crystal.TweenObject({SettingToggleSwitch, 0.2, "BackgroundTransparency", 0})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "BackgroundColor3", Color3.fromRGB(255, 255, 255)})
-                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Position", UDim2.new(0, 16, 0.5, 0)})
+                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Position", UDim2.new(0, 18, 0.5, 0)})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "Size", UDim2.new(0, 12, 0, 12)})
+                    Crystal.TweenObject({SettingToggleSwitchStroke, 0.2, "Color", Color3.fromRGB(93, 197, 248)})
+                    Crystal.TweenObject({SettingToggleSwitchStroke, 0.2, "Transparency", 0})
                 else
                     Crystal.TweenObject({SettingToggleSwitch, 0.2, "BackgroundTransparency", 0.999})
-                    Crystal.TweenObject({SettingToggleCircle, 0.2, "BackgroundColor3", Color3.fromRGB(113, 111, 112)})
+Crystal.TweenObject({SettingToggleCircle, 0.2, "BackgroundColor3", Color3.fromRGB(113, 111, 112)})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "Position", UDim2.new(0, 2, 0.5, 0)})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "Size", UDim2.new(0, 10, 0, 10)})
+                    Crystal.TweenObject({SettingToggleSwitchStroke, 0.2, "Color", Color3.fromRGB(113, 111, 112)})
+                    Crystal.TweenObject({SettingToggleSwitchStroke, 0.2, "Transparency", 0.5})
                 end
                 pcall(Config.Callback, Value)
             end
@@ -3748,23 +3823,34 @@ function TabObject:AddToggle(ConfigToggles)
             Config.Min = Config.Min or 0
             Config.Max = Config.Max or 100
             Config.Default = Config.Default or 50
+            Config.Increment = Config.Increment or 1
             Config.Callback = Config.Callback or function() end
 
             local SettingSlider = Instance.new("Frame")
+            local SettingSliderCorner = Instance.new("UICorner")
             local SettingSliderTitle = Instance.new("TextLabel")
+            local SettingSliderValue = Instance.new("TextLabel")
             local SettingSliderFrame = Instance.new("Frame")
-            local SettingSliderUICorner = Instance.new("UICorner")
+            local SettingSliderFrameCorner = Instance.new("UICorner")
+            local SettingSliderFrameStroke = Instance.new("UIStroke")
             local SettingSliderFill = Instance.new("Frame")
-            local SettingSliderFillUICorner = Instance.new("UICorner")
+            local SettingSliderFillCorner = Instance.new("UICorner")
+            local SettingSliderHandle = Instance.new("Frame")
+            local SettingSliderHandleCorner = Instance.new("UICorner")
+            local SettingSliderHandleStroke = Instance.new("UIStroke")
             local SettingSliderButton = Instance.new("TextButton")
 
             SettingSlider.Name = "SettingSlider"
             SettingSlider.Parent = SettingScroll
-            SettingSlider.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-            SettingSlider.BackgroundTransparency = 0.900
+            SettingSlider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            SettingSlider.BackgroundTransparency = 0.700
             SettingSlider.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingSlider.BorderSizePixel = 0
-            SettingSlider.Size = UDim2.new(1, 0, 0, 40)
+            SettingSlider.Size = UDim2.new(1, 0, 0, 45)
+            SettingSlider.ZIndex = 100
+
+            SettingSliderCorner.CornerRadius = UDim.new(0, 4)
+            SettingSliderCorner.Parent = SettingSlider
 
             SettingSliderTitle.Name = "SettingSliderTitle"
             SettingSliderTitle.Parent = SettingSlider
@@ -3772,34 +3858,76 @@ function TabObject:AddToggle(ConfigToggles)
             SettingSliderTitle.BackgroundTransparency = 1
             SettingSliderTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingSliderTitle.BorderSizePixel = 0
-            SettingSliderTitle.Position = UDim2.new(0, 8, 0, 5)
-            SettingSliderTitle.Size = UDim2.new(1, -16, 0, 12)
+            SettingSliderTitle.Position = UDim2.new(0, 10, 0, 5)
+            SettingSliderTitle.Size = UDim2.new(1, -60, 0, 12)
             SettingSliderTitle.Font = Enum.Font.Arcade
-            SettingSliderTitle.Text = Config.Name .. ": " .. Config.Default
+            SettingSliderTitle.Text = Config.Name
             SettingSliderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
             SettingSliderTitle.TextSize = 11
             SettingSliderTitle.TextXAlignment = Enum.TextXAlignment.Left
+            SettingSliderTitle.ZIndex = 101
+
+            SettingSliderValue.Name = "SettingSliderValue"
+            SettingSliderValue.Parent = SettingSlider
+            SettingSliderValue.AnchorPoint = Vector2.new(1, 0)
+            SettingSliderValue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            SettingSliderValue.BackgroundTransparency = 1
+            SettingSliderValue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            SettingSliderValue.BorderSizePixel = 0
+            SettingSliderValue.Position = UDim2.new(1, -10, 0, 5)
+            SettingSliderValue.Size = UDim2.new(0, 40, 0, 12)
+            SettingSliderValue.Font = Enum.Font.Arcade
+            SettingSliderValue.Text = tostring(Config.Default)
+            SettingSliderValue.TextColor3 = Color3.fromRGB(93, 197, 248)
+            SettingSliderValue.TextSize = 11
+            SettingSliderValue.TextXAlignment = Enum.TextXAlignment.Right
+            SettingSliderValue.ZIndex = 101
 
             SettingSliderFrame.Name = "SettingSliderFrame"
             SettingSliderFrame.Parent = SettingSlider
-            SettingSliderFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            SettingSliderFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+            SettingSliderFrame.BackgroundTransparency = 0.100
             SettingSliderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingSliderFrame.BorderSizePixel = 0
-            SettingSliderFrame.Position = UDim2.new(0, 8, 0, 22)
-            SettingSliderFrame.Size = UDim2.new(1, -16, 0, 6)
+            SettingSliderFrame.Position = UDim2.new(0, 10, 0, 25)
+            SettingSliderFrame.Size = UDim2.new(1, -20, 0, 4)
+            SettingSliderFrame.ZIndex = 101
 
-            SettingSliderUICorner.CornerRadius = UDim.new(1, 0)
-            SettingSliderUICorner.Parent = SettingSliderFrame
+            SettingSliderFrameCorner.CornerRadius = UDim.new(0, 2)
+            SettingSliderFrameCorner.Parent = SettingSliderFrame
+
+            SettingSliderFrameStroke.Parent = SettingSliderFrame
+            SettingSliderFrameStroke.Color = Color3.fromRGB(93, 197, 248)
+            SettingSliderFrameStroke.Thickness = 1
+            SettingSliderFrameStroke.Transparency = 0.5
 
             SettingSliderFill.Name = "SettingSliderFill"
             SettingSliderFill.Parent = SettingSliderFrame
-            SettingSliderFill.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+            SettingSliderFill.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
             SettingSliderFill.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingSliderFill.BorderSizePixel = 0
             SettingSliderFill.Size = UDim2.new((Config.Default - Config.Min) / (Config.Max - Config.Min), 0, 1, 0)
+            SettingSliderFill.ZIndex = 102
 
-            SettingSliderFillUICorner.CornerRadius = UDim.new(1, 0)
-            SettingSliderFillUICorner.Parent = SettingSliderFill
+            SettingSliderFillCorner.CornerRadius = UDim.new(0, 2)
+            SettingSliderFillCorner.Parent = SettingSliderFill
+
+            SettingSliderHandle.Name = "SettingSliderHandle"
+            SettingSliderHandle.Parent = SettingSliderFill
+            SettingSliderHandle.AnchorPoint = Vector2.new(1, 0.5)
+            SettingSliderHandle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            SettingSliderHandle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            SettingSliderHandle.BorderSizePixel = 0
+            SettingSliderHandle.Position = UDim2.new(1, 0, 0.5, 0)
+            SettingSliderHandle.Size = UDim2.new(0, 10, 0, 10)
+            SettingSliderHandle.ZIndex = 103
+
+            SettingSliderHandleCorner.CornerRadius = UDim.new(1, 0)
+            SettingSliderHandleCorner.Parent = SettingSliderHandle
+
+            SettingSliderHandleStroke.Parent = SettingSliderHandle
+            SettingSliderHandleStroke.Color = Color3.fromRGB(93, 197, 248)
+            SettingSliderHandleStroke.Thickness = 2
 
             SettingSliderButton.Name = "SettingSliderButton"
             SettingSliderButton.Parent = SettingSlider
@@ -3812,36 +3940,63 @@ function TabObject:AddToggle(ConfigToggles)
             SettingSliderButton.Text = ""
             SettingSliderButton.TextColor3 = Color3.fromRGB(0, 0, 0)
             SettingSliderButton.TextSize = 14
+            SettingSliderButton.ZIndex = 104
+
+            Crystal.Mouseto(SettingSlider, function()
+                Crystal.TweenObject({SettingSlider, 0.2, "BackgroundTransparency", 0.600})
+                Crystal.TweenObject({SettingSliderHandle, 0.2, "Size", UDim2.new(0, 12, 0, 12)})
+            end, function()
+                Crystal.TweenObject({SettingSlider, 0.2, "BackgroundTransparency", 0.700})
+                Crystal.TweenObject({SettingSliderHandle, 0.2, "Size", UDim2.new(0, 10, 0, 10)})
+            end)
 
             local SettingSliderFunc = { Value = Config.Default }
             local dragging = false
 
+            local function Round(Number, Factor)
+                local Result = math.floor(Number / Factor + 0.5) * Factor
+                return Result
+            end
+
             function SettingSliderFunc:Set(Value)
-                Value = math.clamp(Value, Config.Min, Config.Max)
+                Value = math.clamp(Round(Value, Config.Increment), Config.Min, Config.Max)
                 SettingSliderFunc.Value = Value
-                SettingSliderTitle.Text = Config.Name .. ": " .. Value
-                SettingSliderFill.Size = UDim2.new((Value - Config.Min) / (Config.Max - Config.Min), 0, 1, 0)
+                SettingSliderValue.Text = tostring(Value)
+                
+                local scale = (Value - Config.Min) / (Config.Max - Config.Min)
+                Crystal.TweenObject({SettingSliderFill, 0.15, "Size", UDim2.fromScale(scale, 1)})
+                
                 pcall(Config.Callback, Value)
             end
 
             SettingSliderButton.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                     dragging = true
-                end
-            end)
-
-            SettingSliderButton.InputEnded:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    dragging = false
+                    Crystal.TweenObject({SettingSliderHandle, 0.1, "Size", UDim2.new(0, 14, 0, 14)})
+                    
+                    local function update(pos)
+                        local relativeX = (pos.X - SettingSliderFrame.AbsolutePosition.X) / SettingSliderFrame.AbsoluteSize.X
+                        relativeX = math.clamp(relativeX, 0, 1)
+                        local value = Config.Min + (relativeX * (Config.Max - Config.Min))
+                        SettingSliderFunc:Set(value)
+                    end
+                    
+                    update(input.Position)
+                    
+                    local connection
+                    connection = input.Changed:Connect(function()
+                        if input.UserInputState == Enum.UserInputState.End then
+                            dragging = false
+                            connection:Disconnect()
+                            Crystal.TweenObject({SettingSliderHandle, 0.2, "Size", UDim2.new(0, 10, 0, 10)})
+                        end
+                    end)
                 end
             end)
 
             Crystal.UserInputService.InputChanged:Connect(function(input)
-                if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-                    local mousePos = Crystal.UserInputService:GetMouseLocation()
-                    local sliderAbsPos = SettingSliderFrame.AbsolutePosition
-                    local sliderAbsSize = SettingSliderFrame.AbsoluteSize
-                    local relativeX = (mousePos.X - sliderAbsPos.X) / sliderAbsSize.X
+                if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+                    local relativeX = (input.Position.X - SettingSliderFrame.AbsolutePosition.X) / SettingSliderFrame.AbsoluteSize.X
                     relativeX = math.clamp(relativeX, 0, 1)
                     local value = Config.Min + (relativeX * (Config.Max - Config.Min))
                     SettingSliderFunc:Set(value)
@@ -3858,6 +4013,7 @@ function TabObject:AddToggle(ConfigToggles)
 
     return ToggleFunc
 end
+
 TabCount = TabCount + 1
 return TabObject
     end
