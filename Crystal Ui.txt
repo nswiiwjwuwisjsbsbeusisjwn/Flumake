@@ -1598,7 +1598,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     }
 
     Dropdown.Name = ConfigDropdown.Title
-    Dropdown.Parent = ScrollLayers
+    Dropdown.Parent = TabObject.ScrollLayers
     Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Dropdown.BackgroundTransparency = 0.970
     Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2064,7 +2064,6 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
-
 function TabObject:AddInput(ConfigInput)
     ConfigInput = ConfigInput or {}
     ConfigInput.Title = ConfigInput.Title or "Input"
