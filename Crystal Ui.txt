@@ -21,7 +21,7 @@ local Crystal = {
 Crystal.Types = {
     Info = {
         Icon = "rbxassetid://11401835396",
-        Color = Color3.fromRGB(100, 150, 255)
+        Color = Color3.fromRGB(100, 220, 255)
     },
     Success = {
         Icon = "rbxassetid://11401835396",
@@ -337,7 +337,7 @@ Crystal.Notify = function(self, NotifyConfig)
         if NotifyConfig.Title1 then
             Title1Label.Font = Enum.Font.GothamBold
             Title1Label.Text = NotifyConfig.Title1
-            Title1Label.TextColor3 = Color3.fromRGB(100, 150, 255)
+            Title1Label.TextColor3 = Color3.fromRGB(100, 220, 255)
             Title1Label.TextSize = 8
             Title1Label.TextXAlignment = Enum.TextXAlignment.Left
             Title1Label.TextYAlignment = Enum.TextYAlignment.Center
@@ -387,7 +387,7 @@ Crystal.Notify = function(self, NotifyConfig)
         UICorner2.CornerRadius = UDim.new(1, 0)
         UICorner2.Parent = ProgressBar
 
-        ProgressFill.BackgroundColor3 = typeData and typeData.Color or Color3.fromRGB(100, 150, 255)
+        ProgressFill.BackgroundColor3 = typeData and typeData.Color or Color3.fromRGB(100, 220, 255)
         ProgressFill.BorderSizePixel = 0
         ProgressFill.Size = UDim2.new(1, 0, 1, 0)
         ProgressFill.Parent = ProgressBar
@@ -597,7 +597,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.TopDescription.Size = UDim2.new(0, 80, 0, 16)
     CrystalHub.TopDescription.Font = Enum.Font.GothamBold
     CrystalHub.TopDescription.Text = WindowConfig.Description
-    CrystalHub.TopDescription.TextColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.TopDescription.TextColor3 = Color3.fromRGB(200, 170, 255)
     CrystalHub.TopDescription.TextSize = 12.000
     CrystalHub.TopDescription.TextTransparency = 0.300
     CrystalHub.TopDescription.TextXAlignment = Enum.TextXAlignment.Left
@@ -648,7 +648,7 @@ Crystal.Window = function(self, WindowConfig)
 
     CrystalHub.CloseBorderLeft.Name = "FrameBiNgu"
     CrystalHub.CloseBorderLeft.Parent = CrystalHub.CloseButton
-    CrystalHub.CloseBorderLeft.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+    CrystalHub.CloseBorderLeft.BackgroundColor3 = Color3.fromRGB(100, 220, 255)
     CrystalHub.CloseBorderLeft.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.CloseBorderLeft.BorderSizePixel = 0
     CrystalHub.CloseBorderLeft.Size = UDim2.new(0, 7, 1, 0)
@@ -656,7 +656,7 @@ Crystal.Window = function(self, WindowConfig)
 
     CrystalHub.CloseBorderBottom.Name = "FrameOc"
     CrystalHub.CloseBorderBottom.Parent = CrystalHub.CloseButton
-    CrystalHub.CloseBorderBottom.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+    CrystalHub.CloseBorderBottom.BackgroundColor3 = Color3.fromRGB(100, 220, 255)
     CrystalHub.CloseBorderBottom.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.CloseBorderBottom.BorderSizePixel = 0
     CrystalHub.CloseBorderBottom.BackgroundTransparency = 1.000
@@ -923,7 +923,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.SearchDecideActive.Name = "SearchDecide_2"
     CrystalHub.SearchDecideActive.Parent = CrystalHub.SearchDecide
     CrystalHub.SearchDecideActive.AnchorPoint = Vector2.new(0.5, 1)
-    CrystalHub.SearchDecideActive.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.SearchDecideActive.BackgroundColor3 = Color3.fromRGB(100, 220, 255)
     CrystalHub.SearchDecideActive.BackgroundTransparency = 0.999
     CrystalHub.SearchDecideActive.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.SearchDecideActive.BorderSizePixel = 0
@@ -934,7 +934,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.SearchDecideActiveCorner.Parent = CrystalHub.SearchDecideActive
 
     CrystalHub.SearchDecideActiveStroke.Parent = CrystalHub.SearchDecideActive
-    CrystalHub.SearchDecideActiveStroke.Color = Color3.fromRGB(93, 197, 248)
+    CrystalHub.SearchDecideActiveStroke.Color = Color3.fromRGB(200, 170, 255)
     CrystalHub.SearchDecideActiveStroke.Transparency = 0.999
     CrystalHub.SearchDecideActiveStroke.Thickness = 0.800
 
@@ -1118,7 +1118,7 @@ Crystal.Window = function(self, WindowConfig)
     Crystal.Mouseto(CrystalHub.ConfirmButtonFrame, function()
         Crystal.TweenObject({CrystalHub.ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(120, 210, 255)})
     end, function()
-        Crystal.TweenObject({CrystalHub.ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(93, 197, 248)})
+        Crystal.TweenObject({CrystalHub.ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(200, 170, 255)})
     end)
 
     CrystalHub.CancelButtonFrame.Name = "CancelFrame"
@@ -1390,7 +1390,7 @@ Crystal.Window = function(self, WindowConfig)
         ScrollLayers.BackgroundTransparency = 0.999
         ScrollLayers.BorderSizePixel = 0
         ScrollLayers.Size = UDim2.new(1, 0, 1, 0)
-        ScrollLayers.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
+        ScrollLayers.ScrollBarImageColor3 = Color3.fromRGB(200, 170, 255)
         ScrollLayers.CanvasSize = UDim2.new(0, 0, 0, 0)
         ScrollLayers.ScrollBarImageTransparency = 0.700
         ScrollLayers.ScrollBarThickness = 3
@@ -1411,7 +1411,7 @@ Crystal.Window = function(self, WindowConfig)
 
             ChoosingFrame.Name = "ChoosingFrame"
             ChoosingFrame.Parent = Tab
-            ChoosingFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+            ChoosingFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
             ChoosingFrame.BorderSizePixel = 0
             ChoosingFrame.Position = UDim2.new(0, 2, 0, 10)
             ChoosingFrame.Size = UDim2.new(0, 3, 0, 12)
@@ -1420,7 +1420,7 @@ Crystal.Window = function(self, WindowConfig)
             ChoosingCorner.Parent = ChoosingFrame
 
             ChoosingStroke.Parent = ChoosingFrame
-            ChoosingStroke.Color = Color3.fromRGB(93, 197, 248)
+            ChoosingStroke.Color = Color3.fromRGB(200, 170, 255)
             ChoosingStroke.Thickness = 0.800
 
             LayersPageLayout:JumpToIndex(0)
@@ -1825,7 +1825,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     ScrollSelect.BorderSizePixel = 0
     ScrollSelect.ClipsDescendants = true
     ScrollSelect.Size = UDim2.new(1, 0, 1, 0)
-    ScrollSelect.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
+    ScrollSelect.ScrollBarImageColor3 = Color3.fromRGB(200, 170, 255)
     ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, 0)
     ScrollSelect.ScrollBarImageTransparency = 0.700
     ScrollSelect.ScrollBarThickness = 3
@@ -1837,7 +1837,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     SearchBox.Focused:Connect(function()
         Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(30, 30, 30)})
-        Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
+        Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(200, 170, 255)})
     end)
 
     SearchBox.FocusLost:Connect(function()
@@ -2028,7 +2028,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Option
         ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
-        ChooseFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        ChooseFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
         ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ChooseFrame.BorderSizePixel = 0
         ChooseFrame.Position = UDim2.new(0, 4, 0.5, 0)
@@ -2036,7 +2036,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         ChooseFrame.ZIndex = 56
 
         UIStroke_14.Parent = ChooseFrame
-        UIStroke_14.Color = Color3.fromRGB(93, 197, 248)
+        UIStroke_14.Color = Color3.fromRGB(200, 170, 255)
         UIStroke_14.Thickness = 0.800
         UIStroke_14.Enabled = false
 
@@ -3146,7 +3146,7 @@ function TabObject:AddSlider(ConfigSlider)
 
     local SliderInputStroke = Instance.new("UIStroke")
     SliderInputStroke.Parent = SliderInputFrame
-    SliderInputStroke.Color = Color3.fromRGB(93, 197, 248)
+    SliderInputStroke.Color = Color3.fromRGB(200, 170, 255)
     SliderInputStroke.Thickness = 1
     SliderInputStroke.Transparency = 0.7
 
@@ -3156,7 +3156,7 @@ function TabObject:AddSlider(ConfigSlider)
     SliderInput.Size = UDim2.new(1, 0, 1, 0)
     SliderInput.Font = Enum.Font.GothamBold
     SliderInput.Text = tostring(ConfigSlider.Default)
-    SliderInput.TextColor3 = Color3.fromRGB(93, 197, 248)
+    SliderInput.TextColor3 = Color3.fromRGB(200, 170, 255)
     SliderInput.TextSize = 11
     SliderInput.ClearTextOnFocus = false
 
@@ -3166,7 +3166,7 @@ function TabObject:AddSlider(ConfigSlider)
     SliderNumber.Size = UDim2.new(1, 0, 1, 0)
     SliderNumber.Font = Enum.Font.GothamBold
     SliderNumber.Text = tostring(ConfigSlider.Default)
-    SliderNumber.TextColor3 = Color3.fromRGB(93, 197, 248)
+    SliderNumber.TextColor3 = Color3.fromRGB(200, 170, 255)
     SliderNumber.TextSize = 11
     SliderNumber.Visible = true
 
@@ -3183,7 +3183,7 @@ function TabObject:AddSlider(ConfigSlider)
     UICorner_24.Parent = SliderFrame
 
     UIStroke_24.Parent = SliderFrame
-    UIStroke_24.Color = Color3.fromRGB(93, 197, 248)
+    UIStroke_24.Color = Color3.fromRGB(200, 170, 255)
     UIStroke_24.Thickness = 1
     UIStroke_24.Transparency = 0.5
 
@@ -3191,7 +3191,7 @@ function TabObject:AddSlider(ConfigSlider)
     SliderDrag.Name = "SliderDrag"
     SliderDrag.Parent = SliderFrame
     SliderDrag.AnchorPoint = Vector2.new(0, 0.5)
-    SliderDrag.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    SliderDrag.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
     SliderDrag.BorderSizePixel = 0
     SliderDrag.Position = UDim2.new(0, 0, 0.5, 0)
     SliderDrag.Size = UDim2.new(0, 0, 1, 0)
@@ -3214,7 +3214,7 @@ function TabObject:AddSlider(ConfigSlider)
     UICorner_26.Parent = SliderCircle
 
     UIStroke_10.Parent = SliderCircle
-    UIStroke_10.Color = Color3.fromRGB(93, 197, 248)
+    UIStroke_10.Color = Color3.fromRGB(200, 170, 255)
     UIStroke_10.Thickness = 2
 
     -- Drag Area
@@ -3489,7 +3489,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleSwitch.Name = "ToggleSwitch"
     ToggleSwitch.Parent = Toggle
     ToggleSwitch.AnchorPoint = Vector2.new(1, 0.5)
-    ToggleSwitch.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    ToggleSwitch.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
     ToggleSwitch.BackgroundTransparency = ConfigToggles.Default and 0 or 0.999
     ToggleSwitch.Position = UDim2.new(1, -25, 0.5, 0)
     ToggleSwitch.Size = UDim2.new(0, 40, 0, 20)
@@ -3509,7 +3509,7 @@ function TabObject:AddToggle(ConfigToggles)
     UICorner_14.Parent = ToggleCircle
 
     UIStroke_6.Parent = ToggleSwitch
-    UIStroke_6.Color = ConfigToggles.Default and Color3.fromRGB(93, 197, 248) or Color3.fromRGB(113, 111, 112)
+    UIStroke_6.Color = ConfigToggles.Default and Color3.fromRGB(200, 170, 255) or Color3.fromRGB(113, 111, 112)
     UIStroke_6.Thickness = 1.5
     UIStroke_6.Transparency = ConfigToggles.Default and 0 or 0.5
 
@@ -3531,7 +3531,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleOnOff.Size = UDim2.new(0, 30, 0, 12)
     ToggleOnOff.Font = Enum.Font.GothamBold
     ToggleOnOff.Text = ConfigToggles.Default and "True" or "False"
-    ToggleOnOff.TextColor3 = ConfigToggles.Default and Color3.fromRGB(93, 197, 248) or Color3.fromRGB(180, 180, 180)
+    ToggleOnOff.TextColor3 = ConfigToggles.Default and Color3.fromRGB(200, 170, 255) or Color3.fromRGB(180, 180, 180)
     ToggleOnOff.TextSize = 11
     ToggleOnOff.TextXAlignment = Enum.TextXAlignment.Right
 
@@ -3553,9 +3553,9 @@ function TabObject:AddToggle(ConfigToggles)
             Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "BackgroundColor3", NewValue = Color3.fromRGB(255, 255, 255)})
             Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Position", NewValue = UDim2.new(0, 24, 0.5, 0)})
             Crystal.TweenObject({Object = ToggleCircle, Time = 0.3, OldValue = "Size", NewValue = UDim2.new(0, 16, 0, 16)})
-            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(93, 197, 248)})
+            Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Color", NewValue = Color3.fromRGB(200, 170, 255)})
             Crystal.TweenObject({Object = UIStroke_6, Time = 0.3, OldValue = "Transparency", NewValue = 0})
-            Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(93, 197, 248)})
+            Crystal.TweenObject({Object = ToggleOnOff, Time = 0.3, OldValue = "TextColor3", NewValue = Color3.fromRGB(200, 170, 255)})
             ToggleOnOff.Text = "True"
         else
             Crystal.TweenObject({Object = ToggleSwitch, Time = 0.3, OldValue = "BackgroundTransparency", NewValue = 0.999})
