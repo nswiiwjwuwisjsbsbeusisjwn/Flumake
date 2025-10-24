@@ -753,13 +753,13 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.DecideFrame.Name = "DecideFrame"
     CrystalHub.DecideFrame.Parent = CrystalHub.TopBar
     CrystalHub.DecideFrame.AnchorPoint = Vector2.new(0.5, 1)
-    CrystalHub.DecideFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.DecideFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
     CrystalHub.DecideFrame.BackgroundTransparency = 0.800
     CrystalHub.DecideFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.DecideFrame.BorderSizePixel = 0
     CrystalHub.DecideFrame.Position = UDim2.new(0.5, 0, 1, 2)
     CrystalHub.DecideFrame.Size = UDim2.new(1, -14, 0, 2)
-
+    
     CrystalHub.DecideCorner.CornerRadius = UDim.new(0, 100)
     CrystalHub.DecideCorner.Parent = CrystalHub.DecideFrame
 
@@ -850,7 +850,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.AvatarFrameCorner.Parent = CrystalHub.AvatarFrame
 
     CrystalHub.AvatarStroke.Parent = CrystalHub.AvatarFrame
-    CrystalHub.AvatarStroke.Color = Color3.fromRGB(93, 197, 248)
+    CrystalHub.AvatarStroke.Color = Color3.fromRGB(200, 170, 255)
     CrystalHub.AvatarStroke.Transparency = 0.700
     CrystalHub.AvatarStroke.Thickness = 2.000
 
@@ -989,7 +989,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.ScrollTab.Position = UDim2.new(0, 0, 0, 90)
     CrystalHub.ScrollTab.Size = UDim2.new(1, 0, 1, -90)
     CrystalHub.ScrollTab.ZIndex = 0
-    CrystalHub.ScrollTab.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.ScrollTab.ScrollBarImageColor3 = Color3.fromRGB(200, 170, 255)
     CrystalHub.ScrollTab.CanvasSize = UDim2.new(0, 0, 0, 220)
     CrystalHub.ScrollTab.ScrollBarImageTransparency = 0.700
     CrystalHub.ScrollTab.ScrollBarThickness = 3
@@ -1094,7 +1094,7 @@ Crystal.Window = function(self, WindowConfig)
 
     CrystalHub.ConfirmButtonFrame.Name = "ConfirmFrame"
     CrystalHub.ConfirmButtonFrame.Parent = CrystalHub.ConfirmationBottom
-    CrystalHub.ConfirmButtonFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+    CrystalHub.ConfirmButtonFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
     CrystalHub.ConfirmButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.ConfirmButtonFrame.BorderSizePixel = 0
     CrystalHub.ConfirmButtonFrame.Position = UDim2.new(0, 15, 0, 12)
