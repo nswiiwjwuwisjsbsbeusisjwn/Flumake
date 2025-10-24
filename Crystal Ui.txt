@@ -1598,7 +1598,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     }
 
     Dropdown.Name = ConfigDropdown.Title
-    Dropdown.Parent = Tab1.ScrollLayers
+    Dropdown.Parent = ScrollLayers
     Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Dropdown.BackgroundTransparency = 0.970
     Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1706,7 +1706,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownButton.ZIndex = 2
 
     DropMore.Name = "DropMore"
-    DropMore.Parent = game.Players.LocalPlayer.PlayerGui
+    DropMore.Parent = CrystalHub.Layers
     DropMore.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropMore.BackgroundTransparency = 1
     DropMore.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1817,6 +1817,10 @@ function TabObject:AddDropdown(ConfigDropdown)
     UIListLayout_6.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout_6.Padding = UDim.new(0, 3)
 
+    UIListLayout_6:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
+    end)
+
     SearchBox.Focused:Connect(function()
         Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(30, 30, 30)})
         Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
@@ -1856,7 +1860,6 @@ function TabObject:AddDropdown(ConfigDropdown)
         local contentHeight = math.max(DropdownContent.TextBounds.Y + 10, 30)
         Dropdown.Size = UDim2.new(1, -8, 0, contentHeight + 18)
         DropdownContent.Size = UDim2.new(1, -180, 0, contentHeight + 10)
-        ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
     end)
 
     if DropdownContent.Text == '' then
@@ -1865,7 +1868,6 @@ function TabObject:AddDropdown(ConfigDropdown)
     end
 
     local menuWidth = 180
-    local menuHeight = 250
     local function UpdateMenuPosition()
         local absPos = SelectOptionsFrame.AbsolutePosition
         local absSize = SelectOptionsFrame.AbsoluteSize
@@ -1884,7 +1886,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         UpdateMenuPosition()
         
         local startPos = DropdownSelectReal.Position
-        local offscreenX = game:GetService("GuiService"):GetScreenResolution().X + 50
+        local offscreenX = workspace.CurrentCamera.ViewportSize.X + 50
         DropdownSelectReal.Position = UDim2.new(0, offscreenX, 0, startPos.Y.Offset)
         Crystal.TweenObject({DropdownSelectReal, 0.3, "Position", startPos})
         Crystal.TweenObject({OptionImg, 0.2, "Rotation", -90})
@@ -2020,7 +2022,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(230, 230, 230)})
             end
         end, function()
-            if not table.find(DropFunc.Value, OptionSelecting_2.Text) then
+            if Option.BackgroundTransparency >= 0.900 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 1})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(200, 200, 200)})
             end
@@ -2042,9 +2044,6 @@ function TabObject:AddDropdown(ConfigDropdown)
         end)
 
         OptionCounts = OptionCounts + 1
-        UIListLayout_6:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-            ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
-        end)
     end
 
     function DropFunc:Clear()
@@ -2065,6 +2064,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
+
 function TabObject:AddInput(ConfigInput)
     ConfigInput = ConfigInput or {}
     ConfigInput.Title = ConfigInput.Title or "Input"
