@@ -1553,6 +1553,7 @@ function TabObject:AddButton(ButtonConfig)
     return Button
 end
 
+
 function TabObject:AddDropdown(ConfigDropdown)
     ConfigDropdown = ConfigDropdown or {}
     ConfigDropdown.Title = ConfigDropdown.Title or "Dropdown"
@@ -1563,6 +1564,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     ConfigDropdown.Default = ConfigDropdown.Default or (ConfigDropdown.Multi and {} or "")
     ConfigDropdown.Callback = ConfigDropdown.Callback or function() end
 
+    -- UI Elements
     local Dropdown = Instance.new("Frame")
     local DropdownTitle = Instance.new("TextLabel")
     local UICorner_27 = Instance.new("UICorner")
@@ -1577,7 +1579,6 @@ function TabObject:AddDropdown(ConfigDropdown)
     local DropMore = Instance.new("Frame")
     local DropdownSelectReal = Instance.new("Frame")
     local DropFrame = Instance.new("Frame")
-    local DropdownFolder = Instance.new("Folder")
     local UICorner_41 = Instance.new("UICorner")
     local UIStroke_16 = Instance.new("UIStroke")
     
@@ -1591,26 +1592,27 @@ function TabObject:AddDropdown(ConfigDropdown)
     local ScrollSelect = Instance.new("ScrollingFrame")
     local UIListLayout_6 = Instance.new("UIListLayout")
 
+    -- Initialize value properly
     local DropFunc = {
         Value = ConfigDropdown.Multi and 
-            (type(ConfigDropdown.Default) == "table" and ConfigDropdown.Default or {ConfigDropdown.Default}) or 
+            (type(ConfigDropdown.Default) == "table" and ConfigDropdown.Default or {}) or 
             (type(ConfigDropdown.Default) == "string" and ConfigDropdown.Default or "")
     }
 
+    -- Main Dropdown Frame
     Dropdown.Name = ConfigDropdown.Title
-    Dropdown.Parent = TabObject.ScrollLayers
+    Dropdown.Parent = ScrollLayers
     Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Dropdown.BackgroundTransparency = 0.970
-    Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Dropdown.BorderSizePixel = 0
     Dropdown.Size = UDim2.new(1, -8, 0, 45)
 
+    UICorner_27.CornerRadius = UDim.new(0, 4)
+    UICorner_27.Parent = Dropdown
+
     DropdownTitle.Name = "DropdownTitle"
     DropdownTitle.Parent = Dropdown
-    DropdownTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownTitle.BackgroundTransparency = 1
-    DropdownTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    DropdownTitle.BorderSizePixel = 0
     DropdownTitle.Position = UDim2.new(0, 40, 0, 11)
     DropdownTitle.Size = UDim2.new(1, -180, 0, 12)
     DropdownTitle.Font = Enum.Font.Arcade
@@ -1619,15 +1621,9 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownTitle.TextSize = 12
     DropdownTitle.TextXAlignment = Enum.TextXAlignment.Left
 
-    UICorner_27.CornerRadius = UDim.new(0, 4)
-    UICorner_27.Parent = Dropdown
-
     DropdownContent.Name = "DropdownContent"
     DropdownContent.Parent = Dropdown
-    DropdownContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownContent.BackgroundTransparency = 1
-    DropdownContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    DropdownContent.BorderSizePixel = 0
     DropdownContent.Position = UDim2.new(0, 40, 0, 21)
     DropdownContent.Size = UDim2.new(1, -180, 0, 11)
     DropdownContent.Font = Enum.Font.Arcade
@@ -1642,10 +1638,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownImage.Name = "DropdownImage"
     DropdownImage.Parent = Dropdown
     DropdownImage.AnchorPoint = Vector2.new(0, 0.5)
-    DropdownImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownImage.BackgroundTransparency = 1
-    DropdownImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    DropdownImage.BorderSizePixel = 0
     DropdownImage.Position = UDim2.new(0, 12, 0.5, 0)
     DropdownImage.Size = UDim2.new(0, 16, 0, 16)
     DropdownImage.Image = ConfigDropdown.IconDrop
@@ -1656,7 +1649,6 @@ function TabObject:AddDropdown(ConfigDropdown)
     SelectOptionsFrame.AnchorPoint = Vector2.new(1, 0.5)
     SelectOptionsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     SelectOptionsFrame.BackgroundTransparency = 0.900
-    SelectOptionsFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     SelectOptionsFrame.BorderSizePixel = 0
     SelectOptionsFrame.Position = UDim2.new(1, -9, 0.5, 0)
     SelectOptionsFrame.Size = UDim2.new(0, 125, 0, 26)
@@ -1666,10 +1658,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     OptionSelecting.Name = "OptionSelecting"
     OptionSelecting.Parent = SelectOptionsFrame
-    OptionSelecting.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     OptionSelecting.BackgroundTransparency = 1
-    OptionSelecting.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    OptionSelecting.BorderSizePixel = 0
     OptionSelecting.Position = UDim2.new(0, 7, 0, 0)
     OptionSelecting.Size = UDim2.new(1, -30, 1, 0)
     OptionSelecting.Font = Enum.Font.Arcade
@@ -1682,10 +1671,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     OptionImg.Name = "OptionImg"
     OptionImg.Parent = SelectOptionsFrame
     OptionImg.AnchorPoint = Vector2.new(1, 0.5)
-    OptionImg.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     OptionImg.BackgroundTransparency = 1
-    OptionImg.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    OptionImg.BorderSizePixel = 0
     OptionImg.Position = UDim2.new(1, -5, 0.5, 1)
     OptionImg.Rotation = 90
     OptionImg.Size = UDim2.new(0, 16, 0, 16)
@@ -1694,38 +1680,31 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     DropdownButton.Name = "DropdownButton"
     DropdownButton.Parent = SelectOptionsFrame
-    DropdownButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownButton.BackgroundTransparency = 1
-    DropdownButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    DropdownButton.BorderSizePixel = 0
     DropdownButton.Size = UDim2.new(1, 0, 1, 0)
     DropdownButton.Font = Enum.Font.SourceSans
     DropdownButton.Text = ""
-    DropdownButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-    DropdownButton.TextSize = 14
     DropdownButton.ZIndex = 2
 
+    -- Dropdown Menu Overlay
     DropMore.Name = "DropMore"
     DropMore.Parent = CrystalHub.Layers
-    DropMore.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropMore.BackgroundTransparency = 1
-    DropMore.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropMore.BorderSizePixel = 0
-    DropMore.Position = UDim2.new(0, 0, 0, 0)
-    DropMore.Size = UDim2.new(1, 0, 1, 0)
+    DropMore.Position = UDim2.new(0, 0, 0, 30)
+    DropMore.Size = UDim2.new(1, 0, 1, -30)
     DropMore.Visible = false
     DropMore.ClipsDescendants = true
     DropMore.ZIndex = 50
 
     DropdownSelectReal.Name = "DropdownSelectReal"
     DropdownSelectReal.Parent = DropMore
-    DropdownSelectReal.AnchorPoint = Vector2.new(0, 0)
+    DropdownSelectReal.AnchorPoint = Vector2.new(1, 0)
     DropdownSelectReal.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
     DropdownSelectReal.BackgroundTransparency = 0.050
-    DropdownSelectReal.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropdownSelectReal.BorderSizePixel = 0
     DropdownSelectReal.ClipsDescendants = true
-    DropdownSelectReal.Position = UDim2.new(0, 0, 0, 0)
+    DropdownSelectReal.Position = UDim2.new(1, -17, 0, 7)
     DropdownSelectReal.Size = UDim2.new(0, 180, 0, 250)
     DropdownSelectReal.ZIndex = 52
 
@@ -1736,6 +1715,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     UIStroke_16.Color = Color3.fromRGB(60, 60, 60)
     UIStroke_16.Thickness = 1.5
 
+    -- Search Frame
     SearchFrame.Name = "SearchFrame"
     SearchFrame.Parent = DropdownSelectReal
     SearchFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -1787,23 +1767,16 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     DropFrame.Name = "DropFrame"
     DropFrame.Parent = DropdownSelectReal
-    DropFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     DropFrame.BackgroundTransparency = 1
-    DropFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropFrame.BorderSizePixel = 0
     DropFrame.Position = UDim2.new(0, 5, 0, 50)
     DropFrame.Size = UDim2.new(1, -7, 1, -55)
     DropFrame.ZIndex = 53
 
-    DropdownFolder.Name = "DropdownFolder"
-    DropdownFolder.Parent = DropFrame
-
     ScrollSelect.Name = "ScrollSelect"
-    ScrollSelect.Parent = DropdownFolder
+    ScrollSelect.Parent = DropFrame
     ScrollSelect.Active = true
-    ScrollSelect.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ScrollSelect.BackgroundTransparency = 1
-    ScrollSelect.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ScrollSelect.BorderSizePixel = 0
     ScrollSelect.ClipsDescendants = true
     ScrollSelect.Size = UDim2.new(1, 0, 1, 0)
@@ -1817,10 +1790,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     UIListLayout_6.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout_6.Padding = UDim.new(0, 3)
 
-    UIListLayout_6:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
-    end)
-
+    -- Search Box Focus Effects
     SearchBox.Focused:Connect(function()
         Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(30, 30, 30)})
         Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
@@ -1831,13 +1801,12 @@ function TabObject:AddDropdown(ConfigDropdown)
         Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(140, 140, 140)})
     end)
 
+    -- Search Functionality
     SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
         local searchText = SearchBox.Text:lower():gsub(" ", "")
-        
         for _, v in next, ScrollSelect:GetChildren() do
             if v:IsA("Frame") and v.Name == "Option" then
                 local optionText = v.OptionSelecting.Text:lower():gsub(" ", "")
-                
                 if searchText == "" or string.find(optionText, searchText) then
                     v.Visible = true
                 else
@@ -1847,12 +1816,14 @@ function TabObject:AddDropdown(ConfigDropdown)
         end
     end)
 
+    -- Hover effects
     Crystal.Mouseto(SelectOptionsFrame, function()
         Crystal.TweenObject({SelectOptionsFrame, 0.2, "BackgroundTransparency", 0.850})
     end, function()
         Crystal.TweenObject({SelectOptionsFrame, 0.2, "BackgroundTransparency", 0.900})
     end)
 
+    -- Dynamic sizing (throttled)
     local lastSizeUpdate = 0
     Crystal.Stepped:Connect(function()
         if tick() - lastSizeUpdate < 0.1 then return end
@@ -1860,6 +1831,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         local contentHeight = math.max(DropdownContent.TextBounds.Y + 10, 30)
         Dropdown.Size = UDim2.new(1, -8, 0, contentHeight + 18)
         DropdownContent.Size = UDim2.new(1, -180, 0, contentHeight + 10)
+        ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
     end)
 
     if DropdownContent.Text == '' then
@@ -1867,6 +1839,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         DropdownTitle.Position = UDim2.new(0, 40, 0, 0)
     end
 
+    -- Dynamic menu position (right-aligned under button)
     local menuWidth = 180
     local function UpdateMenuPosition()
         local absPos = SelectOptionsFrame.AbsolutePosition
@@ -1876,6 +1849,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         DropdownSelectReal.Position = UDim2.new(0, menuX, 0, menuY)
     end
 
+    -- Open/Close dropdown
     local isOpen = false
     
     Crystal.Click(DropdownButton, function()
@@ -1885,18 +1859,24 @@ function TabObject:AddDropdown(ConfigDropdown)
         SearchBox.Text = ""
         UpdateMenuPosition()
         
-        local startPos = DropdownSelectReal.Position
-        local offscreenX = workspace.CurrentCamera.ViewportSize.X + 50
-        DropdownSelectReal.Position = UDim2.new(0, offscreenX, 0, startPos.Y.Offset)
-        Crystal.TweenObject({DropdownSelectReal, 0.3, "Position", startPos})
+        -- Slide in from right
+        local startX = workspace.CurrentCamera.ViewportSize.X + 50
+        local currentPos = DropdownSelectReal.Position
+        DropdownSelectReal.Position = UDim2.new(0, startX, 0, currentPos.Y.Offset)
+        Crystal.TweenObject({DropdownSelectReal, 0.3, "Position", currentPos})
         Crystal.TweenObject({OptionImg, 0.2, "Rotation", -90})
     end)
 
+    -- Outside click (robust, no DropButton)
     DropMore.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 and isOpen then
             local mousePos = Vector2.new(input.Position.X, input.Position.Y)
-            local menuRect = Rect.new(DropdownSelectReal.AbsolutePosition, DropdownSelectReal.AbsoluteSize)
-            if not menuRect:ExpandToPoint(Vector2.new(0,0)):ContainsPoint(mousePos) then
+            local menuPos = DropdownSelectReal.AbsolutePosition
+            local menuSize = DropdownSelectReal.AbsoluteSize
+            
+            -- Check if click is outside menu
+            if mousePos.X < menuPos.X or mousePos.X > menuPos.X + menuSize.X or
+               mousePos.Y < menuPos.Y or mousePos.Y > menuPos.Y + menuSize.Y then
                 isOpen = false
                 Crystal.TweenObject({OptionImg, 0.2, "Rotation", 90})
                 task.wait(0.3)
@@ -1905,19 +1885,17 @@ function TabObject:AddDropdown(ConfigDropdown)
         end
     end)
 
+    -- Set function (with validation)
     function DropFunc:Set(Value)
         local currentValue = ConfigDropdown.Multi and (type(Value) == "table" and Value or {Value}) or (type(Value) == "table" and Value[1] or Value)
         
+        -- Validation (skip if invalid)
         if ConfigDropdown.Multi then
             for _, val in ipairs(currentValue) do
-                if not table.find(ConfigDropdown.Values, val) then
-                    return
-                end
+                if not table.find(ConfigDropdown.Values, val) then return end
             end
         else
-            if currentValue ~= "" and not table.find(ConfigDropdown.Values, currentValue) then
-                return
-            end
+            if currentValue ~= "" and not table.find(ConfigDropdown.Values, currentValue) then return end
         end
         
         DropFunc.Value = currentValue
@@ -1960,7 +1938,6 @@ function TabObject:AddDropdown(ConfigDropdown)
         Option.Parent = ScrollSelect
         Option.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         Option.BackgroundTransparency = 1
-        Option.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Option.BorderSizePixel = 0
         Option.Size = UDim2.new(1, -5, 0, 28)
         Option.LayoutOrder = OptionCounts
@@ -1971,10 +1948,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
         OptionSelecting_2.Name = "OptionSelecting"
         OptionSelecting_2.Parent = Option
-        OptionSelecting_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         OptionSelecting_2.BackgroundTransparency = 1
-        OptionSelecting_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        OptionSelecting_2.BorderSizePixel = 0
         OptionSelecting_2.Position = UDim2.new(0, 14, 0, 0)
         OptionSelecting_2.Size = UDim2.new(1, -20, 1, 0)
         OptionSelecting_2.Font = Enum.Font.Arcade
@@ -1986,23 +1960,17 @@ function TabObject:AddDropdown(ConfigDropdown)
 
         OptionButton.Name = "OptionButton"
         OptionButton.Parent = Option
-        OptionButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         OptionButton.BackgroundTransparency = 1
-        OptionButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
         OptionButton.BorderSizePixel = 0
         OptionButton.Size = UDim2.new(1, 0, 1, 0)
         OptionButton.Font = Enum.Font.Arcade
         OptionButton.Text = ""
-        OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        OptionButton.TextSize = 10
-        OptionButton.TextXAlignment = Enum.TextXAlignment.Left
         OptionButton.ZIndex = 57
 
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Option
         ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
         ChooseFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
-        ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ChooseFrame.BorderSizePixel = 0
         ChooseFrame.Position = UDim2.new(0, 4, 0.5, 0)
         ChooseFrame.Size = UDim2.new(0, 2, 0, 0)
@@ -2022,12 +1990,12 @@ function TabObject:AddDropdown(ConfigDropdown)
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(230, 230, 230)})
             end
         end, function()
-            if Option.BackgroundTransparency >= 0.900 then
+            local isSelected = ConfigDropdown.Multi and table.find(DropFunc.Value, OptionSelecting_2.Text) or (OptionSelecting_2.Text == DropFunc.Value)
+            if not isSelected and Option.BackgroundTransparency >= 0.900 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 1})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(200, 200, 200)})
             end
         end)
-
         Crystal.Click(OptionButton, function()
             local text = OptionSelecting_2.Text
             if ConfigDropdown.Multi then
@@ -2052,8 +2020,8 @@ function TabObject:AddDropdown(ConfigDropdown)
                 v:Destroy()
             end
         end
-        ConfigDropdown.Values = {}
         DropFunc.Value = ConfigDropdown.Multi and {} or ""
+        ConfigDropdown.Values = {}
         OptionCounts = 0
     end
 
