@@ -602,7 +602,7 @@ TextGradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),  -- Tím
     ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))      -- Xanh
 })
-TextGradient.Rotation = 0  -
+TextGradient.Rotation = 0  
 TextGradient.Parent = CrystalHub.TopTitle
 CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.TopDescription.Name = "TopDescription"
