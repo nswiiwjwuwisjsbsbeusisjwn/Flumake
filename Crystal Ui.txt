@@ -3341,6 +3341,7 @@ function TabObject:AddSlider(ConfigSlider)
 
     return SliderFunc
 end
+
 function TabObject:AddToggle(ConfigToggles)
     ConfigToggles = ConfigToggles or {}
     ConfigToggles.Title = ConfigToggles.Title or "Toggle"
@@ -3529,12 +3530,6 @@ function TabObject:AddToggle(ConfigToggles)
         SettingUICorner.CornerRadius = UDim.new(0, 4)
         SettingUICorner.Parent = SettingFrame
 
-        local SettingStroke = Instance.new("UIStroke")
-        SettingStroke.Parent = SettingFrame
-        SettingStroke.Color = Color3.fromRGB(93, 197, 248)
-        SettingStroke.Thickness = 1
-        SettingStroke.Transparency = 0.7
-
         SettingIcon.Name = "SettingIcon"
         SettingIcon.Parent = SettingFrame
         SettingIcon.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -3564,17 +3559,14 @@ function TabObject:AddToggle(ConfigToggles)
 
         Crystal.Mouseto(SettingFrame, function()
             Crystal.TweenObject({SettingFrame, 0.2, "BackgroundTransparency", 0.700})
-            Crystal.TweenObject({SettingIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
-            Crystal.TweenObject({SettingStroke, 0.2, "Transparency", 0.3})
+            Crystal.TweenObject({SettingIcon, 0.2, "ImageColor3", Color3.fromRGB(200, 200, 200)})
         end, function()
             Crystal.TweenObject({SettingFrame, 0.2, "BackgroundTransparency", 0.800})
             Crystal.TweenObject({SettingIcon, 0.2, "ImageColor3", Color3.fromRGB(180, 180, 180)})
-            Crystal.TweenObject({SettingStroke, 0.2, "Transparency", 0.7})
         end)
 
         local SettingMenu = Instance.new("Frame")
         local SettingMenuCorner = Instance.new("UICorner")
-        local SettingMenuStroke = Instance.new("UIStroke")
         local SettingScroll = Instance.new("ScrollingFrame")
         local SettingListLayout = Instance.new("UIListLayout")
         local SettingDropShadow = Instance.new("ImageLabel")
@@ -3610,11 +3602,6 @@ function TabObject:AddToggle(ConfigToggles)
 
         SettingMenuCorner.CornerRadius = UDim.new(0, 8)
         SettingMenuCorner.Parent = SettingMenu
-
-        SettingMenuStroke.Parent = SettingMenu
-        SettingMenuStroke.Color = Color3.fromRGB(93, 197, 248)
-        SettingMenuStroke.Thickness = 1.5
-        SettingMenuStroke.Transparency = 0.5
 
         SettingDropShadow.Name = "SettingDropShadow"
         SettingDropShadow.Parent = SettingMenu
@@ -3793,7 +3780,7 @@ function TabObject:AddToggle(ConfigToggles)
                 if Value then
                     Crystal.TweenObject({SettingToggleSwitch, 0.2, "BackgroundTransparency", 0})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "BackgroundColor3", Color3.fromRGB(255, 255, 255)})
-                  Crystal.TweenObject({SettingToggleCircle, 0.2, "Position", UDim2.new(0, 18, 0.5, 0)})
+                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Position", UDim2.new(0, 18, 0.5, 0)})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "Size", UDim2.new(0, 12, 0, 12)})
                     Crystal.TweenObject({SettingToggleSwitchStroke, 0.2, "Color", Color3.fromRGB(93, 197, 248)})
                     Crystal.TweenObject({SettingToggleSwitchStroke, 0.2, "Transparency", 0})
@@ -3809,6 +3796,7 @@ function TabObject:AddToggle(ConfigToggles)
             end
 
             SettingToggleButton.Activated:Connect(function()
+            
                 SettingToggleFunc:Set(not SettingToggleFunc.Value)
             end)
 
