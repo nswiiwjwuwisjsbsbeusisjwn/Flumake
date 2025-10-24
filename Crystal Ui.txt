@@ -1919,7 +1919,14 @@ function TabObject:AddDropdown(ConfigDropdown)
             
             for _, v in next, ScrollSelect:GetChildren() do
                 if v.ClassName ~= "UIListLayout" then
-                    local isSelected = table.find(DropFunc.Value, v.OptionSelecting.Text)
+                    local isSelected = false
+                    for _, selectedValue in pairs(DropFunc.Value) do
+                        if v.OptionSelecting.Text == selectedValue then
+                            isSelected = true
+                            break
+                        end
+                    end
+                    
                     if isSelected then
                         v.ChooseFrame.UIStroke.Enabled = true
                         Crystal.TweenObject({v, 0.3, "BackgroundTransparency", 0.850})
@@ -2050,21 +2057,39 @@ function TabObject:AddDropdown(ConfigDropdown)
 
         Crystal.Click(OptionButton, function()
             if ConfigDropdown.Multi then
-                if Option.BackgroundTransparency >= 0.999 then
+                local isCurrentlySelected = false
+                for i, v in pairs(DropFunc.Value) do
+                    if v == OptionSelecting_2.Text then
+                        isCurrentlySelected = true
+                        table.remove(DropFunc.Value, i)
+                        break
+                    end
+                end
+                
+                if not isCurrentlySelected then
                     table.insert(DropFunc.Value, OptionSelecting_2.Text)
-                    DropFunc:Set(DropFunc.Value)
-                else
-                    for i, v in pairs(DropFunc.Value) do
-                        if v == OptionSelecting_2.Text then
-                            table.remove(DropFunc.Value, i)
-                            break
+                end
+                
+                DropFunc:Set(DropFunc.Value)
+            else
+                DropFunc.Value = OptionSelecting_2.Text
+                DropFunc:Set(DropFunc.Value)
+                
+                Crystal.Click(DropButton, function()
+                    if not isOpen then return end
+                    isOpen = false
+                    
+                    for _, v in next, CrystalHub.LayersFolder:GetDescendants() do
+                        if v.ClassName == "TextButton" then
+                            v.Active = true
                         end
                     end
-                    DropFunc:Set(DropFunc.Value)
-                end
-            else
-                DropFunc.Value = {OptionSelecting_2.Text}
-                DropFunc:Set(DropFunc.Value)
+                    
+                    Crystal.TweenObject({DropdownSelectReal, 0.3, "Position", UDim2.new(1.42, -17, 0, 7)})
+                    Crystal.TweenObject({OptionImg, 0.2, "Rotation", 90})
+                    task.wait(0.3)
+                    DropMore.Visible = false
+                end)()
             end
         end)
 
@@ -2096,6 +2121,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
+
 function TabObject:AddInput(ConfigInput)
     ConfigInput = ConfigInput or {}
     ConfigInput.Title = ConfigInput.Title or "Input"
