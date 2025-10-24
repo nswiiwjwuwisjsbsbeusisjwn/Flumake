@@ -527,65 +527,74 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.Window.Parent = Crystal.CoreGui
     CrystalHub.Window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    CrystalHub.MainFrame.Name = "Window11"
-    CrystalHub.MainFrame.Parent = CrystalHub.Window
-    CrystalHub.MainFrame.BackgroundColor3 = Color3.fromRGB(40, 20, 60) 
-    CrystalHub.MainFrame.BackgroundTransparency = 0.050
-    CrystalHub.MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    CrystalHub.MainFrame.BorderSizePixel = 0
-    CrystalHub.MainFrame.Size = WindowConfig.Size
-    CrystalHub.MainFrame.Position = Crystal.GetMidPos(CrystalHub.MainFrame)
+CrystalHub.MainFrame.Name = "Window11"
+CrystalHub.MainFrame.Parent = CrystalHub.Window
+CrystalHub.MainFrame.BackgroundColor3 = Color3.fromRGB(60, 40, 100)
+CrystalHub.MainFrame.BackgroundTransparency = 0.020
+CrystalHub.MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CrystalHub.MainFrame.BorderSizePixel = 0
+CrystalHub.MainFrame.Size = WindowConfig.Size
+CrystalHub.MainFrame.Position = Crystal.GetMidPos(CrystalHub.MainFrame)
 
-    CrystalHub.MainCorner.CornerRadius = UDim.new(0, 12)
-    CrystalHub.MainCorner.Parent = CrystalHub.MainFrame
+CrystalHub.MainCorner.CornerRadius = UDim.new(0, 12)
+CrystalHub.MainCorner.Parent = CrystalHub.MainFrame
 
-    CrystalHub.MainStroke.Parent = CrystalHub.MainFrame
-    CrystalHub.MainStroke.Color = Color3.fromRGB(60, 60, 60)
-    CrystalHub.MainStroke.Thickness = 1.800
+CrystalHub.MainStroke.Parent = CrystalHub.MainFrame
+CrystalHub.MainStroke.Color = Color3.fromRGB(80, 60, 120)
+CrystalHub.MainStroke.Thickness = 1.800
 
-    CrystalHub.DropShadowHolder.Name = "DropShadowHolder"
-    CrystalHub.DropShadowHolder.Parent = CrystalHub.MainFrame
-    CrystalHub.DropShadowHolder.BackgroundTransparency = 1.000
-    CrystalHub.DropShadowHolder.BorderSizePixel = 0
-    CrystalHub.DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
-    CrystalHub.DropShadowHolder.ZIndex = 0
+CrystalHub.DropShadowHolder.Name = "DropShadowHolder"
+CrystalHub.DropShadowHolder.Parent = CrystalHub.MainFrame
+CrystalHub.DropShadowHolder.BackgroundTransparency = 1.000
+CrystalHub.DropShadowHolder.BorderSizePixel = 0
+CrystalHub.DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+CrystalHub.DropShadowHolder.ZIndex = 0
 
-    CrystalHub.DropShadow.Name = "DropShadow"
-    CrystalHub.DropShadow.Parent = CrystalHub.DropShadowHolder
-    CrystalHub.DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    CrystalHub.DropShadow.BackgroundTransparency = 1.000
-    CrystalHub.DropShadow.BorderSizePixel = 0
-    CrystalHub.DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    CrystalHub.DropShadow.Size = UDim2.new(1, 47, 1, 47)
-    CrystalHub.DropShadow.ZIndex = 0
-    CrystalHub.DropShadow.Image = "rbxassetid://6015897843"
-    CrystalHub.DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    CrystalHub.DropShadow.ImageTransparency = 0.300
-    CrystalHub.DropShadow.ScaleType = Enum.ScaleType.Slice
-    CrystalHub.DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+CrystalHub.DropShadow.Name = "DropShadow"
+CrystalHub.DropShadow.Parent = CrystalHub.DropShadowHolder
+CrystalHub.DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+CrystalHub.DropShadow.BackgroundTransparency = 1.000
+CrystalHub.DropShadow.BorderSizePixel = 0
+CrystalHub.DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+CrystalHub.DropShadow.Size = UDim2.new(1, 47, 1, 47)
+CrystalHub.DropShadow.ZIndex = 0
+CrystalHub.DropShadow.Image = "rbxassetid://6015897843"
+CrystalHub.DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+CrystalHub.DropShadow.ImageTransparency = 0.300
+CrystalHub.DropShadow.ScaleType = Enum.ScaleType.Slice
+CrystalHub.DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
 
-    CrystalHub.TopBar.Name = "Top"
-    CrystalHub.TopBar.Parent = CrystalHub.MainFrame
-    CrystalHub.TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    CrystalHub.TopBar.BackgroundTransparency = 0.999
-    CrystalHub.TopBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    CrystalHub.TopBar.BorderSizePixel = 0
-    CrystalHub.TopBar.Size = UDim2.new(1, 0, 0, 40)
-    CrystalHub.TopBar.ZIndex = 2
+CrystalHub.TopBar.Name = "Top"
+CrystalHub.TopBar.Parent = CrystalHub.MainFrame
+CrystalHub.TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CrystalHub.TopBar.BackgroundTransparency = 0.500
+CrystalHub.TopBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CrystalHub.TopBar.BorderSizePixel = 0
+CrystalHub.TopBar.Size = UDim2.new(1, 0, 0, 40)
+CrystalHub.TopBar.ZIndex = 2
 
-    CrystalHub.TopTitle.Name = "TopTitle"
-    CrystalHub.TopTitle.Parent = CrystalHub.TopBar
-    CrystalHub.TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    CrystalHub.TopTitle.BackgroundTransparency = 0.999
-    CrystalHub.TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    CrystalHub.TopTitle.BorderSizePixel = 0
-    CrystalHub.TopTitle.Position = UDim2.new(0, 15, 0, 12)
-    CrystalHub.TopTitle.Size = UDim2.new(0, 100, 0, 16)
-    CrystalHub.TopTitle.Font = Enum.Font.GothamBold
-    CrystalHub.TopTitle.Text = WindowConfig.Title
-    CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CrystalHub.TopTitle.TextSize = 14.000
-    CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
+local TitleGradient = Instance.new("UIGradient")
+TitleGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
+})
+TitleGradient.Rotation = 45
+TitleGradient.Parent = CrystalHub.TopBar
+
+CrystalHub.TopTitle.Name = "TopTitle"
+CrystalHub.TopTitle.Parent = CrystalHub.TopBar
+CrystalHub.TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CrystalHub.TopTitle.BackgroundTransparency = 1.000
+CrystalHub.TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CrystalHub.TopTitle.BorderSizePixel = 0
+CrystalHub.TopTitle.Position = UDim2.new(0, 15, 0, 12)
+CrystalHub.TopTitle.Size = UDim2.new(0, 100, 0, 16)
+CrystalHub.TopTitle.Font = Enum.Font.GothamBold
+CrystalHub.TopTitle.Text = WindowConfig.Title
+CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+CrystalHub.TopTitle.TextSize = 14.000
+CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
 
     CrystalHub.TopDescription.Name = "TopDescription"
     CrystalHub.TopDescription.Parent = CrystalHub.TopBar
