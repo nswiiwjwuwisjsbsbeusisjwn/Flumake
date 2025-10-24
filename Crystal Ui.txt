@@ -3508,7 +3508,7 @@ function TabObject:AddToggle(ConfigToggles)
         SettingFrame.BackgroundTransparency = 0.800
         SettingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SettingFrame.BorderSizePixel = 0
-        SettingFrame.Position = UDim2.new(1, -75, 0.5, 0)
+        SettingFrame.Position = UDim2.new(1, -45, 0.5, 0)
         SettingFrame.Size = UDim2.new(0, 20, 0, 20)
 
         SettingUICorner.CornerRadius = UDim.new(0, 4)
@@ -3559,7 +3559,7 @@ function TabObject:AddToggle(ConfigToggles)
         SettingMenu.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SettingMenu.BorderSizePixel = 0
         SettingMenu.Position = UDim2.new(0, 0, 0, 0)
-        SettingMenu.Size = UDim2.new(0, 200, 0, 150)
+        SettingMenu.Size = UDim2.new(0, 180, 0, 120)
         SettingMenu.Visible = false
         SettingMenu.ZIndex = 10
 
@@ -3593,7 +3593,10 @@ function TabObject:AddToggle(ConfigToggles)
             if SettingMenu.Visible then
                 local toggleAbsPos = Toggle.AbsolutePosition
                 local toggleAbsSize = Toggle.AbsoluteSize
-                SettingMenu.Position = UDim2.new(0, toggleAbsPos.X + toggleAbsSize.X - 200, 0, toggleAbsPos.Y + toggleAbsSize.Y + 5)
+                local menuX = toggleAbsPos.X - 180 + 45
+                local menuY = toggleAbsPos.Y + toggleAbsSize.Y + 5
+                
+                SettingMenu.Position = UDim2.new(0, menuX, 0, menuY)
             end
         end
 
@@ -3639,7 +3642,7 @@ function TabObject:AddToggle(ConfigToggles)
             SettingToggle.BackgroundTransparency = 0.800
             SettingToggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingToggle.BorderSizePixel = 0
-            SettingToggle.Size = UDim2.new(1, 0, 0, 30)
+            SettingToggle.Size = UDim2.new(1, 0, 0, 25)
 
             SettingToggleTitle.Name = "SettingToggleTitle"
             SettingToggleTitle.Parent = SettingToggle
@@ -3648,11 +3651,11 @@ function TabObject:AddToggle(ConfigToggles)
             SettingToggleTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingToggleTitle.BorderSizePixel = 0
             SettingToggleTitle.Position = UDim2.new(0, 8, 0, 0)
-            SettingToggleTitle.Size = UDim2.new(1, -50, 1, 0)
+            SettingToggleTitle.Size = UDim2.new(1, -45, 1, 0)
             SettingToggleTitle.Font = Enum.Font.Arcade
             SettingToggleTitle.Text = Config.Name
             SettingToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            SettingToggleTitle.TextSize = 11
+            SettingToggleTitle.TextSize = 10
             SettingToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
 
             SettingToggleSwitch.Name = "SettingToggleSwitch"
@@ -3663,19 +3666,19 @@ function TabObject:AddToggle(ConfigToggles)
             SettingToggleSwitch.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingToggleSwitch.BorderSizePixel = 0
             SettingToggleSwitch.Position = UDim2.new(1, -8, 0.5, 0)
-            SettingToggleSwitch.Size = UDim2.new(0, 30, 0, 16)
+            SettingToggleSwitch.Size = UDim2.new(0, 25, 0, 14)
 
-            SettingToggleUICorner.CornerRadius = UDim.new(0, 8)
+            SettingToggleUICorner.CornerRadius = UDim.new(0, 7)
             SettingToggleUICorner.Parent = SettingToggleSwitch
 
             SettingToggleCircle.Name = "SettingToggleCircle"
             SettingToggleCircle.Parent = SettingToggleSwitch
             SettingToggleCircle.AnchorPoint = Vector2.new(0, 0.5)
             SettingToggleCircle.BackgroundColor3 = Config.Default and Color3.fromRGB(200, 200, 200) or Color3.fromRGB(100, 100, 100)
-            SettingToggleCircle.Position = Config.Default and UDim2.new(0, 16, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
-            SettingToggleCircle.Size = Config.Default and UDim2.new(0, 12, 0, 12) or UDim2.new(0, 10, 0, 10)
+            SettingToggleCircle.Position = Config.Default and UDim2.new(0, 13, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
+            SettingToggleCircle.Size = Config.Default and UDim2.new(0, 10, 0, 10) or UDim2.new(0, 8, 0, 8)
 
-            SettingToggleCircleUICorner.CornerRadius = UDim.new(0, 6)
+            SettingToggleCircleUICorner.CornerRadius = UDim.new(0, 5)
             SettingToggleCircleUICorner.Parent = SettingToggleCircle
 
             SettingToggleButton.Name = "SettingToggleButton"
@@ -3697,13 +3700,13 @@ function TabObject:AddToggle(ConfigToggles)
                 if Value then
                     Crystal.TweenObject({SettingToggleSwitch, 0.2, "BackgroundTransparency", 0.300})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "BackgroundColor3", Color3.fromRGB(230, 230, 230)})
-                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Position", UDim2.new(0, 16, 0.5, 0)})
-                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Size", UDim2.new(0, 12, 0, 12)})
+                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Position", UDim2.new(0, 13, 0.5, 0)})
+                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Size", UDim2.new(0, 10, 0, 10)})
                 else
                     Crystal.TweenObject({SettingToggleSwitch, 0.2, "BackgroundTransparency", 0.500})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "BackgroundColor3", Color3.fromRGB(100, 100, 100)})
                     Crystal.TweenObject({SettingToggleCircle, 0.2, "Position", UDim2.new(0, 2, 0.5, 0)})
-                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Size", UDim2.new(0, 10, 0, 10)})
+                    Crystal.TweenObject({SettingToggleCircle, 0.2, "Size", UDim2.new(0, 8, 0, 8)})
                 end
                 pcall(Config.Callback, Value)
             end
@@ -3739,7 +3742,7 @@ function TabObject:AddToggle(ConfigToggles)
             SettingSlider.BackgroundTransparency = 0.800
             SettingSlider.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingSlider.BorderSizePixel = 0
-            SettingSlider.Size = UDim2.new(1, 0, 0, 40)
+            SettingSlider.Size = UDim2.new(1, 0, 0, 35)
 
             SettingSliderTitle.Name = "SettingSliderTitle"
             SettingSliderTitle.Parent = SettingSlider
@@ -3748,11 +3751,11 @@ function TabObject:AddToggle(ConfigToggles)
             SettingSliderTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingSliderTitle.BorderSizePixel = 0
             SettingSliderTitle.Position = UDim2.new(0, 8, 0, 5)
-            SettingSliderTitle.Size = UDim2.new(1, -16, 0, 12)
+            SettingSliderTitle.Size = UDim2.new(1, -16, 0, 10)
             SettingSliderTitle.Font = Enum.Font.Arcade
             SettingSliderTitle.Text = Config.Name .. ": " .. Config.Default
             SettingSliderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            SettingSliderTitle.TextSize = 11
+            SettingSliderTitle.TextSize = 9
             SettingSliderTitle.TextXAlignment = Enum.TextXAlignment.Left
 
             SettingSliderFrame.Name = "SettingSliderFrame"
@@ -3760,8 +3763,8 @@ function TabObject:AddToggle(ConfigToggles)
             SettingSliderFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
             SettingSliderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SettingSliderFrame.BorderSizePixel = 0
-            SettingSliderFrame.Position = UDim2.new(0, 8, 0, 22)
-            SettingSliderFrame.Size = UDim2.new(1, -16, 0, 6)
+            SettingSliderFrame.Position = UDim2.new(0, 8, 0, 20)
+            SettingSliderFrame.Size = UDim2.new(1, -16, 0, 5)
 
             SettingSliderUICorner.CornerRadius = UDim.new(1, 0)
             SettingSliderUICorner.Parent = SettingSliderFrame
@@ -3794,7 +3797,7 @@ function TabObject:AddToggle(ConfigToggles)
             function SettingSliderFunc:Set(Value)
                 Value = math.clamp(Value, Config.Min, Config.Max)
                 SettingSliderFunc.Value = Value
-                SettingSliderTitle.Text = Config.Name .. ": " .. Value
+                SettingSliderTitle.Text = Config.Name .. ": " .. math.floor(Value)
                 SettingSliderFill.Size = UDim2.new((Value - Config.Min) / (Config.Max - Config.Min), 0, 1, 0)
                 pcall(Config.Callback, Value)
             end
@@ -3833,7 +3836,6 @@ function TabObject:AddToggle(ConfigToggles)
 
     return ToggleFunc
 end
-
 TabCount = TabCount + 1
 return TabObject
     end
