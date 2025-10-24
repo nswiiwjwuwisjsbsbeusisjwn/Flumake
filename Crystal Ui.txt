@@ -1974,11 +1974,9 @@ function TabObject:AddDropdown(ConfigDropdown)
         ConfigDropdown.Callback(DropFunc.Value)
     end
 
+        -- Add value function
     local OptionCounts = 0
     function DropFunc:AddValue(NameValue)
-        if table.find(ConfigDropdown.Values, NameValue) then return end
-        table.insert(ConfigDropdown.Values, NameValue)
-        
         local Option = Instance.new("Frame")
         local UICorner_37 = Instance.new("UICorner")
         local OptionSelecting_2 = Instance.new("TextLabel")
@@ -1991,6 +1989,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         Option.Parent = ScrollSelect
         Option.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         Option.BackgroundTransparency = 1
+        Option.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Option.BorderSizePixel = 0
         Option.Size = UDim2.new(1, -5, 0, 28)
         Option.LayoutOrder = OptionCounts
@@ -2001,7 +2000,10 @@ function TabObject:AddDropdown(ConfigDropdown)
 
         OptionSelecting_2.Name = "OptionSelecting"
         OptionSelecting_2.Parent = Option
+        OptionSelecting_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         OptionSelecting_2.BackgroundTransparency = 1
+        OptionSelecting_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        OptionSelecting_2.BorderSizePixel = 0
         OptionSelecting_2.Position = UDim2.new(0, 14, 0, 0)
         OptionSelecting_2.Size = UDim2.new(1, -20, 1, 0)
         OptionSelecting_2.Font = Enum.Font.Arcade
@@ -2013,17 +2015,23 @@ function TabObject:AddDropdown(ConfigDropdown)
 
         OptionButton.Name = "OptionButton"
         OptionButton.Parent = Option
+        OptionButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         OptionButton.BackgroundTransparency = 1
+        OptionButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
         OptionButton.BorderSizePixel = 0
         OptionButton.Size = UDim2.new(1, 0, 1, 0)
         OptionButton.Font = Enum.Font.Arcade
         OptionButton.Text = ""
+        OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        OptionButton.TextSize = 10
+        OptionButton.TextXAlignment = Enum.TextXAlignment.Left
         OptionButton.ZIndex = 57
 
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Option
         ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
         ChooseFrame.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+        ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ChooseFrame.BorderSizePixel = 0
         ChooseFrame.Position = UDim2.new(0, 4, 0.5, 0)
         ChooseFrame.Size = UDim2.new(0, 2, 0, 0)
@@ -2037,30 +2045,37 @@ function TabObject:AddDropdown(ConfigDropdown)
         UICorner_38.CornerRadius = UDim.new(0, 2)
         UICorner_38.Parent = ChooseFrame
 
+        -- Hover effect
         Crystal.Mouseto(Option, function()
             if Option.BackgroundTransparency >= 0.999 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 0.950})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(230, 230, 230)})
             end
         end, function()
-            local isSelected = ConfigDropdown.Multi and table.find(DropFunc.Value, OptionSelecting_2.Text) or (OptionSelecting_2.Text == DropFunc.Value)
-            if not isSelected and Option.BackgroundTransparency >= 0.900 then
+            if Option.BackgroundTransparency >= 0.900 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 1})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(200, 200, 200)})
             end
         end)
+
+        -- Click handler
         Crystal.Click(OptionButton, function()
-            local text = OptionSelecting_2.Text
             if ConfigDropdown.Multi then
-                local idx = table.find(DropFunc.Value, text)
-                if idx then
-                    table.remove(DropFunc.Value, idx)
+                if Option.BackgroundTransparency >= 0.999 then
+                    table.insert(DropFunc.Value, OptionSelecting_2.Text)
+                    DropFunc:Set(DropFunc.Value)
                 else
-                    table.insert(DropFunc.Value, text)
+                    for i, v in pairs(DropFunc.Value) do
+                        if v == OptionSelecting_2.Text then
+                            table.remove(DropFunc.Value, i)
+                            break
+                        end
+                    end
+                    DropFunc:Set(DropFunc.Value)
                 end
-                DropFunc:Set(DropFunc.Value)
             else
-                DropFunc:Set(text)
+                DropFunc.Value = {OptionSelecting_2.Text}
+                DropFunc:Set(DropFunc.Value)
             end
         end)
 
@@ -2085,6 +2100,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
+
 function TabObject:AddInput(ConfigInput)
     ConfigInput = ConfigInput or {}
     ConfigInput.Title = ConfigInput.Title or "Input"
