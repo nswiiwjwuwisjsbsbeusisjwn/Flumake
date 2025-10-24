@@ -1,0 +1,1203 @@
+local player = game.Players.LocalPlayer
+local CoreGui = game:GetService("CoreGui")
+
+if CoreGui:FindFirstChild('Crystal hub') then
+    CoreGui:FindFirstChild('Crystal hub'):Destroy()
+end
+
+local Crystal = {
+    TweenService = game:GetService("TweenService"),
+    Player = game.Players.LocalPlayer,
+    Workspace = workspace,
+    CoreGui = game:GetService("CoreGui"),
+    UserInputService = game:GetService("UserInputService"),
+    Mouse = game.Players.LocalPlayer:GetMouse(),
+    ViewportSize = workspace.CurrentCamera.ViewportSize,
+    Stepped = game:GetService("RunService").Stepped,
+    OldMouseIcon = game.Players.LocalPlayer:GetMouse().Icon
+}
+
+
+Crystal.Types = {
+    Info = {
+        Icon = "rbxassetid://11401835396",
+        Color = Color3.fromRGB(100, 220, 255)
+    },
+    Success = {
+        Icon = "rbxassetid://11401835396",
+        Color = Color3.fromRGB(50, 200, 150)
+    },
+    Warning = {
+        Icon = "rbxassetid://11401835396",
+        Color = Color3.fromRGB(255, 180, 100)
+    },
+    Error = {
+        Icon = "rbxassetid://11401835396",
+        Color = Color3.fromRGB(255, 100, 100)
+    }
+}
+
+Crystal.TweenObject = function(config)
+    config.Object = config.Object or config[1]
+    config.Time = config.Time or config[2]
+    config.OldValue = config.OldValue or config[3]
+    config.NewValue = config.NewValue or config[4]
+    local Info = TweenInfo.new(config.Time, Enum.EasingStyle.Quint)
+    local tween = Crystal.TweenService:Create(config.Object, Info, {[config.OldValue] = config.NewValue})
+    tween:Play()
+    return tween
+end
+
+Crystal.Click = function(Object, callback)
+    Object.Activated:Connect(function()
+        callback()
+    end)
+end
+
+Crystal.Find = function(Object, Name)
+    for _, v in next, Object:GetChildren() do
+        if v.Name == Name then
+            return v
+        end
+    end
+end
+
+Crystal.Mouseto = function(Object, CallbackEnter, CallbackLeave)
+    Object.MouseEnter:Connect(function()
+        CallbackEnter()
+    end)
+    Object.MouseLeave:Connect(function()
+        CallbackLeave()
+    end)
+end
+
+Crystal.MakeDraggable = function(object, top)
+    local Dragging = nil
+    local DragInput = nil
+    local DragStart = nil
+    local StartPosition = nil
+    local function UpdatePos(input)
+        local Delta = input.Position - DragStart
+        local newPos = UDim2.new(
+            StartPosition.X.Scale,
+            StartPosition.X.Offset + Delta.X,
+            StartPosition.Y.Scale,
+            StartPosition.Y.Offset + Delta.Y
+        )
+        object.Position = newPos
+    end
+    top.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            Dragging = true
+            DragStart = input.Position
+            StartPosition = object.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    Dragging = false
+                end
+            end)
+        end
+    end)
+    top.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            DragInput = input
+        end
+    end)
+    Crystal.UserInputService.InputChanged:Connect(function(input)
+        if input == DragInput and Dragging then
+            UpdatePos(input)
+        end
+    end)
+end
+
+Crystal.CustomSize = function(object)
+    local Dragging = false
+    local DragInput = nil
+    local DragStart = nil
+    local StartSize = nil
+    local maxSizeX = object.Size.X.Offset
+    local maxSizeY = object.Size.Y.Offset
+    object.Size = UDim2.new(0, maxSizeX, 0, maxSizeY)
+    local changesizeobject = Instance.new("Frame")
+    changesizeobject.AnchorPoint = Vector2.new(1, 1)
+    changesizeobject.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    changesizeobject.BackgroundTransparency = 0.999
+    changesizeobject.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    changesizeobject.BorderSizePixel = 0
+    changesizeobject.Position = UDim2.new(1, 20, 1, 20)
+    changesizeobject.Size = UDim2.new(0, 40, 0, 40)
+    changesizeobject.Name = "changesizeobject"
+    changesizeobject.Parent = object
+    Crystal.Mouseto(changesizeobject, function()
+        Crystal.Mouse.Icon = "rbxassetid://97880490001888"
+    end, function()
+        Crystal.Mouse.Icon = Crystal.OldMouseIcon
+    end)
+    local function UpdateSize(input)
+        local Delta = input.Position - DragStart
+        local newWidth = StartSize.X.Offset + Delta.X
+        local newHeight = StartSize.Y.Offset + Delta.Y
+        newWidth = math.max(newWidth, maxSizeX)
+        newHeight = math.max(newHeight, maxSizeY)
+        object.Size = UDim2.new(0, newWidth, 0, newHeight)
+    end
+    changesizeobject.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            Dragging = true
+            DragStart = input.Position
+            StartSize = object.Size
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    Dragging = false
+                end
+            end)
+        end
+    end)
+    changesizeobject.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            DragInput = input
+        end
+    end)
+    Crystal.UserInputService.InputChanged:Connect(function(input)
+        if input == DragInput and Dragging then
+            UpdateSize(input)
+        end
+    end)
+end
+
+Crystal.GetMidPos = function(mainFrame)
+    return UDim2.new(0, (Crystal.ViewportSize.X/2 - mainFrame.Size.X.Offset/2), 0, (Crystal.ViewportSize.Y/2 - mainFrame.Size.Y.Offset/2))
+end
+
+Crystal.Notify = function(self, NotifyConfig)
+    NotifyConfig = NotifyConfig or {}
+    NotifyConfig.Title = NotifyConfig.Title or "Crystal Hub"
+    NotifyConfig.Title1 = NotifyConfig.Title1 or "By Catdzs1vn"
+    NotifyConfig.Content = NotifyConfig.Content or "..."
+    NotifyConfig.Logo = NotifyConfig.Logo or "rbxassetid://129781592728096"
+    NotifyConfig.Type = NotifyConfig.Type or "Info"
+    NotifyConfig.Time = NotifyConfig.Time or 0.5
+    NotifyConfig.Delay = NotifyConfig.Delay or 5
+
+    local NotifyFunc = {}
+
+    spawn(function()
+        if not Crystal.CoreGui:FindFirstChild("NotifyGui") then
+            local NotifyGui = Instance.new("ScreenGui")
+            NotifyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+            NotifyGui.Name = "NotifyGui"
+            NotifyGui.Parent = Crystal.CoreGui
+        end
+
+        if not Crystal.CoreGui.NotifyGui:FindFirstChild("NotifyLayout") then
+            local NotifyLayout = Instance.new("Frame")
+            NotifyLayout.AnchorPoint = Vector2.new(1, 0)
+            NotifyLayout.BackgroundTransparency = 1
+            NotifyLayout.BorderSizePixel = 0
+            NotifyLayout.Position = UDim2.new(1, -10, 0, 10)
+            NotifyLayout.Size = UDim2.new(0, 220, 1, -20)
+            NotifyLayout.Name = "NotifyLayout"
+            NotifyLayout.Parent = Crystal.CoreGui.NotifyGui
+
+            local Count = 0
+            Crystal.CoreGui.NotifyGui.NotifyLayout.ChildRemoved:Connect(function()
+                Count = 0
+                for _, v in pairs(Crystal.CoreGui.NotifyGui.NotifyLayout:GetChildren()) do
+                    if v:IsA("Frame") then
+                        Crystal.TweenObject({
+                            v,
+                            0.3,
+                            "Position",
+                            UDim2.new(0, 0, 0, (v.Size.Y.Offset + 6) * Count)
+                        })
+                        Count = Count + 1
+                    end
+                end
+            end)
+
+            Crystal.CoreGui.NotifyGui.NotifyLayout.ChildAdded:Connect(function(child)
+                local Count2 = 1
+                for _, v in pairs(Crystal.CoreGui.NotifyGui.NotifyLayout:GetChildren()) do
+                    if v ~= child and v:IsA("Frame") then
+                        Crystal.TweenObject({
+                            v,
+                            0.3,
+                            "Position",
+                            UDim2.new(0, 0, 0, (v.Size.Y.Offset + 6) * Count2)
+                        })
+                        Count2 = Count2 + 1
+                    end
+                end
+            end)
+        end
+
+        local NotifyFrame = Instance.new("Frame")
+        local NotifyFrameReal = Instance.new("Frame")
+        local UICorner = Instance.new("UICorner")
+        local DropShadowHolder = Instance.new("Frame")
+        local DropShadow = Instance.new("ImageLabel")
+        local NotifyLogo = Instance.new("ImageLabel")
+        local UICorner1 = Instance.new("UICorner")
+        local TitleFrame = Instance.new("Frame")
+        local NotifyTitle = Instance.new("TextLabel")
+        local Title1Label = Instance.new("TextLabel")
+        local NotifyContent = Instance.new("TextLabel")
+        local AlertImage = Instance.new("ImageLabel")
+        local ProgressBar = Instance.new("Frame")
+        local ProgressFill = Instance.new("Frame")
+        local UICorner2 = Instance.new("UICorner")
+        local UICorner3 = Instance.new("UICorner")
+        local UIGradient = Instance.new("UIGradient")
+        local UIStroke = Instance.new("UIStroke")
+
+        NotifyFrame.BackgroundTransparency = 1
+        NotifyFrame.BorderSizePixel = 0
+        NotifyFrame.Size = UDim2.new(1, 0, 0, 60)
+        NotifyFrame.Name = "NotifyFrame"
+        NotifyFrame.Parent = Crystal.CoreGui.NotifyGui.NotifyLayout
+        NotifyFrame.Position = UDim2.new(0, 0, 0, 0)
+
+        NotifyFrameReal.BackgroundColor3 = Color3.fromRGB(30, 15, 50)
+        NotifyFrameReal.BackgroundTransparency = 0.1
+        NotifyFrameReal.BorderSizePixel = 0
+        NotifyFrameReal.Position = UDim2.new(0, 250, 0, 0)
+        NotifyFrameReal.Size = UDim2.new(1, 0, 1, 0)
+        NotifyFrameReal.Name = "NotifyFrameReal"
+        NotifyFrameReal.Parent = NotifyFrame
+
+        UICorner.CornerRadius = UDim.new(0, 8)
+        UICorner.Parent = NotifyFrameReal
+
+        UIGradient.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 50, 200)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(50, 200, 150))
+        }
+        UIGradient.Rotation = 45
+        UIGradient.Parent = NotifyFrameReal
+
+        UIStroke.Parent = NotifyFrameReal
+        UIStroke.Color = Color3.fromRGB(60, 40, 80)
+        UIStroke.Thickness = 1.2
+        UIStroke.Transparency = 0.5
+
+        DropShadowHolder.BackgroundTransparency = 1
+        DropShadowHolder.BorderSizePixel = 0
+        DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+        DropShadowHolder.ZIndex = 0
+        DropShadowHolder.Name = "DropShadowHolder"
+        DropShadowHolder.Parent = NotifyFrameReal
+
+        DropShadow.Image = "rbxassetid://6015897843"
+        DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+        DropShadow.ImageTransparency = 0.4
+        DropShadow.ScaleType = Enum.ScaleType.Slice
+        DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+        DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+        DropShadow.BackgroundTransparency = 1
+        DropShadow.BorderSizePixel = 0
+        DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+        DropShadow.Size = UDim2.new(1, 35, 1, 35)
+        DropShadow.ZIndex = 0
+        DropShadow.Name = "DropShadow"
+        DropShadow.Parent = DropShadowHolder
+
+        NotifyLogo.Image = NotifyConfig.Logo
+        NotifyLogo.BackgroundColor3 = Color3.fromRGB(40, 20, 60)
+        NotifyLogo.BackgroundTransparency = 0.8
+        NotifyLogo.BorderSizePixel = 0
+        NotifyLogo.AnchorPoint = Vector2.new(0, 0.5)
+        NotifyLogo.Position = UDim2.new(0, 6, 0.5, 0)
+        NotifyLogo.Size = UDim2.new(0, 36, 0, 36)
+        NotifyLogo.Name = "NotifyLogo"
+        NotifyLogo.Parent = NotifyFrameReal
+
+        UICorner1.CornerRadius = UDim.new(0, 6)
+        UICorner1.Parent = NotifyLogo
+
+        TitleFrame.BackgroundTransparency = 1
+        TitleFrame.BorderSizePixel = 0
+        TitleFrame.Position = UDim2.new(0, 48, 0, 6)
+        TitleFrame.Size = UDim2.new(1, -100, 0, 12)
+        TitleFrame.Parent = NotifyFrameReal
+
+        NotifyTitle.Font = Enum.Font.GothamBold
+        NotifyTitle.Text = NotifyConfig.Title
+        NotifyTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+        NotifyTitle.TextSize = 10
+        NotifyTitle.TextXAlignment = Enum.TextXAlignment.Left
+        NotifyTitle.TextYAlignment = Enum.TextYAlignment.Center
+        NotifyTitle.BackgroundTransparency = 1
+        NotifyTitle.BorderSizePixel = 0
+        NotifyTitle.Position = UDim2.new(0, 0, 0, 0)
+        NotifyTitle.Size = UDim2.new(1, 0, 1, 0)
+        NotifyTitle.Name = "NotifyTitle"
+        NotifyTitle.Parent = TitleFrame
+        NotifyTitle.TextTruncate = Enum.TextTruncate.AtEnd
+
+        if NotifyConfig.Title1 then
+            Title1Label.Font = Enum.Font.GothamBold
+            Title1Label.Text = NotifyConfig.Title1
+            Title1Label.TextColor3 = Color3.fromRGB(100, 220, 255)
+            Title1Label.TextSize = 8
+            Title1Label.TextXAlignment = Enum.TextXAlignment.Left
+            Title1Label.TextYAlignment = Enum.TextYAlignment.Center
+            Title1Label.BackgroundTransparency = 1
+            Title1Label.BorderSizePixel = 0
+            Title1Label.Position = UDim2.new(0, NotifyTitle.TextBounds.X + 4, 0, 0)
+            Title1Label.Size = UDim2.new(0, 45, 1, 0)
+            Title1Label.Parent = TitleFrame
+        end
+
+        NotifyContent.Font = Enum.Font.GothamBold
+        NotifyContent.Text = NotifyConfig.Content
+        NotifyContent.TextColor3 = Color3.fromRGB(180, 180, 180)
+        NotifyContent.TextSize = 9
+        NotifyContent.TextXAlignment = Enum.TextXAlignment.Left
+        NotifyContent.TextYAlignment = Enum.TextYAlignment.Center
+        NotifyContent.BackgroundTransparency = 1
+        NotifyContent.BorderSizePixel = 0
+        NotifyContent.Position = UDim2.new(0, 48, 0, 22)
+        NotifyContent.Size = UDim2.new(1, -100, 0, 26)
+        NotifyContent.Name = "NotifyContent"
+        NotifyContent.Parent = NotifyFrameReal
+        NotifyContent.TextWrapped = true
+
+        local typeData = Crystal.Types[NotifyConfig.Type]
+        if typeData then
+            AlertImage.Image = typeData.Icon
+            AlertImage.ImageColor3 = typeData.Color
+        else
+            AlertImage.Image = NotifyConfig.Type
+            AlertImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
+        end
+
+        AlertImage.AnchorPoint = Vector2.new(1, 0.5)
+        AlertImage.BackgroundTransparency = 1
+        AlertImage.BorderSizePixel = 0
+        AlertImage.Position = UDim2.new(1, -6, 0.5, 0)
+        AlertImage.Size = UDim2.new(0, 24, 0, 24)
+        AlertImage.Parent = NotifyFrameReal
+
+        ProgressBar.BackgroundColor3 = Color3.fromRGB(60, 40, 80)
+        ProgressBar.BorderSizePixel = 0
+        ProgressBar.Position = UDim2.new(0, 6, 1, -4)
+        ProgressBar.Size = UDim2.new(1, -12, 0, 2)
+        ProgressBar.Parent = NotifyFrameReal
+
+        UICorner2.CornerRadius = UDim.new(1, 0)
+        UICorner2.Parent = ProgressBar
+
+        ProgressFill.BackgroundColor3 = typeData and typeData.Color or Color3.fromRGB(100, 220, 255)
+        ProgressFill.BorderSizePixel = 0
+        ProgressFill.Size = UDim2.new(1, 0, 1, 0)
+        ProgressFill.Parent = ProgressBar
+
+        UICorner3.CornerRadius = UDim.new(1, 0)
+        UICorner3.Parent = ProgressFill
+
+        local contentHeight = math.max(26, NotifyContent.TextBounds.Y)
+        NotifyFrame.Size = UDim2.new(1, 0, 0, math.max(60, contentHeight + 34))
+
+        local closed = false
+        local fadeStarted = false
+
+        local function FadeOut()
+            if fadeStarted then return end
+            fadeStarted = true
+
+            Crystal.TweenObject({NotifyFrameReal, 0.4, "BackgroundTransparency", 1})
+            Crystal.TweenObject({NotifyLogo, 0.4, "ImageTransparency", 1})
+            Crystal.TweenObject({NotifyLogo, 0.4, "BackgroundTransparency", 1})
+            Crystal.TweenObject({NotifyTitle, 0.4, "TextTransparency", 1})
+            if NotifyConfig.Title1 then
+                Crystal.TweenObject({Title1Label, 0.4, "TextTransparency", 1})
+            end
+            Crystal.TweenObject({NotifyContent, 0.4, "TextTransparency", 1})
+            Crystal.TweenObject({AlertImage, 0.4, "ImageTransparency", 1})
+            Crystal.TweenObject({ProgressBar, 0.4, "BackgroundTransparency", 1})
+            Crystal.TweenObject({ProgressFill, 0.4, "BackgroundTransparency", 1})
+            Crystal.TweenObject({DropShadow, 0.4, "ImageTransparency", 1})
+        end
+
+        function NotifyFunc:Close()
+            if closed then return end
+            closed = true
+            FadeOut()
+            Crystal.TweenObject({NotifyFrameReal, NotifyConfig.Time * 0.6, "Position", UDim2.new(0, 250, 0, 0)})
+            task.wait(NotifyConfig.Time * 0.6)
+            NotifyFrame:Destroy()
+        end
+
+        Crystal.TweenObject({NotifyFrameReal, NotifyConfig.Time, "Position", UDim2.new(0, 0, 0, 0)})
+        Crystal.TweenObject({ProgressFill, NotifyConfig.Delay, "Size", UDim2.new(0, 0, 1, 0)})
+
+        task.spawn(function()
+            task.wait(NotifyConfig.Delay - 0.4)
+            FadeOut()
+            task.wait(0.4)
+            NotifyFunc:Close()
+        end)
+    end)
+
+    return NotifyFunc
+end
+
+Crystal.Window = function(self, WindowConfig)
+    WindowConfig = WindowConfig or {}
+    WindowConfig.Title = WindowConfig.Title or "Crystal Hub"
+    WindowConfig.Description = WindowConfig.Description or ""
+    WindowConfig.User = WindowConfig.User
+    WindowConfig.IconUser = WindowConfig.IconUser or ""
+    WindowConfig.UseAcrylic = WindowConfig.UseAcrylic or false
+    WindowConfig.Size = WindowConfig.Size or UDim2.new(0, 450, 0, 320)
+    WindowConfig.DiscordStatus = WindowConfig.DiscordStatus or "love you hipp"
+    WindowConfig.DiscordDescription = WindowConfig.DiscordDescription or ""
+    WindowConfig.KeyCode = WindowConfig.KeyCode or Enum.KeyCode.RightControl
+
+    local CrystalHub = {}
+    CrystalHub.Window = Instance.new("ScreenGui")
+    CrystalHub.MainFrame = Instance.new("Frame")
+    CrystalHub.DropShadowHolder = Instance.new("Frame")
+    CrystalHub.DropShadow = Instance.new("ImageLabel")
+    CrystalHub.TopBar = Instance.new("Frame")
+    CrystalHub.TopTitle = Instance.new("TextLabel")
+    CrystalHub.TopDescription = Instance.new("TextLabel")
+    CrystalHub.CloseButton = Instance.new("TextButton")
+    CrystalHub.CloseImage = Instance.new("ImageLabel")
+    CrystalHub.CloseBorderLeft = Instance.new("Frame")
+    CrystalHub.CloseBorderBottom = Instance.new("Frame")
+    CrystalHub.MaxButton = Instance.new("TextButton")
+    CrystalHub.MaxImage = Instance.new("ImageLabel")
+    CrystalHub.HideButton = Instance.new("TextButton")
+    CrystalHub.HideImage = Instance.new("ImageLabel")
+    CrystalHub.DecideFrame = Instance.new("Frame")
+    CrystalHub.DecideCorner = Instance.new("UICorner")
+    CrystalHub.LayersTab = Instance.new("Frame")
+    CrystalHub.PlayerInfo = Instance.new("Frame")
+    CrystalHub.InfoCorner = Instance.new("UICorner")
+    CrystalHub.PlayerName = Instance.new("TextLabel")
+    CrystalHub.PlayerUsername = Instance.new("TextLabel")
+    CrystalHub.PlayerDescription = Instance.new("TextLabel")
+    CrystalHub.AvatarFrame = Instance.new("Frame")
+    CrystalHub.AvatarImage = Instance.new("ImageLabel")
+    CrystalHub.AvatarCorner = Instance.new("UICorner")
+    CrystalHub.AvatarFrameCorner = Instance.new("UICorner")
+    CrystalHub.AvatarStroke = Instance.new("UIStroke")
+    CrystalHub.StatusIndicator = Instance.new("Frame")
+    CrystalHub.StatusCorner = Instance.new("UICorner")
+    CrystalHub.StatusStroke = Instance.new("UIStroke")
+    CrystalHub.InfoButton = Instance.new("TextButton")
+    CrystalHub.SearchFrame = Instance.new("Frame")
+    CrystalHub.SearchCorner = Instance.new("UICorner")
+    CrystalHub.SearchImage = Instance.new("ImageLabel")
+    CrystalHub.SearchDecide = Instance.new("Frame")
+    CrystalHub.SearchDecideCorner = Instance.new("UICorner")
+    CrystalHub.SearchDecideActive = Instance.new("Frame")
+    CrystalHub.SearchDecideActiveCorner = Instance.new("UICorner")
+    CrystalHub.SearchDecideStroke = Instance.new("UIStroke")
+    CrystalHub.SearchDecideActiveStroke = Instance.new("UIStroke")
+    CrystalHub.SearchBoxFrame = Instance.new("Frame")
+    CrystalHub.SearchBox = Instance.new("TextBox")
+    CrystalHub.ScrollTab = Instance.new("ScrollingFrame")
+    CrystalHub.TabListLayout = Instance.new("UIListLayout")
+    CrystalHub.MainCorner = Instance.new("UICorner")
+    CrystalHub.MainStroke = Instance.new("UIStroke")
+    CrystalHub.Layers = Instance.new("Frame")
+    CrystalHub.ConfirmationFrame = Instance.new("Frame")
+    CrystalHub.ConfirmationBackground = Instance.new("TextButton")
+    CrystalHub.ConfirmationDropShadowHolder = Instance.new("Frame")
+    CrystalHub.ConfirmationDropShadow = Instance.new("ImageLabel")
+    CrystalHub.ConfirmationDialog = Instance.new("Frame")
+    CrystalHub.ConfirmationDialogCorner = Instance.new("UICorner")
+    CrystalHub.ConfirmationDialogStroke = Instance.new("UIStroke")
+    CrystalHub.ConfirmationTitle = Instance.new("TextLabel")
+    CrystalHub.ConfirmationContent = Instance.new("TextLabel")
+    CrystalHub.ConfirmationBottom = Instance.new("Frame")
+    CrystalHub.ConfirmationBottomCorner = Instance.new("UICorner")
+    CrystalHub.ConfirmButtonFrame = Instance.new("Frame")
+    CrystalHub.ConfirmButtonCorner = Instance.new("UICorner")
+    CrystalHub.ConfirmButton = Instance.new("TextButton")
+    CrystalHub.CancelButtonFrame = Instance.new("Frame")
+    CrystalHub.CancelButtonCorner = Instance.new("UICorner")
+    CrystalHub.CancelButton = Instance.new("TextButton")
+    CrystalHub.LayersFolder = Instance.new("Folder")
+    CrystalHub.CloseCorner = Instance.new("UICorner")
+
+    CrystalHub.Window.Name = "Window"
+    CrystalHub.Window.Parent = Crystal.CoreGui
+    CrystalHub.Window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+     CrystalHub.MainFrame.Name = "Window11"
+CrystalHub.MainFrame.Parent = CrystalHub.Window
+CrystalHub.MainFrame.BackgroundColor3 = Color3.fromRGB(60, 40, 100)
+CrystalHub.MainFrame.BackgroundTransparency = 0.020
+CrystalHub.MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CrystalHub.MainFrame.BorderSizePixel = 0
+CrystalHub.MainFrame.Size = WindowConfig.Size
+CrystalHub.MainFrame.Position = Crystal.GetMidPos(CrystalHub.MainFrame)
+
+CrystalHub.MainCorner.CornerRadius = UDim.new(0, 12)
+CrystalHub.MainCorner.Parent = CrystalHub.MainFrame
+
+CrystalHub.MainStroke.Parent = CrystalHub.MainFrame
+CrystalHub.MainStroke.Color = Color3.fromRGB(80, 60, 120)
+CrystalHub.MainStroke.Thickness = 1.800
+
+CrystalHub.DropShadowHolder.Name = "DropShadowHolder"
+CrystalHub.DropShadowHolder.Parent = CrystalHub.MainFrame
+CrystalHub.DropShadowHolder.BackgroundTransparency = 1.000
+CrystalHub.DropShadowHolder.BorderSizePixel = 0
+CrystalHub.DropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+CrystalHub.DropShadowHolder.ZIndex = 0
+
+CrystalHub.DropShadow.Name = "DropShadow"
+CrystalHub.DropShadow.Parent = CrystalHub.DropShadowHolder
+CrystalHub.DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+CrystalHub.DropShadow.BackgroundTransparency = 1.000
+CrystalHub.DropShadow.BorderSizePixel = 0
+CrystalHub.DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+CrystalHub.DropShadow.Size = UDim2.new(1, 47, 1, 47)
+CrystalHub.DropShadow.ZIndex = 0
+CrystalHub.DropShadow.Image = "rbxassetid://6015897843"
+CrystalHub.DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+CrystalHub.DropShadow.ImageTransparency = 0.300
+CrystalHub.DropShadow.ScaleType = Enum.ScaleType.Slice
+CrystalHub.DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+CrystalHub.TopBar.Name = "Top"
+CrystalHub.TopBar.Parent = CrystalHub.MainFrame
+CrystalHub.TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CrystalHub.TopBar.BackgroundTransparency = 0.500
+CrystalHub.TopBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CrystalHub.TopBar.BorderSizePixel = 0
+CrystalHub.TopBar.Size = UDim2.new(1, 0, 0, 40)
+CrystalHub.TopBar.ZIndex = 2
+
+local TitleGradient = Instance.new("UIGradient")
+TitleGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
+})
+TitleGradient.Rotation = 45
+TitleGradient.Parent = CrystalHub.TopBar
+
+    CrystalHub.TopTitle.Name = "TopTitle"
+CrystalHub.TopTitle.Parent = CrystalHub.TopBar
+CrystalHub.TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CrystalHub.TopTitle.BackgroundTransparency = 1.000
+CrystalHub.TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CrystalHub.TopTitle.BorderSizePixel = 0
+CrystalHub.TopTitle.Position = UDim2.new(0, 15, 0, 12)
+CrystalHub.TopTitle.Size = UDim2.new(0, 0, 0, 16) 
+CrystalHub.TopTitle.AutomaticSize = Enum.AutomaticSize.X  
+CrystalHub.TopTitle.Font = Enum.Font.GothamBold
+CrystalHub.TopTitle.Text = WindowConfig.Title
+CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+CrystalHub.TopTitle.TextSize = 14.000
+CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.TopDescription.Name = "TopDescription"
+    CrystalHub.TopDescription.Parent = CrystalHub.TopBar
+    CrystalHub.TopDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.TopDescription.BackgroundTransparency = 0.999
+    CrystalHub.TopDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.TopDescription.BorderSizePixel = 0
+    CrystalHub.TopDescription.Position = UDim2.new(0, 0, 0, 12)
+    CrystalHub.TopDescription.Size = UDim2.new(0, 80, 0, 16)
+    CrystalHub.TopDescription.Font = Enum.Font.GothamBold
+    CrystalHub.TopDescription.Text = WindowConfig.Description
+    CrystalHub.TopDescription.TextColor3 = Color3.fromRGB(200, 170, 255)
+    CrystalHub.TopDescription.TextSize = 12.000
+    CrystalHub.TopDescription.TextTransparency = 0.300
+    CrystalHub.TopDescription.TextXAlignment = Enum.TextXAlignment.Left
+    
+    CrystalHub.CloseButton.Name = "CloseButton"
+    CrystalHub.CloseButton.Parent = CrystalHub.TopBar
+    CrystalHub.CloseButton.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.CloseButton.BackgroundTransparency = 1.000
+    CrystalHub.CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseButton.BorderSizePixel = 0
+    CrystalHub.CloseButton.Position = UDim2.new(1, 0, 0, 0)
+    CrystalHub.CloseButton.Size = UDim2.new(0, 40, 0, 40)
+    CrystalHub.CloseButton.Font = Enum.Font.GothamBold
+    CrystalHub.CloseButton.AutoButtonColor = false
+    CrystalHub.CloseButton.Text = ""
+    CrystalHub.CloseButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseButton.TextSize = 14.000
+
+    Crystal.Mouseto(CrystalHub.CloseButton, function()
+        Crystal.TweenObject({CrystalHub.CloseButton, 0.2, "BackgroundTransparency", 0.970})
+        Crystal.TweenObject({CrystalHub.CloseBorderLeft, 0.2, "BackgroundTransparency", 0.000})
+        Crystal.TweenObject({CrystalHub.CloseBorderBottom, 0.2, "BackgroundTransparency", 0.000})
+    end, function()
+        Crystal.TweenObject({CrystalHub.CloseButton, 0.2, "BackgroundTransparency", 1.000})
+        Crystal.TweenObject({CrystalHub.CloseBorderLeft, 0.2, "BackgroundTransparency", 1.000})
+        Crystal.TweenObject({CrystalHub.CloseBorderBottom, 0.2, "BackgroundTransparency", 1.000})
+    end)
+
+    Crystal.Click(CrystalHub.CloseButton, function()
+        CrystalHub.MainFrame.Visible = false
+    end)
+
+    CrystalHub.CloseCorner.CornerRadius = UDim.new(0, 12)
+    CrystalHub.CloseCorner.Parent = CrystalHub.CloseButton
+
+    CrystalHub.CloseImage.Name = "CloseImage"
+    CrystalHub.CloseImage.Parent = CrystalHub.CloseButton
+    CrystalHub.CloseImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.CloseImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.CloseImage.BackgroundTransparency = 0.999
+    CrystalHub.CloseImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseImage.BorderSizePixel = 0
+    CrystalHub.CloseImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.CloseImage.Size = UDim2.new(1, -22, 1, -22)
+    CrystalHub.CloseImage.Image = "rbxassetid://18556800637"
+    CrystalHub.CloseImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
+
+    CrystalHub.CloseBorderLeft.Name = "FrameBiNgu"
+    CrystalHub.CloseBorderLeft.Parent = CrystalHub.CloseButton
+    CrystalHub.CloseBorderLeft.BackgroundColor3 = Color3.fromRGB(100, 220, 255)
+    CrystalHub.CloseBorderLeft.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseBorderLeft.BorderSizePixel = 0
+    CrystalHub.CloseBorderLeft.Size = UDim2.new(0, 7, 1, 0)
+    CrystalHub.CloseBorderLeft.BackgroundTransparency = 1.000
+
+    CrystalHub.CloseBorderBottom.Name = "FrameOc"
+    CrystalHub.CloseBorderBottom.Parent = CrystalHub.CloseButton
+    CrystalHub.CloseBorderBottom.BackgroundColor3 = Color3.fromRGB(100, 220, 255)
+    CrystalHub.CloseBorderBottom.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CloseBorderBottom.BorderSizePixel = 0
+    CrystalHub.CloseBorderBottom.BackgroundTransparency = 1.000
+    CrystalHub.CloseBorderBottom.Position = UDim2.new(0, 0, 1, -5)
+    CrystalHub.CloseBorderBottom.Size = UDim2.new(1, 0, 0, 5)
+
+    CrystalHub.MaxButton.Name = "MaxButton"
+    CrystalHub.MaxButton.Parent = CrystalHub.TopBar
+    CrystalHub.MaxButton.AutoButtonColor = false
+    CrystalHub.MaxButton.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.MaxButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.MaxButton.BackgroundTransparency = 0.999
+    CrystalHub.MaxButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.MaxButton.BorderSizePixel = 0
+    CrystalHub.MaxButton.Position = UDim2.new(1, -39, 0, 0)
+    CrystalHub.MaxButton.Size = UDim2.new(0, 40, 0, 40)
+    CrystalHub.MaxButton.Font = Enum.Font.GothamBold
+    CrystalHub.MaxButton.Text = ""
+    CrystalHub.MaxButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.MaxButton.TextSize = 14.000
+
+    local OldPos, OldSize
+    Crystal.Click(CrystalHub.MaxButton, function()
+        if CrystalHub.MainFrame.Size.Y.Scale < 1 then
+            OldPos = CrystalHub.MainFrame.Position
+            OldSize = CrystalHub.MainFrame.Size
+            Crystal.TweenObject({CrystalHub.MainFrame, 0.5, "Size", UDim2.new(1, 0, 1, 0)})
+            Crystal.TweenObject({CrystalHub.MainFrame, 0.5, "Position", UDim2.new(0, 0, 0, 0)})
+        else
+            Crystal.TweenObject({CrystalHub.MainFrame, 0.5, "Size", OldSize})
+            Crystal.TweenObject({CrystalHub.MainFrame, 0.5, "Position", OldPos})
+        end
+    end)
+
+    Crystal.Mouseto(CrystalHub.MaxButton, function()
+        CrystalHub.MaxButton.BackgroundTransparency = 0.970
+        Crystal.TweenObject({CrystalHub.MaxImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
+    end, function()
+        CrystalHub.MaxButton.BackgroundTransparency = 0.999
+        Crystal.TweenObject({CrystalHub.MaxImage, 0.2, "ImageColor3", Color3.fromRGB(230, 230, 230)})
+    end)
+
+    CrystalHub.MaxImage.Name = "MaxImage"
+    CrystalHub.MaxImage.Parent = CrystalHub.MaxButton
+    CrystalHub.MaxImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.MaxImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.MaxImage.BackgroundTransparency = 0.999
+    CrystalHub.MaxImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.MaxImage.BorderSizePixel = 0
+    CrystalHub.MaxImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.MaxImage.Size = UDim2.new(1, -24, 1, -24)
+    CrystalHub.MaxImage.Image = "rbxassetid://9886659406"
+    CrystalHub.MaxImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
+
+    CrystalHub.HideButton.Name = "HideButton"
+    CrystalHub.HideButton.Parent = CrystalHub.TopBar
+    CrystalHub.HideButton.AutoButtonColor = false
+    CrystalHub.HideButton.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.HideButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    CrystalHub.HideButton.BackgroundTransparency = 0.999
+    CrystalHub.HideButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.HideButton.BorderSizePixel = 0
+    CrystalHub.HideButton.Position = UDim2.new(1, -77, 0, 0)
+    CrystalHub.HideButton.Size = UDim2.new(0, 40, 0, 40)
+    CrystalHub.HideButton.Font = Enum.Font.GothamBold
+    CrystalHub.HideButton.Text = ""
+    CrystalHub.HideButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.HideButton.TextSize = 14.000
+
+    Crystal.Mouseto(CrystalHub.HideButton, function()
+        CrystalHub.HideButton.BackgroundTransparency = 0.950
+        Crystal.TweenObject({CrystalHub.HideImage, 0.2, "ImageColor3", Color3.fromRGB(255, 255, 255)})
+    end, function()
+        CrystalHub.HideButton.BackgroundTransparency = 0.999
+        Crystal.TweenObject({CrystalHub.HideImage, 0.2, "ImageColor3", Color3.fromRGB(230, 230, 230)})
+    end)
+
+    Crystal.Click(CrystalHub.HideButton, function()
+        CrystalHub.MainFrame.Visible = false
+    end)
+
+    CrystalHub.HideImage.Name = "HideImage"
+    CrystalHub.HideImage.Parent = CrystalHub.HideButton
+    CrystalHub.HideImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.HideImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.HideImage.BackgroundTransparency = 0.999
+    CrystalHub.HideImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.HideImage.BorderSizePixel = 0
+    CrystalHub.HideImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.HideImage.Size = UDim2.new(1, -24, 1, -24)
+    CrystalHub.HideImage.Image = "rbxassetid://18556824827"
+    CrystalHub.HideImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
+
+    CrystalHub.DecideFrame.Name = "DecideFrame"
+    CrystalHub.DecideFrame.Parent = CrystalHub.TopBar
+    CrystalHub.DecideFrame.AnchorPoint = Vector2.new(0.5, 1)
+    CrystalHub.DecideFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
+    CrystalHub.DecideFrame.BackgroundTransparency = 0.800
+    CrystalHub.DecideFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.DecideFrame.BorderSizePixel = 0
+    CrystalHub.DecideFrame.Position = UDim2.new(0.5, 0, 1, 2)
+    CrystalHub.DecideFrame.Size = UDim2.new(1, -14, 0, 2)
+    
+    CrystalHub.DecideCorner.CornerRadius = UDim.new(0, 100)
+    CrystalHub.DecideCorner.Parent = CrystalHub.DecideFrame
+
+    CrystalHub.LayersTab.Name = "LayersTab"
+    CrystalHub.LayersTab.Parent = CrystalHub.MainFrame
+    CrystalHub.LayersTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.LayersTab.BackgroundTransparency = 0.999
+    CrystalHub.LayersTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.LayersTab.BorderSizePixel = 0
+    CrystalHub.LayersTab.Position = UDim2.new(0, 10, 0, 48)
+    CrystalHub.LayersTab.Size = UDim2.new(0, 140, 1, -58)
+
+    CrystalHub.PlayerInfo.Name = "Info"
+    CrystalHub.PlayerInfo.Parent = CrystalHub.LayersTab
+    CrystalHub.PlayerInfo.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    CrystalHub.PlayerInfo.BackgroundTransparency = 1.000
+    CrystalHub.PlayerInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerInfo.BorderSizePixel = 0
+    CrystalHub.PlayerInfo.AnchorPoint = Vector2.new(0, 0.5)
+    CrystalHub.PlayerInfo.Position = UDim2.new(0, -40, 0.5, 0)
+    CrystalHub.PlayerInfo.Size = UDim2.new(1, 40, 0, 48)
+
+    Crystal.Mouseto(CrystalHub.PlayerInfo, function()
+        CrystalHub.PlayerInfo.BackgroundTransparency = 0.950
+        Crystal.TweenObject({CrystalHub.AvatarStroke, 0.3, "Transparency", 0.400})
+    end, function()
+        CrystalHub.PlayerInfo.BackgroundTransparency = 1.000
+        Crystal.TweenObject({CrystalHub.AvatarStroke, 0.3, "Transparency", 0.700})
+    end)
+
+    CrystalHub.InfoCorner.CornerRadius = UDim.new(0, 6)
+    CrystalHub.InfoCorner.Parent = CrystalHub.PlayerInfo
+
+    CrystalHub.PlayerName.Name = "NamePlayer"
+    CrystalHub.PlayerName.Parent = CrystalHub.PlayerInfo
+    CrystalHub.PlayerName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerName.BackgroundTransparency = 0.999
+    CrystalHub.PlayerName.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerName.BorderSizePixel = 0
+    CrystalHub.PlayerName.Position = UDim2.new(0, 46, 0, 10)
+    CrystalHub.PlayerName.Size = UDim2.new(1, -50, 0, 12)
+    CrystalHub.PlayerName.Font = Enum.Font.GothamBold
+    CrystalHub.PlayerName.Text = tostring(Crystal.Player.DisplayName)
+    CrystalHub.PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerName.TextSize = 12.000
+    CrystalHub.PlayerName.TextWrapped = true
+    CrystalHub.PlayerName.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.PlayerDescription.Name = "DescriptionPlayer"
+    CrystalHub.PlayerDescription.Parent = CrystalHub.PlayerInfo
+    CrystalHub.PlayerDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerDescription.BackgroundTransparency = 0.999
+    CrystalHub.PlayerDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerDescription.BorderSizePixel = 0
+    CrystalHub.PlayerDescription.Position = UDim2.new(0, 46, 0, 24)
+    CrystalHub.PlayerDescription.Size = UDim2.new(1, -50, 0, 9)
+    CrystalHub.PlayerDescription.Font = Enum.Font.GothamBold
+    CrystalHub.PlayerDescription.Text = tostring(Crystal.Player.UserId)
+    CrystalHub.PlayerDescription.TextColor3 = Color3.fromRGB(120, 120, 120)
+    CrystalHub.PlayerDescription.TextSize = 8.000
+    CrystalHub.PlayerDescription.TextTransparency = 0.400
+    CrystalHub.PlayerDescription.TextWrapped = true
+    CrystalHub.PlayerDescription.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.AvatarFrame.Name = "LogoFrame"
+    CrystalHub.AvatarFrame.Parent = CrystalHub.PlayerInfo
+    CrystalHub.AvatarFrame.AnchorPoint = Vector2.new(0, 0.5)
+    CrystalHub.AvatarFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    CrystalHub.AvatarFrame.BackgroundTransparency = 0.850
+    CrystalHub.AvatarFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.AvatarFrame.BorderSizePixel = 0
+    CrystalHub.AvatarFrame.Position = UDim2.new(0, 4, 0.5, 0)
+    CrystalHub.AvatarFrame.Size = UDim2.new(0, 38, 0, 38)
+
+    CrystalHub.AvatarImage.Name = "LogoPlayer"
+    CrystalHub.AvatarImage.Parent = CrystalHub.AvatarFrame
+    CrystalHub.AvatarImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.AvatarImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.AvatarImage.BackgroundTransparency = 0.999
+    CrystalHub.AvatarImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.AvatarImage.BorderSizePixel = 0
+    CrystalHub.AvatarImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.AvatarImage.Size = UDim2.new(1, -2, 1, -2)
+    CrystalHub.AvatarImage.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..Crystal.Player.UserId.."&width=420&height=420&format=png"
+
+    CrystalHub.AvatarCorner.CornerRadius = UDim.new(0, 1000)
+    CrystalHub.AvatarCorner.Parent = CrystalHub.AvatarImage
+
+    CrystalHub.AvatarFrameCorner.CornerRadius = UDim.new(0, 1000)
+    CrystalHub.AvatarFrameCorner.Parent = CrystalHub.AvatarFrame
+
+    CrystalHub.AvatarStroke.Parent = CrystalHub.AvatarFrame
+    CrystalHub.AvatarStroke.Color = Color3.fromRGB(200, 170, 255)
+    CrystalHub.AvatarStroke.Transparency = 0.700
+    CrystalHub.AvatarStroke.Thickness = 2.000
+
+    CrystalHub.StatusIndicator.Name = "StatusIndicator"
+    CrystalHub.StatusIndicator.Parent = CrystalHub.AvatarFrame
+    CrystalHub.StatusIndicator.AnchorPoint = Vector2.new(1, 1)
+    CrystalHub.StatusIndicator.BackgroundColor3 = Color3.fromRGB(67, 181, 129)
+    CrystalHub.StatusIndicator.BorderSizePixel = 0
+    CrystalHub.StatusIndicator.Position = UDim2.new(1, -1, 1, -1)
+    CrystalHub.StatusIndicator.Size = UDim2.new(0, 11, 0, 11)
+    CrystalHub.StatusIndicator.ZIndex = 5
+
+    CrystalHub.StatusCorner.CornerRadius = UDim.new(1, 0)
+    CrystalHub.StatusCorner.Parent = CrystalHub.StatusIndicator
+
+    CrystalHub.StatusStroke.Parent = CrystalHub.StatusIndicator
+    CrystalHub.StatusStroke.Color = Color3.fromRGB(20, 20, 20)
+    CrystalHub.StatusStroke.Thickness = 2.000
+
+    CrystalHub.InfoButton.Name = "InfoButton"
+    CrystalHub.InfoButton.Parent = CrystalHub.PlayerInfo
+    CrystalHub.InfoButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.InfoButton.BackgroundTransparency = 0.999
+    CrystalHub.InfoButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.InfoButton.BorderSizePixel = 0
+    CrystalHub.InfoButton.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.InfoButton.Font = Enum.Font.GothamBold
+    CrystalHub.InfoButton.Text = ""
+    CrystalHub.InfoButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.InfoButton.TextSize = 14.000
+
+
+    CrystalHub.ScrollTab.Name = "ScrollTab"
+    CrystalHub.ScrollTab.Parent = CrystalHub.LayersTab
+    CrystalHub.ScrollTab.Active = true
+    CrystalHub.ScrollTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ScrollTab.BackgroundTransparency = 0.999
+    CrystalHub.ScrollTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ScrollTab.BorderSizePixel = 0
+    CrystalHub.ScrollTab.Position = UDim2.new(0, 0, 0, 90)
+    CrystalHub.ScrollTab.Size = UDim2.new(1, 0, 1, -90)
+    CrystalHub.ScrollTab.ZIndex = 0
+    CrystalHub.ScrollTab.ScrollBarImageColor3 = Color3.fromRGB(200, 170, 255)
+    CrystalHub.ScrollTab.CanvasSize = UDim2.new(0, 0, 0, 220)
+    CrystalHub.ScrollTab.ScrollBarImageTransparency = 0.700
+    CrystalHub.ScrollTab.ScrollBarThickness = 3
+
+    Crystal.Stepped:Connect(function()
+        CrystalHub.ScrollTab.CanvasSize = UDim2.new(0, 0, 0, CrystalHub.TabListLayout.AbsoluteContentSize.Y + 15)
+    end)
+
+    CrystalHub.TabListLayout.Parent = CrystalHub.ScrollTab
+    CrystalHub.TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    CrystalHub.TabListLayout.Padding = UDim.new(0, 2)
+
+    CrystalHub.ConfirmationFrame.Name = "AnotherFrame"
+    CrystalHub.ConfirmationFrame.Parent = CrystalHub.MainFrame
+    CrystalHub.ConfirmationFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationFrame.BackgroundTransparency = 0.300
+    CrystalHub.ConfirmationFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationFrame.BorderSizePixel = 0
+    CrystalHub.ConfirmationFrame.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ConfirmationFrame.Visible = false
+    CrystalHub.ConfirmationFrame.ZIndex = 5
+
+    CrystalHub.ConfirmationDropShadowHolder.Name = "DropShadowHolder"
+    CrystalHub.ConfirmationDropShadowHolder.Parent = CrystalHub.ConfirmationFrame
+    CrystalHub.ConfirmationDropShadowHolder.BackgroundTransparency = 1.000
+    CrystalHub.ConfirmationDropShadowHolder.BorderSizePixel = 0
+    CrystalHub.ConfirmationDropShadowHolder.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ConfirmationDropShadowHolder.ZIndex = 0
+
+    CrystalHub.ConfirmationDropShadow.Name = "DropShadow"
+    CrystalHub.ConfirmationDropShadow.Parent = CrystalHub.ConfirmationDropShadowHolder
+    CrystalHub.ConfirmationDropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.ConfirmationDropShadow.BackgroundTransparency = 1.000
+    CrystalHub.ConfirmationDropShadow.BorderSizePixel = 0
+    CrystalHub.ConfirmationDropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.ConfirmationDropShadow.Size = UDim2.new(1, 47, 1, 47)
+    CrystalHub.ConfirmationDropShadow.ZIndex = 0
+    CrystalHub.ConfirmationDropShadow.Image = "rbxassetid://6015897843"
+    CrystalHub.ConfirmationDropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationDropShadow.ImageTransparency = 0.500
+    CrystalHub.ConfirmationDropShadow.ScaleType = Enum.ScaleType.Slice
+    CrystalHub.ConfirmationDropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+    CrystalHub.ConfirmationDialog.Name = "LogFrame"
+    CrystalHub.ConfirmationDialog.Parent = CrystalHub.ConfirmationDropShadow
+    CrystalHub.ConfirmationDialog.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.ConfirmationDialog.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    CrystalHub.ConfirmationDialog.BackgroundTransparency = 0.020
+    CrystalHub.ConfirmationDialog.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationDialog.BorderSizePixel = 0
+    CrystalHub.ConfirmationDialog.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.ConfirmationDialog.Size = UDim2.new(0, 220, 0, 120)
+    CrystalHub.ConfirmationDialog.Visible = false
+
+    CrystalHub.ConfirmationDialogCorner.CornerRadius = UDim.new(0, 8)
+    CrystalHub.ConfirmationDialogCorner.Parent = CrystalHub.ConfirmationDialog
+
+    CrystalHub.ConfirmationDialogStroke.Parent = CrystalHub.ConfirmationDialog
+    CrystalHub.ConfirmationDialogStroke.Color = Color3.fromRGB(50, 50, 50)
+    CrystalHub.ConfirmationDialogStroke.Thickness = 1.500
+
+    CrystalHub.ConfirmationTitle.Name = "LogTitle"
+    CrystalHub.ConfirmationTitle.Parent = CrystalHub.ConfirmationDialog
+    CrystalHub.ConfirmationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmationTitle.BackgroundTransparency = 0.999
+    CrystalHub.ConfirmationTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationTitle.BorderSizePixel = 0
+    CrystalHub.ConfirmationTitle.Position = UDim2.new(0, 18, 0, 18)
+    CrystalHub.ConfirmationTitle.Size = UDim2.new(0, 180, 0, 18)
+    CrystalHub.ConfirmationTitle.Font = Enum.Font.GothamBold
+    CrystalHub.ConfirmationTitle.Text = "Confirmation"
+    CrystalHub.ConfirmationTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmationTitle.TextSize = 15.000
+    CrystalHub.ConfirmationTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.ConfirmationContent.Name = "LogContent"
+    CrystalHub.ConfirmationContent.Parent = CrystalHub.ConfirmationDialog
+    CrystalHub.ConfirmationContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmationContent.BackgroundTransparency = 0.999
+    CrystalHub.ConfirmationContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationContent.BorderSizePixel = 0
+    CrystalHub.ConfirmationContent.Position = UDim2.new(0, 18, 0, 38)
+    CrystalHub.ConfirmationContent.Size = UDim2.new(0, 180, 0, 12)
+    CrystalHub.ConfirmationContent.Font = Enum.Font.GothamBold
+    CrystalHub.ConfirmationContent.Text = "Are you sure about this action?"
+    CrystalHub.ConfirmationContent.TextColor3 = Color3.fromRGB(200, 200, 200)
+    CrystalHub.ConfirmationContent.TextSize = 12.000
+    CrystalHub.ConfirmationContent.TextTransparency = 0.400
+    CrystalHub.ConfirmationContent.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.ConfirmationBottom.Name = "LogUnder"
+    CrystalHub.ConfirmationBottom.Parent = CrystalHub.ConfirmationDialog
+    CrystalHub.ConfirmationBottom.AnchorPoint = Vector2.new(0, 1)
+    CrystalHub.ConfirmationBottom.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+    CrystalHub.ConfirmationBottom.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmationBottom.BorderSizePixel = 0
+    CrystalHub.ConfirmationBottom.Position = UDim2.new(0, 0, 1, 0)
+    CrystalHub.ConfirmationBottom.Size = UDim2.new(1, 0, 1, -62)
+
+    CrystalHub.ConfirmationBottomCorner.CornerRadius = UDim.new(0, 8)
+    CrystalHub.ConfirmationBottomCorner.Parent = CrystalHub.ConfirmationBottom
+
+    CrystalHub.ConfirmButtonFrame.Name = "ConfirmFrame"
+    CrystalHub.ConfirmButtonFrame.Parent = CrystalHub.ConfirmationBottom
+    CrystalHub.ConfirmButtonFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
+    CrystalHub.ConfirmButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmButtonFrame.BorderSizePixel = 0
+    CrystalHub.ConfirmButtonFrame.Position = UDim2.new(0, 15, 0, 12)
+    CrystalHub.ConfirmButtonFrame.Size = UDim2.new(0, 85, 0, 28)
+
+    CrystalHub.ConfirmButtonCorner.CornerRadius = UDim.new(0, 5)
+    CrystalHub.ConfirmButtonCorner.Parent = CrystalHub.ConfirmButtonFrame
+
+    CrystalHub.ConfirmButton.Name = "ConfirmButton"
+    CrystalHub.ConfirmButton.Parent = CrystalHub.ConfirmButtonFrame
+    CrystalHub.ConfirmButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmButton.BackgroundTransparency = 0.999
+    CrystalHub.ConfirmButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.ConfirmButton.BorderSizePixel = 0
+    CrystalHub.ConfirmButton.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ConfirmButton.Font = Enum.Font.GothamBold
+    CrystalHub.ConfirmButton.Text = "Confirm"
+    CrystalHub.ConfirmButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ConfirmButton.TextSize = 12.000
+
+    Crystal.Mouseto(CrystalHub.ConfirmButtonFrame, function()
+        Crystal.TweenObject({CrystalHub.ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(120, 210, 255)})
+    end, function()
+        Crystal.TweenObject({CrystalHub.ConfirmButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(200, 170, 255)})
+    end)
+
+    CrystalHub.CancelButtonFrame.Name = "CancelFrame"
+    CrystalHub.CancelButtonFrame.Parent = CrystalHub.ConfirmationBottom
+    CrystalHub.CancelButtonFrame.AnchorPoint = Vector2.new(1, 0)
+    CrystalHub.CancelButtonFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    CrystalHub.CancelButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CancelButtonFrame.BorderSizePixel = 0
+    CrystalHub.CancelButtonFrame.Position = UDim2.new(1, -15, 0, 12)
+    CrystalHub.CancelButtonFrame.Size = UDim2.new(0, 85, 0, 28)
+
+    CrystalHub.CancelButtonCorner.CornerRadius = UDim.new(0, 5)
+    CrystalHub.CancelButtonCorner.Parent = CrystalHub.CancelButtonFrame
+
+    CrystalHub.CancelButton.Name = "CancelButton"
+    CrystalHub.CancelButton.Parent = CrystalHub.CancelButtonFrame
+    CrystalHub.CancelButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.CancelButton.BackgroundTransparency = 0.999
+    CrystalHub.CancelButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.CancelButton.BorderSizePixel = 0
+    CrystalHub.CancelButton.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.CancelButton.Font = Enum.Font.GothamBold
+    CrystalHub.CancelButton.Text = "Cancel"
+    CrystalHub.CancelButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+    CrystalHub.CancelButton.TextSize = 12.000
+
+    Crystal.Mouseto(CrystalHub.CancelButtonFrame, function()
+        Crystal.TweenObject({CrystalHub.CancelButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(45, 45, 45)})
+    end, function()
+        Crystal.TweenObject({CrystalHub.CancelButtonFrame, 0.2, "BackgroundColor3", Color3.fromRGB(35, 35, 35)})
+    end)
+
+    local TopLayers = Instance.new("Frame")
+    local NameBack = Instance.new("Frame")
+    local BackButton = Instance.new("TextButton")
+    local NameBack_2 = Instance.new("Frame")
+    local ForwardImage = Instance.new("ImageLabel")
+    local BackButton_2 = Instance.new("TextButton")
+    local UIListLayout_2 = Instance.new("UIListLayout")
+    local LayersPageLayout = Instance.new("UIPageLayout")
+    local RealLayers = Instance.new("Frame")
+
+    CrystalHub.Layers.Name = "Layers"
+    CrystalHub.Layers.Parent = CrystalHub.MainFrame
+    CrystalHub.Layers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.Layers.BackgroundTransparency = 0.999
+    CrystalHub.Layers.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.Layers.BorderSizePixel = 0
+    CrystalHub.Layers.Position = UDim2.new(0, 158, 0, 48)
+    CrystalHub.Layers.Size = UDim2.new(1, -168, 1, -58)
+    CrystalHub.Layers.ZIndex = 3
+
+    TopLayers.Name = "TopLayers"
+    TopLayers.Parent = CrystalHub.Layers
+    TopLayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TopLayers.BackgroundTransparency = 0.999
+    TopLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TopLayers.BorderSizePixel = 0
+    TopLayers.ClipsDescendants = true
+    TopLayers.Size = UDim2.new(1, 0, 0, 30)
+
+    NameBack.Name = "NameBack"
+    NameBack.Parent = TopLayers
+    NameBack.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NameBack.BackgroundTransparency = 0.999
+    NameBack.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NameBack.BorderSizePixel = 0
+    NameBack.Size = UDim2.new(0, 45, 1, 0)
+
+    BackButton.Name = "BackButton"
+    BackButton.Parent = NameBack
+    BackButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton.BackgroundTransparency = 0.999
+    BackButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    BackButton.BorderSizePixel = 0
+    BackButton.Size = UDim2.new(1, 0, 1, 0)
+    BackButton.Font = Enum.Font.GothamBold
+    BackButton.Text = ""
+    BackButton.LayoutOrder = 0
+    BackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton.TextSize = 14.000
+    BackButton.TextTransparency = 0
+    BackButton.TextXAlignment = Enum.TextXAlignment.Left
+
+    NameBack_2.Name = "NameBack_2"
+    NameBack_2.Parent = TopLayers
+    NameBack_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NameBack_2.BackgroundTransparency = 0.999
+    NameBack_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NameBack_2.BorderSizePixel = 0
+    NameBack_2.Position = UDim2.new(0, 90, 0, 0)
+    NameBack_2.Size = UDim2.new(0, 90, 1, 0)
+
+    ForwardImage.Name = "ForwardImage"
+    ForwardImage.Parent = NameBack_2
+    ForwardImage.AnchorPoint = Vector2.new(0, 0.5)
+    ForwardImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ForwardImage.BackgroundTransparency = 0.999
+    ForwardImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ForwardImage.BorderSizePixel = 0
+    ForwardImage.Position = UDim2.new(0, 8, 0.54, 0)
+    ForwardImage.Size = UDim2.new(0, 15, 0, 15)
+    ForwardImage.Image = "rbxassetid://18558566660"
+    ForwardImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
+    ForwardImage.ImageTransparency = 1.000
+
+    BackButton_2.Name = "BackButton_2"
+    BackButton_2.Parent = NameBack_2
+    BackButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton_2.BackgroundTransparency = 0.999
+    BackButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    BackButton_2.BorderSizePixel = 0
+    BackButton_2.Position = UDim2.new(0, 28, 0, 0)
+    BackButton_2.Size = UDim2.new(0, 62, 1, 0)
+    BackButton_2.Font = Enum.Font.GothamBold
+    BackButton_2.Text = ""
+    BackButton_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    BackButton_2.TextSize = 14.000
+    BackButton_2.TextTransparency = 0.600
+    BackButton_2.TextXAlignment = Enum.TextXAlignment.Left
+
+    UIListLayout_2.Parent = TopLayers
+    UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+
+    RealLayers.Name = "RealLayers"
+    RealLayers.Parent = CrystalHub.Layers
+    RealLayers.AnchorPoint = Vector2.new(1, 1)
+    RealLayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    RealLayers.BackgroundTransparency = 0.999
+    RealLayers.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    RealLayers.BorderSizePixel = 0
+    RealLayers.ClipsDescendants = true
+    RealLayers.Position = UDim2.new(1, 0, 1, 0)
+    RealLayers.Size = UDim2.new(1, 0, 1, -30)
+    RealLayers.ZIndex = 2
+
+    CrystalHub.LayersFolder.Name = "LayersFolder"
+    CrystalHub.LayersFolder.Parent = RealLayers
+
+    LayersPageLayout.Name = "LayersPageLayout"
+    LayersPageLayout.Parent = CrystalHub.LayersFolder
+    LayersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    LayersPageLayout.EasingDirection = Enum.EasingDirection.InOut
+    LayersPageLayout.EasingStyle = Enum.EasingStyle.Quad
+    LayersPageLayout.GamepadInputEnabled = false
+    LayersPageLayout.ScrollWheelInputEnabled = false
+    LayersPageLayout.TouchInputEnabled = false
+    LayersPageLayout.TweenTime = 0.350
+
+    CrystalHub.TopDescription.Position = UDim2.new(0, CrystalHub.TopTitle.TextBounds.X + 19, 0, 12)
+
+    CrystalHub.ConfirmationBackground.Name = "AnotherButton"
+    CrystalHub.ConfirmationBackground.Parent = CrystalHub.ConfirmationFrame
+    CrystalHub.ConfirmationBackground.BackgroundTransparency = 1
+    CrystalHub.ConfirmationBackground.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ConfirmationBackground.Text = ""
+    CrystalHub.ConfirmationBackground.ZIndex = 4
+
+    Crystal.Click(CrystalHub.ConfirmationBackground, function()
+        CrystalHub.ConfirmationFrame.Visible = false
+    end)
+
+    Crystal.MakeDraggable(CrystalHub.MainFrame, CrystalHub.TopBar)
+    end
+    return Crystal
