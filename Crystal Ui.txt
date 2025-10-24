@@ -527,7 +527,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.Window.Parent = Crystal.CoreGui
     CrystalHub.Window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-CrystalHub.MainFrame.Name = "Window11"
+     CrystalHub.MainFrame.Name = "Window11"
 CrystalHub.MainFrame.Parent = CrystalHub.Window
 CrystalHub.MainFrame.BackgroundColor3 = Color3.fromRGB(60, 40, 100)
 CrystalHub.MainFrame.BackgroundTransparency = 0.020
@@ -589,22 +589,14 @@ CrystalHub.TopTitle.BackgroundTransparency = 1.000
 CrystalHub.TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 CrystalHub.TopTitle.BorderSizePixel = 0
 CrystalHub.TopTitle.Position = UDim2.new(0, 15, 0, 12)
-CrystalHub.TopTitle.Size = UDim2.new(0, 100, 0, 16)
+CrystalHub.TopTitle.Size = UDim2.new(0, 0, 0, 16) 
+CrystalHub.TopTitle.AutomaticSize = Enum.AutomaticSize.X  
 CrystalHub.TopTitle.Font = Enum.Font.GothamBold
 CrystalHub.TopTitle.Text = WindowConfig.Title
 CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 CrystalHub.TopTitle.TextSize = 14.000
 CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
 
-local TextGradient = Instance.new("UIGradient")
-TextGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),      -- Hồng
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),  -- Tím
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))      -- Xanh
-})
-TextGradient.Rotation = 0  
-TextGradient.Parent = CrystalHub.TopTitle
-CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.TopDescription.Name = "TopDescription"
     CrystalHub.TopDescription.Parent = CrystalHub.TopBar
     CrystalHub.TopDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
