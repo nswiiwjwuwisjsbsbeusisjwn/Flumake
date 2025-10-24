@@ -3644,6 +3644,12 @@ function TabObject:AddToggle(ConfigToggles)
         local SettingListLayout = Instance.new("UIListLayout")
         local SettingDropShadow = Instance.new("ImageLabel")
         local SettingOverlay = Instance.new("TextButton")
+        local SearchFrame = Instance.new("Frame")
+        local SearchCorner = Instance.new("UICorner")
+        local SearchBox = Instance.new("TextBox")
+        local SearchIcon = Instance.new("ImageLabel")
+        local SearchDivider = Instance.new("Frame")
+        local SearchDividerCorner = Instance.new("UICorner")
 
         SettingOverlay.Name = "SettingOverlay"
         SettingOverlay.Parent = CrystalHub.Layers
@@ -3663,12 +3669,12 @@ function TabObject:AddToggle(ConfigToggles)
         SettingMenu.Name = "SettingMenu"
         SettingMenu.Parent = CrystalHub.Layers
         SettingMenu.AnchorPoint = Vector2.new(0.5, 0.5)
-        SettingMenu.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+        SettingMenu.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
         SettingMenu.BackgroundTransparency = 0.050
         SettingMenu.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SettingMenu.BorderSizePixel = 0
         SettingMenu.Position = UDim2.new(0.5, 0, 0.5, 0)
-        SettingMenu.Size = UDim2.new(0, 250, 0, 0)
+        SettingMenu.Size = UDim2.new(0, 280, 0, 0)
         SettingMenu.Visible = false
         SettingMenu.ZIndex = 99
         SettingMenu.ClipsDescendants = true
@@ -3690,6 +3696,55 @@ function TabObject:AddToggle(ConfigToggles)
         SettingDropShadow.ScaleType = Enum.ScaleType.Slice
         SettingDropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
 
+        SearchFrame.Name = "SearchFrame"
+        SearchFrame.Parent = SettingMenu
+        SearchFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+        SearchFrame.BackgroundTransparency = 0.200
+        SearchFrame.BorderSizePixel = 0
+        SearchFrame.Position = UDim2.new(0, 8, 0, 8)
+        SearchFrame.Size = UDim2.new(1, -16, 0, 30)
+        SearchFrame.ZIndex = 100
+
+        SearchCorner.CornerRadius = UDim.new(0, 6)
+        SearchCorner.Parent = SearchFrame
+
+        SearchIcon.Name = "SearchIcon"
+        SearchIcon.Parent = SearchFrame
+        SearchIcon.AnchorPoint = Vector2.new(0, 0.5)
+        SearchIcon.BackgroundTransparency = 1
+        SearchIcon.Position = UDim2.new(0, 8, 0.5, 0)
+        SearchIcon.Size = UDim2.new(0, 16, 0, 16)
+        SearchIcon.Image = "rbxassetid://18557078698"
+        SearchIcon.ImageColor3 = Color3.fromRGB(140, 140, 140)
+        SearchIcon.ZIndex = 101
+
+        SearchBox.Name = "SearchBox"
+        SearchBox.Parent = SearchFrame
+        SearchBox.BackgroundTransparency = 1
+        SearchBox.Position = UDim2.new(0, 30, 0, 0)
+        SearchBox.Size = UDim2.new(1, -35, 1, 0)
+        SearchBox.Font = Enum.Font.Arcade
+        SearchBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+        SearchBox.PlaceholderText = "Search settings..."
+        SearchBox.Text = ""
+        SearchBox.TextColor3 = Color3.fromRGB(220, 220, 220)
+        SearchBox.TextSize = 10
+        SearchBox.TextXAlignment = Enum.TextXAlignment.Left
+        SearchBox.ClearTextOnFocus = false
+        SearchBox.ZIndex = 101
+
+        SearchDivider.Name = "SearchDivider"
+        SearchDivider.Parent = SettingMenu
+        SearchDivider.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        SearchDivider.BackgroundTransparency = 0.500
+        SearchDivider.BorderSizePixel = 0
+        SearchDivider.Position = UDim2.new(0, 12, 0, 44)
+        SearchDivider.Size = UDim2.new(1, -24, 0, 1)
+        SearchDivider.ZIndex = 100
+
+        SearchDividerCorner.CornerRadius = UDim.new(1, 0)
+        SearchDividerCorner.Parent = SearchDivider
+
         SettingScroll.Name = "SettingScroll"
         SettingScroll.Parent = SettingMenu
         SettingScroll.Active = true
@@ -3697,8 +3752,8 @@ function TabObject:AddToggle(ConfigToggles)
         SettingScroll.BackgroundTransparency = 1
         SettingScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
         SettingScroll.BorderSizePixel = 0
-        SettingScroll.Position = UDim2.new(0, 8, 0, 8)
-        SettingScroll.Size = UDim2.new(1, -16, 1, -16)
+        SettingScroll.Position = UDim2.new(0, 8, 0, 50)
+        SettingScroll.Size = UDim2.new(1, -16, 1, -58)
         SettingScroll.ScrollBarImageColor3 = Color3.fromRGB(93, 197, 248)
         SettingScroll.ScrollBarImageTransparency = 0.500
         SettingScroll.ScrollBarThickness = 3
@@ -3712,6 +3767,16 @@ function TabObject:AddToggle(ConfigToggles)
             SettingScroll.CanvasSize = UDim2.new(0, 0, 0, SettingListLayout.AbsoluteContentSize.Y + 10)
         end)
 
+        SearchBox.Focused:Connect(function()
+            Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(30, 30, 30)})
+            Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(93, 197, 248)})
+        end)
+
+        SearchBox.FocusLost:Connect(function()
+            Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(25, 25, 25)})
+            Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(140, 140, 140)})
+        end)
+
         local SettingItems = {}
         local isOpen = false
 
@@ -3720,12 +3785,12 @@ function TabObject:AddToggle(ConfigToggles)
             isOpen = true
             SettingOverlay.Visible = true
             SettingMenu.Visible = true
-            SettingMenu.Size = UDim2.new(0, 250, 0, 0)
+            SettingMenu.Size = UDim2.new(0, 280, 0, 0)
             
-            local targetHeight = math.min(300, SettingListLayout.AbsoluteContentSize.Y + 26)
+            local targetHeight = math.min(350, SettingListLayout.AbsoluteContentSize.Y + 70)
             
             Crystal.TweenObject({SettingOverlay, 0.2, "BackgroundTransparency", 0.3})
-            Crystal.TweenObject({SettingMenu, 0.3, "Size", UDim2.new(0, 250, 0, targetHeight)})
+            Crystal.TweenObject({SettingMenu, 0.3, "Size", UDim2.new(0, 280, 0, targetHeight)})
         end
 
         local function CloseSettings()
@@ -3733,7 +3798,7 @@ function TabObject:AddToggle(ConfigToggles)
             isOpen = false
             
             Crystal.TweenObject({SettingOverlay, 0.2, "BackgroundTransparency", 1})
-            Crystal.TweenObject({SettingMenu, 0.3, "Size", UDim2.new(0, 250, 0, 0)})
+            Crystal.TweenObject({SettingMenu, 0.3, "Size", UDim2.new(0, 280, 0, 0)})
             task.wait(0.3)
             SettingOverlay.Visible = false
             SettingMenu.Visible = false
@@ -3749,6 +3814,25 @@ function TabObject:AddToggle(ConfigToggles)
 
         SettingOverlay.Activated:Connect(function()
             CloseSettings()
+        end)
+
+        SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+            local searchText = SearchBox.Text:lower():gsub(" ", "")
+            
+            for _, v in next, SettingScroll:GetChildren() do
+                if v:IsA("Frame") and (v.Name == "SettingToggle" or v.Name == "SettingSlider") then
+                    local itemText = v:FindFirstChild("SettingToggleTitle") or v:FindFirstChild("SettingSliderTitle")
+                    if itemText then
+                        local text = itemText.Text:lower():gsub(" ", "")
+                        
+                        if searchText == "" or string.find(text, searchText) then
+                            v.Visible = true
+                        else
+                            v.Visible = false
+                        end
+                    end
+                end
+            end
         end)
 
         local SettingFunctions = {}
@@ -3869,7 +3953,6 @@ function TabObject:AddToggle(ConfigToggles)
             end
 
             SettingToggleButton.Activated:Connect(function()
-            
                 SettingToggleFunc:Set(not SettingToggleFunc.Value)
             end)
 
@@ -4074,7 +4157,6 @@ function TabObject:AddToggle(ConfigToggles)
 
     return ToggleFunc
 end
-
 TabCount = TabCount + 1
 return TabObject
     end
