@@ -320,7 +320,7 @@ Crystal.Notify = function(self, NotifyConfig)
         TitleFrame.Size = UDim2.new(1, -100, 0, 12)
         TitleFrame.Parent = NotifyFrameReal
 
-        NotifyTitle.Font = Enum.Font.Arcade
+        NotifyTitle.Font = Enum.Font.GothamBold
         NotifyTitle.Text = NotifyConfig.Title
         NotifyTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
         NotifyTitle.TextSize = 10
@@ -335,7 +335,7 @@ Crystal.Notify = function(self, NotifyConfig)
         NotifyTitle.TextTruncate = Enum.TextTruncate.AtEnd
 
         if NotifyConfig.Title1 then
-            Title1Label.Font = Enum.Font.Arcade
+            Title1Label.Font = Enum.Font.GothamBold
             Title1Label.Text = NotifyConfig.Title1
             Title1Label.TextColor3 = Color3.fromRGB(100, 150, 255)
             Title1Label.TextSize = 8
@@ -348,7 +348,7 @@ Crystal.Notify = function(self, NotifyConfig)
             Title1Label.Parent = TitleFrame
         end
 
-        NotifyContent.Font = Enum.Font.Arcade
+        NotifyContent.Font = Enum.Font.GothamBold
         NotifyContent.Text = NotifyConfig.Content
         NotifyContent.TextColor3 = Color3.fromRGB(180, 180, 180)
         NotifyContent.TextSize = 9
@@ -581,7 +581,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.TopTitle.BorderSizePixel = 0
     CrystalHub.TopTitle.Position = UDim2.new(0, 15, 0, 12)
     CrystalHub.TopTitle.Size = UDim2.new(0, 100, 0, 16)
-    CrystalHub.TopTitle.Font = Enum.Font.Arcade
+    CrystalHub.TopTitle.Font = Enum.Font.GothamBold
     CrystalHub.TopTitle.Text = WindowConfig.Title
     CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.TopTitle.TextSize = 14.000
@@ -595,7 +595,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.TopDescription.BorderSizePixel = 0
     CrystalHub.TopDescription.Position = UDim2.new(0, 0, 0, 12)
     CrystalHub.TopDescription.Size = UDim2.new(0, 80, 0, 16)
-    CrystalHub.TopDescription.Font = Enum.Font.Arcade
+    CrystalHub.TopDescription.Font = Enum.Font.GothamBold
     CrystalHub.TopDescription.Text = WindowConfig.Description
     CrystalHub.TopDescription.TextColor3 = Color3.fromRGB(93, 197, 248)
     CrystalHub.TopDescription.TextSize = 12.000
@@ -799,7 +799,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.PlayerName.BorderSizePixel = 0
     CrystalHub.PlayerName.Position = UDim2.new(0, 46, 0, 10)
     CrystalHub.PlayerName.Size = UDim2.new(1, -50, 0, 12)
-    CrystalHub.PlayerName.Font = Enum.Font.Arcade
+    CrystalHub.PlayerName.Font = Enum.Font.GothamBold
     CrystalHub.PlayerName.Text = tostring(Crystal.Player.DisplayName)
     CrystalHub.PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.PlayerName.TextSize = 12.000
@@ -814,7 +814,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.PlayerDescription.BorderSizePixel = 0
     CrystalHub.PlayerDescription.Position = UDim2.new(0, 46, 0, 24)
     CrystalHub.PlayerDescription.Size = UDim2.new(1, -50, 0, 9)
-    CrystalHub.PlayerDescription.Font = Enum.Font.Arcade
+    CrystalHub.PlayerDescription.Font = Enum.Font.GothamBold
     CrystalHub.PlayerDescription.Text = tostring(Crystal.Player.UserId)
     CrystalHub.PlayerDescription.TextColor3 = Color3.fromRGB(120, 120, 120)
     CrystalHub.PlayerDescription.TextSize = 8.000
@@ -961,7 +961,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.SearchBox.BorderSizePixel = 0
     CrystalHub.SearchBox.Position = UDim2.new(0, 2, 0, 0)
     CrystalHub.SearchBox.Size = UDim2.new(1, -2, 1, 0)
-    CrystalHub.SearchBox.Font = Enum.Font.Arcade
+    CrystalHub.SearchBox.Font = Enum.Font.GothamBold
     CrystalHub.SearchBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
     CrystalHub.SearchBox.PlaceholderText = "Search..."
     CrystalHub.SearchBox.Text = ""
@@ -1059,7 +1059,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.ConfirmationTitle.BorderSizePixel = 0
     CrystalHub.ConfirmationTitle.Position = UDim2.new(0, 18, 0, 18)
     CrystalHub.ConfirmationTitle.Size = UDim2.new(0, 180, 0, 18)
-    CrystalHub.ConfirmationTitle.Font = Enum.Font.Arcade
+    CrystalHub.ConfirmationTitle.Font = Enum.Font.GothamBold
     CrystalHub.ConfirmationTitle.Text = "Confirmation"
     CrystalHub.ConfirmationTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.ConfirmationTitle.TextSize = 15.000
@@ -1073,7 +1073,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.ConfirmationContent.BorderSizePixel = 0
     CrystalHub.ConfirmationContent.Position = UDim2.new(0, 18, 0, 38)
     CrystalHub.ConfirmationContent.Size = UDim2.new(0, 180, 0, 12)
-    CrystalHub.ConfirmationContent.Font = Enum.Font.Arcade
+    CrystalHub.ConfirmationContent.Font = Enum.Font.GothamBold
     CrystalHub.ConfirmationContent.Text = "Are you sure about this action?"
     CrystalHub.ConfirmationContent.TextColor3 = Color3.fromRGB(200, 200, 200)
     CrystalHub.ConfirmationContent.TextSize = 12.000
@@ -1110,7 +1110,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.ConfirmButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.ConfirmButton.BorderSizePixel = 0
     CrystalHub.ConfirmButton.Size = UDim2.new(1, 0, 1, 0)
-    CrystalHub.ConfirmButton.Font = Enum.Font.Arcade
+    CrystalHub.ConfirmButton.Font = Enum.Font.GothamBold
     CrystalHub.ConfirmButton.Text = "Confirm"
     CrystalHub.ConfirmButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.ConfirmButton.TextSize = 12.000
@@ -1140,7 +1140,7 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.CancelButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.CancelButton.BorderSizePixel = 0
     CrystalHub.CancelButton.Size = UDim2.new(1, 0, 1, 0)
-    CrystalHub.CancelButton.Font = Enum.Font.Arcade
+    CrystalHub.CancelButton.Font = Enum.Font.GothamBold
     CrystalHub.CancelButton.Text = "Cancel"
     CrystalHub.CancelButton.TextColor3 = Color3.fromRGB(200, 200, 200)
     CrystalHub.CancelButton.TextSize = 12.000
@@ -1195,7 +1195,7 @@ Crystal.Window = function(self, WindowConfig)
     BackButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     BackButton.BorderSizePixel = 0
     BackButton.Size = UDim2.new(1, 0, 1, 0)
-    BackButton.Font = Enum.Font.Arcade
+    BackButton.Font = Enum.Font.GothamBold
     BackButton.Text = ""
     BackButton.LayoutOrder = 0
     BackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -1233,7 +1233,7 @@ Crystal.Window = function(self, WindowConfig)
     BackButton_2.BorderSizePixel = 0
     BackButton_2.Position = UDim2.new(0, 28, 0, 0)
     BackButton_2.Size = UDim2.new(0, 62, 1, 0)
-    BackButton_2.Font = Enum.Font.Arcade
+    BackButton_2.Font = Enum.Font.GothamBold
     BackButton_2.Text = ""
     BackButton_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     BackButton_2.TextSize = 14.000
@@ -1377,7 +1377,7 @@ Crystal.Window = function(self, WindowConfig)
         TabName.BorderSizePixel = 0
         TabName.Position = UDim2.new(0, 32, 0.5, 0)
         TabName.Size = UDim2.new(1, -40, 0, 12)
-        TabName.Font = Enum.Font.Arcade
+        TabName.Font = Enum.Font.GothamBold
         TabName.Text = TabConfig.Title
         TabName.TextColor3 = Color3.fromRGB(230, 230, 230)
         TabName.TextSize = 12
@@ -1498,7 +1498,7 @@ function TabObject:AddButton(ButtonConfig)
     ButtonTitle.BackgroundTransparency = 1
     ButtonTitle.Position = UDim2.new(0, 12, 0, 8)
     ButtonTitle.Size = UDim2.new(1, -50, 0, 14)
-    ButtonTitle.Font = Enum.Font.Arcade
+    ButtonTitle.Font = Enum.Font.GothamBold
     ButtonTitle.Text = ButtonConfig.Title
     ButtonTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     ButtonTitle.TextSize = 13
@@ -1509,7 +1509,7 @@ function TabObject:AddButton(ButtonConfig)
     ButtonDescription.BackgroundTransparency = 1
     ButtonDescription.Position = UDim2.new(0, 12, 0, 24)
     ButtonDescription.Size = UDim2.new(1, -50, 0, 10)
-    ButtonDescription.Font = Enum.Font.Arcade
+    ButtonDescription.Font = Enum.Font.GothamBold
     ButtonDescription.Text = ButtonConfig.Description
     ButtonDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
     ButtonDescription.TextSize = 9
@@ -1616,7 +1616,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownTitle.BorderSizePixel = 0
     DropdownTitle.Position = UDim2.new(0, 40, 0, 11)
     DropdownTitle.Size = UDim2.new(1, -180, 0, 12)
-    DropdownTitle.Font = Enum.Font.Arcade
+    DropdownTitle.Font = Enum.Font.GothamBold
     DropdownTitle.Text = ConfigDropdown.Title
     DropdownTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     DropdownTitle.TextSize = 12
@@ -1633,7 +1633,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownContent.BorderSizePixel = 0
     DropdownContent.Position = UDim2.new(0, 40, 0, 21)
     DropdownContent.Size = UDim2.new(1, -180, 0, 11)
-    DropdownContent.Font = Enum.Font.Arcade
+    DropdownContent.Font = Enum.Font.GothamBold
     DropdownContent.Text = ConfigDropdown.Description
     DropdownContent.TextWrapped = true
     DropdownContent.TextYAlignment = Enum.TextYAlignment.Top
@@ -1675,7 +1675,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     OptionSelecting.BorderSizePixel = 0
     OptionSelecting.Position = UDim2.new(0, 7, 0, 0)
     OptionSelecting.Size = UDim2.new(1, -30, 1, 0)
-    OptionSelecting.Font = Enum.Font.Arcade
+    OptionSelecting.Font = Enum.Font.GothamBold
     OptionSelecting.Text = ""
     OptionSelecting.TextColor3 = Color3.fromRGB(220, 220, 220)
     OptionSelecting.TextSize = 10
@@ -1781,7 +1781,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     SearchBox.BackgroundTransparency = 1
     SearchBox.Position = UDim2.new(0, 30, 0, 0)
     SearchBox.Size = UDim2.new(1, -35, 1, 0)
-    SearchBox.Font = Enum.Font.Arcade
+    SearchBox.Font = Enum.Font.GothamBold
     SearchBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
     SearchBox.PlaceholderText = "Search..."
     SearchBox.Text = ""
@@ -2004,7 +2004,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionSelecting_2.BorderSizePixel = 0
         OptionSelecting_2.Position = UDim2.new(0, 14, 0, 0)
         OptionSelecting_2.Size = UDim2.new(1, -20, 1, 0)
-        OptionSelecting_2.Font = Enum.Font.Arcade
+        OptionSelecting_2.Font = Enum.Font.GothamBold
         OptionSelecting_2.Text = NameValue
         OptionSelecting_2.TextColor3 = Color3.fromRGB(200, 200, 200)
         OptionSelecting_2.TextSize = 10
@@ -2018,7 +2018,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
         OptionButton.BorderSizePixel = 0
         OptionButton.Size = UDim2.new(1, 0, 1, 0)
-        OptionButton.Font = Enum.Font.Arcade
+        OptionButton.Font = Enum.Font.GothamBold
         OptionButton.Text = ""
         OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         OptionButton.TextSize = 10
@@ -2089,7 +2089,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                     Crystal.TweenObject({OptionImg, 0.2, "Rotation", 90})
                     task.wait(0.3)
                     DropMore.Visible = false
-                end)()
+                end)
             end
         end)
 
@@ -2167,7 +2167,7 @@ function TabObject:AddInput(ConfigInput)
     InputTitle.BorderSizePixel = 0
     InputTitle.Position = UDim2.new(0, 40, 0, 11)
     InputTitle.Size = UDim2.new(1, -190, 0, 12)
-    InputTitle.Font = Enum.Font.Arcade
+    InputTitle.Font = Enum.Font.GothamBold
     InputTitle.Text = ConfigInput.Title
     InputTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     InputTitle.TextSize = 12.000
@@ -2181,7 +2181,7 @@ function TabObject:AddInput(ConfigInput)
     InputContent.BorderSizePixel = 0
     InputContent.Position = UDim2.new(0, 40, 0, 21)
     InputContent.Size = UDim2.new(1, -190, 0, 11)
-    InputContent.Font = Enum.Font.Arcade
+    InputContent.Font = Enum.Font.GothamBold
     InputContent.Text = ConfigInput.Description
     InputContent.TextColor3 = Color3.fromRGB(160, 160, 160)
     InputContent.TextSize = 11.000
@@ -2252,7 +2252,7 @@ function TabObject:AddInput(ConfigInput)
     InputBox.BorderSizePixel = 0
     InputBox.Position = UDim2.new(0, 1, 0, 0)
     InputBox.Size = UDim2.new(1, -1, 1, 0)
-    InputBox.Font = Enum.Font.Arcade
+    InputBox.Font = Enum.Font.GothamBold
     InputBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
     InputBox.PlaceholderText = ConfigInput.Placeholder
     InputBox.Text = ConfigInput.Default
@@ -2406,7 +2406,7 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindTitle.BorderSizePixel = 0
     KeybindTitle.Position = UDim2.new(0, 40, 0, 11)
     KeybindTitle.Size = UDim2.new(1, -180, 0, 12)
-    KeybindTitle.Font = Enum.Font.Arcade
+    KeybindTitle.Font = Enum.Font.GothamBold
     KeybindTitle.Text = ConfigKeybind.Title
     KeybindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     KeybindTitle.TextSize = 12
@@ -2423,7 +2423,7 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindContent.BorderSizePixel = 0
     KeybindContent.Position = UDim2.new(0, 40, 0, 21)
     KeybindContent.Size = UDim2.new(1, -180, 0, 11)
-    KeybindContent.Font = Enum.Font.Arcade
+    KeybindContent.Font = Enum.Font.GothamBold
     KeybindContent.Text = ConfigKeybind.Description
     KeybindContent.TextWrapped = true
     KeybindContent.TextYAlignment = Enum.TextYAlignment.Top
@@ -2454,7 +2454,7 @@ function TabObject:AddKeybind(ConfigKeybind)
         ToggleKeybind.BorderSizePixel = 0
         ToggleKeybind.Position = UDim2.new(1, -70, 0.5, 0)
         ToggleKeybind.Size = UDim2.new(0, 35, 0, 12)
-        ToggleKeybind.Font = Enum.Font.Arcade
+        ToggleKeybind.Font = Enum.Font.GothamBold
         ToggleKeybind.Text = "False"
         ToggleKeybind.TextColor3 = Color3.fromRGB(255, 255, 255)
         ToggleKeybind.TextSize = 11
@@ -2496,7 +2496,7 @@ function TabObject:AddKeybind(ConfigKeybind)
     KeybindText.BorderSizePixel = 0
     KeybindText.Position = UDim2.new(0, 0, 0, 0)
     KeybindText.Size = UDim2.new(1, 0, 1, 0)
-    KeybindText.Font = Enum.Font.Arcade
+    KeybindText.Font = Enum.Font.GothamBold
     KeybindText.Text = ConfigKeybind.Default.Name or "None"
     KeybindText.TextColor3 = Color3.fromRGB(255, 255, 255)
     KeybindText.TextSize = 11
@@ -2693,7 +2693,7 @@ function TabObject:AddParagraph(ConfigParagraph)
     ParagraphTitle.BorderSizePixel = 0
     ParagraphTitle.Position = UDim2.new(0, 40, 0, 11)
     ParagraphTitle.Size = UDim2.new(1, -52, 0, 12)
-    ParagraphTitle.Font = Enum.Font.Arcade
+    ParagraphTitle.Font = Enum.Font.GothamBold
     ParagraphTitle.Text = ConfigParagraph.Title
     ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     ParagraphTitle.TextSize = 12
@@ -2707,7 +2707,7 @@ function TabObject:AddParagraph(ConfigParagraph)
     ParagraphContent.BorderSizePixel = 0
     ParagraphContent.Position = UDim2.new(0, 40, 0, 21)
     ParagraphContent.Size = UDim2.new(1, -52, 0, 11)
-    ParagraphContent.Font = Enum.Font.Arcade
+    ParagraphContent.Font = Enum.Font.GothamBold
     ParagraphContent.Text = ConfigParagraph.Content
     ParagraphContent.TextColor3 = Color3.fromRGB(255, 255, 255)
     ParagraphContent.TextSize = 11
@@ -2816,7 +2816,7 @@ function TabObject:AddSeperator(Text)
         SeperatorText.BorderSizePixel = 0
         SeperatorText.Position = UDim2.new(0.5, 0, 0.5, 0)
         SeperatorText.Size = UDim2.new(0, 0, 0, 14)
-        SeperatorText.Font = Enum.Font.Arcade
+        SeperatorText.Font = Enum.Font.GothamBold
         SeperatorText.Text = Text
         SeperatorText.TextColor3 = Color3.fromRGB(140, 140, 140)
         SeperatorText.TextSize = 11
@@ -2920,7 +2920,7 @@ function TabObject:AddImage(ConfigImage)
     ImageTitle.BorderSizePixel = 0
     ImageTitle.Position = UDim2.new(0, 0, 0, 10)
     ImageTitle.Size = UDim2.new(1, 0, 0, 16)
-    ImageTitle.Font = Enum.Font.Arcade
+    ImageTitle.Font = Enum.Font.GothamBold
     ImageTitle.Text = ConfigImage.Title
     ImageTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     ImageTitle.TextSize = 14
@@ -2934,7 +2934,7 @@ function TabObject:AddImage(ConfigImage)
     ImageDesc.BorderSizePixel = 0
     ImageDesc.Position = UDim2.new(0, 15, 0, 30)
     ImageDesc.Size = UDim2.new(1, -30, 0, 14)
-    ImageDesc.Font = Enum.Font.Arcade
+    ImageDesc.Font = Enum.Font.GothamBold
     ImageDesc.Text = ConfigImage.Description
     ImageDesc.TextColor3 = Color3.fromRGB(255, 255, 255)
     ImageDesc.TextSize = 11
@@ -3093,7 +3093,7 @@ function TabObject:AddSlider(ConfigSlider)
     SliderTitle.BorderSizePixel = 0
     SliderTitle.Position = UDim2.new(0, 40, 0, 8)
     SliderTitle.Size = UDim2.new(1, -150, 0, 12)
-    SliderTitle.Font = Enum.Font.Arcade
+    SliderTitle.Font = Enum.Font.GothamBold
     SliderTitle.Text = ConfigSlider.Title
     SliderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     SliderTitle.TextSize = 12
@@ -3110,7 +3110,7 @@ function TabObject:AddSlider(ConfigSlider)
     SliderContent.BorderSizePixel = 0
     SliderContent.Position = UDim2.new(0, 40, 0, 20)
     SliderContent.Size = UDim2.new(1, -150, 0, 10)
-    SliderContent.Font = Enum.Font.Arcade
+    SliderContent.Font = Enum.Font.GothamBold
     SliderContent.Text = ConfigSlider.Description
     SliderContent.TextWrapped = true
     SliderContent.TextYAlignment = Enum.TextYAlignment.Top
@@ -3154,7 +3154,7 @@ function TabObject:AddSlider(ConfigSlider)
     SliderInput.Parent = SliderInputFrame
     SliderInput.BackgroundTransparency = 1
     SliderInput.Size = UDim2.new(1, 0, 1, 0)
-    SliderInput.Font = Enum.Font.Arcade
+    SliderInput.Font = Enum.Font.GothamBold
     SliderInput.Text = tostring(ConfigSlider.Default)
     SliderInput.TextColor3 = Color3.fromRGB(93, 197, 248)
     SliderInput.TextSize = 11
@@ -3164,7 +3164,7 @@ function TabObject:AddSlider(ConfigSlider)
     SliderNumber.Parent = SliderInputFrame
     SliderNumber.BackgroundTransparency = 1
     SliderNumber.Size = UDim2.new(1, 0, 1, 0)
-    SliderNumber.Font = Enum.Font.Arcade
+    SliderNumber.Font = Enum.Font.GothamBold
     SliderNumber.Text = tostring(ConfigSlider.Default)
     SliderNumber.TextColor3 = Color3.fromRGB(93, 197, 248)
     SliderNumber.TextSize = 11
@@ -3454,7 +3454,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleTitle.BackgroundTransparency = 1
     ToggleTitle.Position = UDim2.new(0, 40, 0, 11)
     ToggleTitle.Size = UDim2.new(1, -158, 0, 12)
-    ToggleTitle.Font = Enum.Font.Arcade
+    ToggleTitle.Font = Enum.Font.GothamBold
     ToggleTitle.Text = ConfigToggles.Title
     ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     ToggleTitle.TextSize = 12
@@ -3468,7 +3468,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleContent.BackgroundTransparency = 1
     ToggleContent.Position = UDim2.new(0, 40, 0, 21)
     ToggleContent.Size = UDim2.new(1, -158, 0, 11)
-    ToggleContent.Font = Enum.Font.Arcade
+    ToggleContent.Font = Enum.Font.GothamBold
     ToggleContent.Text = ConfigToggles.Description
     ToggleContent.TextWrapped = true
     ToggleContent.TextYAlignment = Enum.TextYAlignment.Top
@@ -3529,7 +3529,7 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleOnOff.BackgroundTransparency = 1
     ToggleOnOff.Position = UDim2.new(1, -70, 0.5, 0)
     ToggleOnOff.Size = UDim2.new(0, 30, 0, 12)
-    ToggleOnOff.Font = Enum.Font.Arcade
+    ToggleOnOff.Font = Enum.Font.GothamBold
     ToggleOnOff.Text = ConfigToggles.Default and "True" or "False"
     ToggleOnOff.TextColor3 = ConfigToggles.Default and Color3.fromRGB(93, 197, 248) or Color3.fromRGB(180, 180, 180)
     ToggleOnOff.TextSize = 11
