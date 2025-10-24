@@ -2064,6 +2064,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
+
 function TabObject:AddInput(ConfigInput)
     ConfigInput = ConfigInput or {}
     ConfigInput.Title = ConfigInput.Title or "Input"
