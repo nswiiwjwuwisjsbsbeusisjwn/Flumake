@@ -172,7 +172,7 @@ end
 Crystal.Notify = function(self, NotifyConfig)
     NotifyConfig = NotifyConfig or {}
     NotifyConfig.Title = NotifyConfig.Title or "Crystal Hub"
-    NotifyConfig.Title1 = NotifyConfig.Title1 or "By Shinichi"
+    NotifyConfig.Title1 = NotifyConfig.Title1 or "By Catdzs1vn"
     NotifyConfig.Content = NotifyConfig.Content or "..."
     NotifyConfig.Logo = NotifyConfig.Logo or "rbxassetid://129781592728096"
     NotifyConfig.Type = NotifyConfig.Type or "Info"
@@ -596,6 +596,15 @@ CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 CrystalHub.TopTitle.TextSize = 14.000
 CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
 
+local TextGradient = Instance.new("UIGradient")
+TextGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),      -- Hồng
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),  -- Tím
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))      -- Xanh
+})
+TextGradient.Rotation = 0  -
+TextGradient.Parent = CrystalHub.TopTitle
+CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.TopDescription.Name = "TopDescription"
     CrystalHub.TopDescription.Parent = CrystalHub.TopBar
     CrystalHub.TopDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
