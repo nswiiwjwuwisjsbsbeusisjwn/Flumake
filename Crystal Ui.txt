@@ -575,21 +575,19 @@ CrystalHub.TopBar.BorderSizePixel = 0
 CrystalHub.TopBar.Size = UDim2.new(1, 0, 0, 40)
 CrystalHub.TopBar.ZIndex = 2
 
-    CrystalHub.TopTitle.Name = "TopTitle"
+CrystalHub.TopTitle.Name = "TopTitle"
 CrystalHub.TopTitle.Parent = CrystalHub.TopBar
 CrystalHub.TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-CrystalHub.TopTitle.BackgroundTransparency = 1.000
+CrystalHub.TopTitle.BackgroundTransparency = 0.999
 CrystalHub.TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 CrystalHub.TopTitle.BorderSizePixel = 0
 CrystalHub.TopTitle.Position = UDim2.new(0, 15, 0, 12)
-CrystalHub.TopTitle.Size = UDim2.new(0, 0, 0, 16) 
-CrystalHub.TopTitle.AutomaticSize = Enum.AutomaticSize.X  
-CrystalHub.TopTitle.Font = Enum.Font.GothamBold
+CrystalHub.TopTitle.Size = UDim2.new(0, 100, 0, 16)
+CrystalHub.TopTitle.Font = Enum.Font.Arcade
 CrystalHub.TopTitle.Text = WindowConfig.Title
 CrystalHub.TopTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 CrystalHub.TopTitle.TextSize = 14.000
 CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
-
     CrystalHub.TopDescription.Name = "TopDescription"
     CrystalHub.TopDescription.Parent = CrystalHub.TopBar
     CrystalHub.TopDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
