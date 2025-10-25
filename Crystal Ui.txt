@@ -169,8 +169,6 @@ end
 Crystal.GetMidPos = function(mainFrame)
     return UDim2.new(0, (Crystal.ViewportSize.X/2 - mainFrame.Size.X.Offset/2), 0, (Crystal.ViewportSize.Y/2 - mainFrame.Size.Y.Offset/2))
 end
-
--- Notification System
 Crystal.Notify = function(self, NotifyConfig)
     NotifyConfig = NotifyConfig or {}
     NotifyConfig.Title = NotifyConfig.Title or "Crystal Hub"
@@ -576,15 +574,6 @@ CrystalHub.TopBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
 CrystalHub.TopBar.BorderSizePixel = 0
 CrystalHub.TopBar.Size = UDim2.new(1, 0, 0, 40)
 CrystalHub.TopBar.ZIndex = 2
-
-local TitleGradient = Instance.new("UIGradient")
-TitleGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
-})
-TitleGradient.Rotation = 45
-TitleGradient.Parent = CrystalHub.TopBar
 
     CrystalHub.TopTitle.Name = "TopTitle"
 CrystalHub.TopTitle.Parent = CrystalHub.TopBar
