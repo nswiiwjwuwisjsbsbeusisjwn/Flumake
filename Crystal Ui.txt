@@ -55,11 +55,12 @@ Crystal.Click = function(Object, callback)
 end
 
 Crystal.Find = function(Object, Name)
-    for _, v in next, Object:GetChildren() do
+    for _, v in pairs(Object:GetChildren()) do
         if v.Name == Name then
             return v
         end
     end
+    return nil
 end
 
 Crystal.Mouseto = function(Object, CallbackEnter, CallbackLeave)
@@ -72,10 +73,11 @@ Crystal.Mouseto = function(Object, CallbackEnter, CallbackLeave)
 end
 
 Crystal.MakeDraggable = function(object, top)
-    local Dragging = nil
+    local Dragging = false
     local DragInput = nil
     local DragStart = nil
     local StartPosition = nil
+    
     local function UpdatePos(input)
         local Delta = input.Position - DragStart
         local newPos = UDim2.new(
@@ -86,11 +88,13 @@ Crystal.MakeDraggable = function(object, top)
         )
         object.Position = newPos
     end
+    
     top.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             Dragging = true
             DragStart = input.Position
             StartPosition = object.Position
+            
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     Dragging = false
@@ -98,11 +102,13 @@ Crystal.MakeDraggable = function(object, top)
             end)
         end
     end)
+    
     top.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             DragInput = input
         end
     end)
+    
     Crystal.UserInputService.InputChanged:Connect(function(input)
         if input == DragInput and Dragging then
             UpdatePos(input)
@@ -117,7 +123,9 @@ Crystal.CustomSize = function(object)
     local StartSize = nil
     local maxSizeX = object.Size.X.Offset
     local maxSizeY = object.Size.Y.Offset
+    
     object.Size = UDim2.new(0, maxSizeX, 0, maxSizeY)
+    
     local changesizeobject = Instance.new("Frame")
     changesizeobject.AnchorPoint = Vector2.new(1, 1)
     changesizeobject.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -128,11 +136,13 @@ Crystal.CustomSize = function(object)
     changesizeobject.Size = UDim2.new(0, 40, 0, 40)
     changesizeobject.Name = "changesizeobject"
     changesizeobject.Parent = object
+    
     Crystal.Mouseto(changesizeobject, function()
         Crystal.Mouse.Icon = "rbxassetid://97880490001888"
     end, function()
         Crystal.Mouse.Icon = Crystal.OldMouseIcon
     end)
+    
     local function UpdateSize(input)
         local Delta = input.Position - DragStart
         local newWidth = StartSize.X.Offset + Delta.X
@@ -141,11 +151,13 @@ Crystal.CustomSize = function(object)
         newHeight = math.max(newHeight, maxSizeY)
         object.Size = UDim2.new(0, newWidth, 0, newHeight)
     end
+    
     changesizeobject.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             Dragging = true
             DragStart = input.Position
             StartSize = object.Size
+            
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     Dragging = false
@@ -153,11 +165,13 @@ Crystal.CustomSize = function(object)
             end)
         end
     end)
+    
     changesizeobject.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             DragInput = input
         end
     end)
+    
     Crystal.UserInputService.InputChanged:Connect(function(input)
         if input == DragInput and Dragging then
             UpdateSize(input)
@@ -181,7 +195,7 @@ Crystal.Notify = function(self, NotifyConfig)
 
     local NotifyFunc = {}
 
-    spawn(function()
+    task.spawn(function()
         if not Crystal.CoreGui:FindFirstChild("NotifyGui") then
             local NotifyGui = Instance.new("ScreenGui")
             NotifyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -334,7 +348,7 @@ Crystal.Notify = function(self, NotifyConfig)
         NotifyTitle.Parent = TitleFrame
         NotifyTitle.TextTruncate = Enum.TextTruncate.AtEnd
 
-        if NotifyConfig.Title1 then
+        if NotifyConfig.Title1 and NotifyConfig.Title1 ~= "" then
             Title1Label.Font = Enum.Font.GothamBold
             Title1Label.Text = NotifyConfig.Title1
             Title1Label.TextColor3 = Color3.fromRGB(100, 220, 255)
@@ -409,7 +423,7 @@ Crystal.Notify = function(self, NotifyConfig)
             Crystal.TweenObject({NotifyLogo, 0.4, "ImageTransparency", 1})
             Crystal.TweenObject({NotifyLogo, 0.4, "BackgroundTransparency", 1})
             Crystal.TweenObject({NotifyTitle, 0.4, "TextTransparency", 1})
-            if NotifyConfig.Title1 then
+            if NotifyConfig.Title1 and NotifyConfig.Title1 ~= "" then
                 Crystal.TweenObject({Title1Label, 0.4, "TextTransparency", 1})
             end
             Crystal.TweenObject({NotifyContent, 0.4, "TextTransparency", 1})
@@ -417,6 +431,7 @@ Crystal.Notify = function(self, NotifyConfig)
             Crystal.TweenObject({ProgressBar, 0.4, "BackgroundTransparency", 1})
             Crystal.TweenObject({ProgressFill, 0.4, "BackgroundTransparency", 1})
             Crystal.TweenObject({DropShadow, 0.4, "ImageTransparency", 1})
+            Crystal.TweenObject({UIStroke, 0.4, "Transparency", 1})
         end
 
         function NotifyFunc:Close()
@@ -441,6 +456,7 @@ Crystal.Notify = function(self, NotifyConfig)
 
     return NotifyFunc
 end
+
 
 Crystal.Window = function(self, WindowConfig)
     WindowConfig = WindowConfig or {}
@@ -582,7 +598,7 @@ TitleGradient.Color = ColorSequence.new({
 TitleGradient.Rotation = 45
 TitleGradient.Parent = CrystalHub.TopBar
 
-CrystalHub.TopTitle.Name = "TopTitle"
+    CrystalHub.TopTitle.Name = "TopTitle"
 CrystalHub.TopTitle.Parent = CrystalHub.TopBar
 CrystalHub.TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 CrystalHub.TopTitle.BackgroundTransparency = 1.000
