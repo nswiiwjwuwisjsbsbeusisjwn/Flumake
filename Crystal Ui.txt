@@ -3421,6 +3421,7 @@ function TabObject:AddToggle(ConfigToggles)
     ConfigToggles.Title = ConfigToggles.Title or "Toggle"
     ConfigToggles.Description = ConfigToggles.Description or ""
     ConfigToggles.IconToggle = ConfigToggles.IconToggle or "rbxassetid://18558566660"
+    ConfigToggles.SizeIcon = ConfigToggles.SizeIcon or 16  -- Thêm tùy chọn kích thước icon
     ConfigToggles.Default = ConfigToggles.Default or false
     ConfigToggles.Callback = ConfigToggles.Callback or function() end
 
@@ -3451,11 +3452,15 @@ function TabObject:AddToggle(ConfigToggles)
         Crystal.TweenObject({Object = Toggle, Time = 0.2, OldValue = "BackgroundTransparency", NewValue = 0.970})
     end)
 
+    -- Tính toán vị trí Title dựa trên kích thước icon
+    local iconSize = ConfigToggles.SizeIcon
+    local titleLeftOffset = 12 + iconSize + 12  -- padding + icon + spacing
+
     ToggleTitle.Name = "ToggleTitle"
     ToggleTitle.Parent = Toggle
     ToggleTitle.BackgroundTransparency = 1
-    ToggleTitle.Position = UDim2.new(0, 40, 0, 11)
-    ToggleTitle.Size = UDim2.new(1, -158, 0, 12)
+    ToggleTitle.Position = UDim2.new(0, titleLeftOffset, 0, 11)
+    ToggleTitle.Size = UDim2.new(1, -(titleLeftOffset + 118), 0, 12)
     ToggleTitle.Font = Enum.Font.GothamBold
     ToggleTitle.Text = ConfigToggles.Title
     ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -3468,8 +3473,8 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleContent.Name = "ToggleContent"
     ToggleContent.Parent = Toggle
     ToggleContent.BackgroundTransparency = 1
-    ToggleContent.Position = UDim2.new(0, 40, 0, 21)
-    ToggleContent.Size = UDim2.new(1, -158, 0, 11)
+    ToggleContent.Position = UDim2.new(0, titleLeftOffset, 0, 21)
+    ToggleContent.Size = UDim2.new(1, -(titleLeftOffset + 118), 0, 11)
     ToggleContent.Font = Enum.Font.GothamBold
     ToggleContent.Text = ConfigToggles.Description
     ToggleContent.TextWrapped = true
@@ -3479,12 +3484,13 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleContent.TextTransparency = 0.600
     ToggleContent.TextXAlignment = Enum.TextXAlignment.Left
 
+    -- Icon với kích thước tùy chỉnh
     ToggleImage.Name = "ToggleImage"
     ToggleImage.Parent = Toggle
     ToggleImage.AnchorPoint = Vector2.new(0, 0.5)
     ToggleImage.BackgroundTransparency = 1
     ToggleImage.Position = UDim2.new(0, 12, 0.5, 0)
-    ToggleImage.Size = UDim2.new(0, 16, 0, 16)
+    ToggleImage.Size = UDim2.new(0, iconSize, 0, iconSize)  -- Sử dụng kích thước tùy chỉnh
     ToggleImage.Image = ConfigToggles.IconToggle
     ToggleImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
 
@@ -3538,14 +3544,14 @@ function TabObject:AddToggle(ConfigToggles)
     ToggleOnOff.TextXAlignment = Enum.TextXAlignment.Right
 
     if ToggleContent.Text == "" then
-        ToggleTitle.Position = UDim2.new(0, 40, 0, 0)
-        ToggleTitle.Size = UDim2.new(1, -158, 1, 0)
+        ToggleTitle.Position = UDim2.new(0, titleLeftOffset, 0, 0)
+        ToggleTitle.Size = UDim2.new(1, -(titleLeftOffset + 118), 1, 0)
     end
 
     Crystal.Stepped:Connect(function()
         local contentHeight = math.max(ToggleContent.TextBounds.Y + 10, 30)
         Toggle.Size = UDim2.new(1, -8, 0, contentHeight + 18)
-        ToggleContent.Size = UDim2.new(1, -158, 0, contentHeight + 10)
+        ToggleContent.Size = UDim2.new(1, -(titleLeftOffset + 118), 0, contentHeight + 10)
     end)
 
     function ToggleFunc:SetValue(boolean)
@@ -3570,6 +3576,19 @@ function TabObject:AddToggle(ConfigToggles)
             ToggleOnOff.Text = "False"
         end
         pcall(ConfigToggles.Callback, ToggleFunc.Enabled)
+    end
+
+    -- Thêm method để thay đổi kích thước icon động
+    function ToggleFunc:SetIconSize(newSize)
+        iconSize = newSize
+        local newTitleLeftOffset = 12 + iconSize + 12
+        
+        Crystal.TweenObject({Object = ToggleImage, Time = 0.3, OldValue = "Size", NewValue = UDim2.new(0, iconSize, 0, iconSize)})
+        Crystal.TweenObject({Object = ToggleTitle, Time = 0.3, OldValue = "Position", NewValue = UDim2.new(0, newTitleLeftOffset, 0, ToggleTitle.Position.Y.Offset)})
+        Crystal.TweenObject({Object = ToggleContent, Time = 0.3, OldValue = "Position", NewValue = UDim2.new(0, newTitleLeftOffset, 0, ToggleContent.Position.Y.Offset)})
+        
+        ToggleTitle.Size = UDim2.new(1, -(newTitleLeftOffset + 118), ToggleTitle.Size.Y.Scale, ToggleTitle.Size.Y.Offset)
+        ToggleContent.Size = UDim2.new(1, -(newTitleLeftOffset + 118), ToggleContent.Size.Y.Scale, ToggleContent.Size.Y.Offset)
     end
 
     ToggleButton.Activated:Connect(function()
