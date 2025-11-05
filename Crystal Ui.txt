@@ -1741,25 +1741,25 @@ function TabObject:AddDropdown(ConfigDropdown)
     DropdownSelectReal.Name = "DropdownSelectReal"
     DropdownSelectReal.Parent = DropMore
     DropdownSelectReal.AnchorPoint = Vector2.new(1, 0)
-    DropdownSelectReal.BackgroundColor3 = Color3.fromRGB(40, 20, 60) -- Màu tím đậm
+    DropdownSelectReal.BackgroundColor3 = Color3.fromRGB(25, 20, 40)
     DropdownSelectReal.BackgroundTransparency = 0.050
     DropdownSelectReal.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropdownSelectReal.BorderSizePixel = 0
     DropdownSelectReal.ClipsDescendants = true
     DropdownSelectReal.Position = UDim2.new(1.42, -17, 0, 7)
-    DropdownSelectReal.Size = UDim2.new(0, 220, 0, 280) -- Tăng kích thước để chứa icon
+    DropdownSelectReal.Size = UDim2.new(0, 180, 0, 250)
     DropdownSelectReal.ZIndex = 52
 
     UICorner_41.CornerRadius = UDim.new(0, 8)
     UICorner_41.Parent = DropdownSelectReal
 
     UIStroke_16.Parent = DropdownSelectReal
-    UIStroke_16.Color = Color3.fromRGB(100, 50, 150) -- Viền màu tím
+    UIStroke_16.Color = Color3.fromRGB(200, 170, 255)
     UIStroke_16.Thickness = 1.5
 
     SearchFrame.Name = "SearchFrame"
     SearchFrame.Parent = DropdownSelectReal
-    SearchFrame.BackgroundColor3 = Color3.fromRGB(50, 30, 70) -- Màu tím nhạt hơn
+    SearchFrame.BackgroundColor3 = Color3.fromRGB(35, 30, 50)
     SearchFrame.BackgroundTransparency = 0.200
     SearchFrame.BorderSizePixel = 0
     SearchFrame.Position = UDim2.new(0, 8, 0, 8)
@@ -1776,7 +1776,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     SearchIcon.Position = UDim2.new(0, 8, 0.5, 0)
     SearchIcon.Size = UDim2.new(0, 16, 0, 16)
     SearchIcon.Image = "rbxassetid://18557078698"
-    SearchIcon.ImageColor3 = Color3.fromRGB(200, 170, 255) -- Màu tím nhạt cho icon search
+    SearchIcon.ImageColor3 = Color3.fromRGB(140, 140, 140)
     SearchIcon.ZIndex = 54
 
     SearchBox.Name = "SearchBox"
@@ -1785,10 +1785,10 @@ function TabObject:AddDropdown(ConfigDropdown)
     SearchBox.Position = UDim2.new(0, 30, 0, 0)
     SearchBox.Size = UDim2.new(1, -35, 1, 0)
     SearchBox.Font = Enum.Font.GothamBold
-    SearchBox.PlaceholderColor3 = Color3.fromRGB(180, 160, 220) -- Placeholder màu tím
+    SearchBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
     SearchBox.PlaceholderText = "Search..."
     SearchBox.Text = ""
-    SearchBox.TextColor3 = Color3.fromRGB(220, 200, 255) -- Text màu tím nhạt
+    SearchBox.TextColor3 = Color3.fromRGB(220, 220, 220)
     SearchBox.TextSize = 10
     SearchBox.TextXAlignment = Enum.TextXAlignment.Left
     SearchBox.ClearTextOnFocus = false
@@ -1796,8 +1796,8 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     SearchDivider.Name = "SearchDivider"
     SearchDivider.Parent = DropdownSelectReal
-    SearchDivider.BackgroundColor3 = Color3.fromRGB(100, 50, 150) -- Màu tím cho divider
-    SearchDivider.BackgroundTransparency = 0.500
+    SearchDivider.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
+    SearchDivider.BackgroundTransparency = 0.700
     SearchDivider.BorderSizePixel = 0
     SearchDivider.Position = UDim2.new(0, 12, 0, 44)
     SearchDivider.Size = UDim2.new(1, -24, 0, 1)
@@ -1828,7 +1828,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     ScrollSelect.BorderSizePixel = 0
     ScrollSelect.ClipsDescendants = true
     ScrollSelect.Size = UDim2.new(1, 0, 1, 0)
-    ScrollSelect.ScrollBarImageColor3 = Color3.fromRGB(200, 170, 255) -- Thanh scroll màu tím
+    ScrollSelect.ScrollBarImageColor3 = Color3.fromRGB(200, 170, 255)
     ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, 0)
     ScrollSelect.ScrollBarImageTransparency = 0.700
     ScrollSelect.ScrollBarThickness = 3
@@ -1839,13 +1839,13 @@ function TabObject:AddDropdown(ConfigDropdown)
     UIListLayout_6.Padding = UDim.new(0, 3)
 
     SearchBox.Focused:Connect(function()
-        Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(60, 40, 90)}) -- Màu tím đậm hơn khi focus
-        Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(220, 200, 255)})
+        Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(40, 35, 55)})
+        Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(200, 170, 255)})
     end)
 
     SearchBox.FocusLost:Connect(function()
-        Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(50, 30, 70)})
-        Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(200, 170, 255)})
+        Crystal.TweenObject({SearchFrame, 0.2, "BackgroundColor3", Color3.fromRGB(35, 30, 50)})
+        Crystal.TweenObject({SearchIcon, 0.2, "ImageColor3", Color3.fromRGB(140, 140, 140)})
     end)
 
     SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -1978,39 +1978,46 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     local OptionCounts = 0
     function DropFunc:AddValue(NameValue, IconValue)
+        IconValue = IconValue or "rbxassetid://18558566660"
+        
         local Option = Instance.new("Frame")
         local UICorner_37 = Instance.new("UICorner")
+        local OptionIcon = Instance.new("ImageLabel")
+        local OptionIconCorner = Instance.new("UICorner")
         local OptionSelecting_2 = Instance.new("TextLabel")
         local OptionButton = Instance.new("TextButton")
         local ChooseFrame = Instance.new("Frame")
         local UIStroke_14 = Instance.new("UIStroke")
         local UICorner_38 = Instance.new("UICorner")
-        local OptionIcon = Instance.new("ImageLabel")
+
+        local iconSize = ConfigDropdown.SizeIcon or 32
 
         Option.Name = "Option"
         Option.Parent = ScrollSelect
-        Option.BackgroundColor3 = Color3.fromRGB(50, 30, 70) -- Màu tím cho option
+        Option.BackgroundColor3 = Color3.fromRGB(35, 30, 50)
         Option.BackgroundTransparency = 1
         Option.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Option.BorderSizePixel = 0
-        Option.Size = UDim2.new(1, -5, 0, 36) -- Tăng chiều cao để chứa icon
+        Option.Size = UDim2.new(1, -5, 0, iconSize + 8)
         Option.LayoutOrder = OptionCounts
         Option.ZIndex = 55
 
-        UICorner_37.CornerRadius = UDim.new(0, 4)
+        UICorner_37.CornerRadius = UDim.new(0, 6)
         UICorner_37.Parent = Option
 
-        -- Thêm icon cho option
         OptionIcon.Name = "OptionIcon"
         OptionIcon.Parent = Option
         OptionIcon.AnchorPoint = Vector2.new(0, 0.5)
-        OptionIcon.BackgroundTransparency = 1
+        OptionIcon.BackgroundColor3 = Color3.fromRGB(40, 35, 55)
+        OptionIcon.BackgroundTransparency = 0.5
         OptionIcon.BorderSizePixel = 0
-        OptionIcon.Position = UDim2.new(0, 8, 0.5, 0)
-        OptionIcon.Size = UDim2.new(0, ConfigDropdown.SizeIcon, 0, ConfigDropdown.SizeIcon) -- Sử dụng SizeIcon
-        OptionIcon.Image = IconValue or "rbxassetid://18558566660" -- Icon mặc định
-        OptionIcon.ImageColor3 = Color3.fromRGB(200, 170, 255) -- Màu tím cho icon
+        OptionIcon.Position = UDim2.new(0, 10, 0.5, 0)
+        OptionIcon.Size = UDim2.new(0, iconSize, 0, iconSize)
+        OptionIcon.Image = IconValue
         OptionIcon.ZIndex = 56
+
+        OptionIconCorner.CornerRadius = UDim.new(0, 6)
+        OptionIconCorner.Parent = OptionIcon
 
         OptionSelecting_2.Name = "OptionSelecting"
         OptionSelecting_2.Parent = Option
@@ -2018,12 +2025,12 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionSelecting_2.BackgroundTransparency = 1
         OptionSelecting_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
         OptionSelecting_2.BorderSizePixel = 0
-        OptionSelecting_2.Position = UDim2.new(0, ConfigDropdown.SizeIcon + 16, 0, 0) -- Căn chỉnh theo icon
-        OptionSelecting_2.Size = UDim2.new(1, -(ConfigDropdown.SizeIcon + 25), 1, 0)
+        OptionSelecting_2.Position = UDim2.new(0, iconSize + 20, 0, 0)
+        OptionSelecting_2.Size = UDim2.new(1, -(iconSize + 30), 1, 0)
         OptionSelecting_2.Font = Enum.Font.GothamBold
         OptionSelecting_2.Text = NameValue
-        OptionSelecting_2.TextColor3 = Color3.fromRGB(220, 220, 220)
-        OptionSelecting_2.TextSize = 10
+        OptionSelecting_2.TextColor3 = Color3.fromRGB(200, 200, 200)
+        OptionSelecting_2.TextSize = 11
         OptionSelecting_2.TextXAlignment = Enum.TextXAlignment.Left
         OptionSelecting_2.ZIndex = 56
 
@@ -2044,16 +2051,16 @@ function TabObject:AddDropdown(ConfigDropdown)
         ChooseFrame.Name = "ChooseFrame"
         ChooseFrame.Parent = Option
         ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
-        ChooseFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255) -- Màu tím cho indicator
+        ChooseFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
         ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         ChooseFrame.BorderSizePixel = 0
-        ChooseFrame.Position = UDim2.new(0, 4, 0.5, 0)
-        ChooseFrame.Size = UDim2.new(0, 2, 0, 0)
+        ChooseFrame.Position = UDim2.new(0, 2, 0.5, 0)
+        ChooseFrame.Size = UDim2.new(0, 3, 0, 0)
         ChooseFrame.ZIndex = 56
 
         UIStroke_14.Parent = ChooseFrame
-        UIStroke_14.Color = Color3.fromRGB(200, 170, 255) -- Màu tím cho stroke
-        UIStroke_14.Thickness = 0.800
+        UIStroke_14.Color = Color3.fromRGB(200, 170, 255)
+        UIStroke_14.Thickness = 1.000
         UIStroke_14.Enabled = false
 
         UICorner_38.CornerRadius = UDim.new(0, 2)
@@ -2061,15 +2068,15 @@ function TabObject:AddDropdown(ConfigDropdown)
 
         Crystal.Mouseto(Option, function()
             if Option.BackgroundTransparency >= 0.999 then
-                Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 0.950})
-                Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(255, 255, 255)})
-                Crystal.TweenObject({OptionIcon, 0.2, "ImageColor3", Color3.fromRGB(220, 200, 255)})
+                Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 0.900})
+                Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(230, 230, 230)})
+                Crystal.TweenObject({OptionIcon, 0.2, "BackgroundTransparency", 0.3})
             end
         end, function()
             if Option.BackgroundTransparency >= 0.900 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 1})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(200, 200, 200)})
-                Crystal.TweenObject({OptionIcon, 0.2, "ImageColor3", Color3.fromRGB(200, 170, 255)})
+                Crystal.TweenObject({OptionIcon, 0.2, "BackgroundTransparency", 0.5})
             end
         end)
 
@@ -2125,12 +2132,11 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionCounts = 0
     end
 
-    -- Xử lý Values với icon
-    for _, valueData in pairs(ConfigDropdown.Values) do
-        if type(valueData) == "table" then
-            DropFunc:AddValue(valueData.Name or valueData[1], valueData.Icon or valueData[2])
+    for _, value in pairs(ConfigDropdown.Values) do
+        if type(value) == "table" then
+            DropFunc:AddValue(value.Name or value[1] or "Option", value.Icon or value[2] or "rbxassetid://18558566660")
         else
-            DropFunc:AddValue(valueData, "rbxassetid://18558566660") -- Icon mặc định
+            DropFunc:AddValue(value, "rbxassetid://18558566660")
         end
     end
 
@@ -2144,7 +2150,6 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
-
 function TabObject:AddInput(ConfigInput)
     ConfigInput = ConfigInput or {}
     ConfigInput.Title = ConfigInput.Title or "Input"
