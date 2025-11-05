@@ -1555,7 +1555,6 @@ function TabObject:AddButton(ButtonConfig)
     return Button
 end
 
-
 function TabObject:AddDropdown(ConfigDropdown)
     ConfigDropdown = ConfigDropdown or {}
     ConfigDropdown.Title = ConfigDropdown.Title or "Dropdown"
@@ -1596,8 +1595,15 @@ function TabObject:AddDropdown(ConfigDropdown)
     local ScrollSelect = Instance.new("ScrollingFrame")
     local UIListLayout_6 = Instance.new("UIListLayout")
 
+    local valuesList = {}
+    if type(ConfigDropdown.Values) == "string" then
+        valuesList = {ConfigDropdown.Values}
+    elseif type(ConfigDropdown.Values) == "table" then
+        valuesList = ConfigDropdown.Values
+    end
+
     local DropFunc = {
-        List = ConfigDropdown.Values,
+        List = valuesList,
         Value = ConfigDropdown.Multi and 
             (type(ConfigDropdown.Default) == "table" and ConfigDropdown.Default or {ConfigDropdown.Default}) or 
             (type(ConfigDropdown.Default) == "string" and ConfigDropdown.Default or "")
@@ -1978,19 +1984,16 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     local OptionCounts = 0
     function DropFunc:AddValue(NameValue, IconValue)
-        IconValue = IconValue or "rbxassetid://18558566660"
+        local hasIcon = IconValue and IconValue ~= ""
+        local iconSize = hasIcon and (ConfigDropdown.SizeIcon or 32) or 0
         
         local Option = Instance.new("Frame")
         local UICorner_37 = Instance.new("UICorner")
-        local OptionIcon = Instance.new("ImageLabel")
-        local OptionIconCorner = Instance.new("UICorner")
         local OptionSelecting_2 = Instance.new("TextLabel")
         local OptionButton = Instance.new("TextButton")
         local ChooseFrame = Instance.new("Frame")
         local UIStroke_14 = Instance.new("UIStroke")
         local UICorner_38 = Instance.new("UICorner")
-
-        local iconSize = ConfigDropdown.SizeIcon or 32
 
         Option.Name = "Option"
         Option.Parent = ScrollSelect
@@ -1998,26 +2001,31 @@ function TabObject:AddDropdown(ConfigDropdown)
         Option.BackgroundTransparency = 1
         Option.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Option.BorderSizePixel = 0
-        Option.Size = UDim2.new(1, -5, 0, iconSize + 8)
+        Option.Size = UDim2.new(1, -5, 0, hasIcon and (iconSize + 8) or 28)
         Option.LayoutOrder = OptionCounts
         Option.ZIndex = 55
 
         UICorner_37.CornerRadius = UDim.new(0, 6)
         UICorner_37.Parent = Option
 
-        OptionIcon.Name = "OptionIcon"
-        OptionIcon.Parent = Option
-        OptionIcon.AnchorPoint = Vector2.new(0, 0.5)
-        OptionIcon.BackgroundColor3 = Color3.fromRGB(40, 35, 55)
-        OptionIcon.BackgroundTransparency = 0.5
-        OptionIcon.BorderSizePixel = 0
-        OptionIcon.Position = UDim2.new(0, 10, 0.5, 0)
-        OptionIcon.Size = UDim2.new(0, iconSize, 0, iconSize)
-        OptionIcon.Image = IconValue
-        OptionIcon.ZIndex = 56
+        if hasIcon then
+            local OptionIcon = Instance.new("ImageLabel")
+            local OptionIconCorner = Instance.new("UICorner")
+            
+            OptionIcon.Name = "OptionIcon"
+            OptionIcon.Parent = Option
+            OptionIcon.AnchorPoint = Vector2.new(0, 0.5)
+            OptionIcon.BackgroundColor3 = Color3.fromRGB(40, 35, 55)
+            OptionIcon.BackgroundTransparency = 0.5
+            OptionIcon.BorderSizePixel = 0
+            OptionIcon.Position = UDim2.new(0, 10, 0.5, 0)
+            OptionIcon.Size = UDim2.new(0, iconSize, 0, iconSize)
+            OptionIcon.Image = IconValue
+            OptionIcon.ZIndex = 56
 
-        OptionIconCorner.CornerRadius = UDim.new(0, 6)
-        OptionIconCorner.Parent = OptionIcon
+            OptionIconCorner.CornerRadius = UDim.new(0, 6)
+            OptionIconCorner.Parent = OptionIcon
+        end
 
         OptionSelecting_2.Name = "OptionSelecting"
         OptionSelecting_2.Parent = Option
@@ -2025,8 +2033,8 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionSelecting_2.BackgroundTransparency = 1
         OptionSelecting_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
         OptionSelecting_2.BorderSizePixel = 0
-        OptionSelecting_2.Position = UDim2.new(0, iconSize + 20, 0, 0)
-        OptionSelecting_2.Size = UDim2.new(1, -(iconSize + 30), 1, 0)
+        OptionSelecting_2.Position = UDim2.new(0, hasIcon and (iconSize + 20) or 14, 0, 0)
+        OptionSelecting_2.Size = UDim2.new(1, hasIcon and -(iconSize + 30) or -24, 1, 0)
         OptionSelecting_2.Font = Enum.Font.GothamBold
         OptionSelecting_2.Text = NameValue
         OptionSelecting_2.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -2070,13 +2078,23 @@ function TabObject:AddDropdown(ConfigDropdown)
             if Option.BackgroundTransparency >= 0.999 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 0.900})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(230, 230, 230)})
-                Crystal.TweenObject({OptionIcon, 0.2, "BackgroundTransparency", 0.3})
+                if hasIcon then
+                    local icon = Option:FindFirstChild("OptionIcon")
+                    if icon then
+                        Crystal.TweenObject({icon, 0.2, "BackgroundTransparency", 0.3})
+                    end
+                end
             end
         end, function()
             if Option.BackgroundTransparency >= 0.900 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 1})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(200, 200, 200)})
-                Crystal.TweenObject({OptionIcon, 0.2, "BackgroundTransparency", 0.5})
+                if hasIcon then
+                    local icon = Option:FindFirstChild("OptionIcon")
+                    if icon then
+                        Crystal.TweenObject({icon, 0.2, "BackgroundTransparency", 0.5})
+                    end
+                end
             end
         end)
 
@@ -2132,11 +2150,11 @@ function TabObject:AddDropdown(ConfigDropdown)
         OptionCounts = 0
     end
 
-    for _, value in pairs(ConfigDropdown.Values) do
+    for _, value in pairs(valuesList) do
         if type(value) == "table" then
-            DropFunc:AddValue(value.Name or value[1] or "Option", value.Icon or value[2] or "rbxassetid://18558566660")
+            DropFunc:AddValue(value.Name or value[1] or "Option", value.Icon or value[2] or nil)
         else
-            DropFunc:AddValue(value, "rbxassetid://18558566660")
+            DropFunc:AddValue(value, nil)
         end
     end
 
