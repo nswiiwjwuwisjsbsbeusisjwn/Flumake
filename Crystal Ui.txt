@@ -36,18 +36,6 @@ Crystal.Types = {
         Color = Color3.fromRGB(255, 100, 100)
     }
 }
-Crystal.Colors = {
-    Primary = Color3.fromRGB(100, 200, 255),
-    Secondary = Color3.fromRGB(180, 100, 255),
-    Background = Color3.fromRGB(10, 10, 20),
-    BackgroundSecondary = Color3.fromRGB(15, 20, 35),
-    BackgroundTertiary = Color3.fromRGB(20, 25, 40),
-    Text = Color3.fromRGB(255, 255, 255),
-    TextSecondary = Color3.fromRGB(180, 180, 180),
-    Border = Color3.fromRGB(80, 60, 120),
-    Accent = Color3.fromRGB(200, 170, 255)
-}
-
 
 -- Utility Functions
 Crystal.TweenObject = function(config)
@@ -454,153 +442,149 @@ Crystal.Notify = function(self, NotifyConfig)
     return NotifyFunc
 end
 
-
-Crystal.GetMidPos = function(mainFrame)
-    return UDim2.new(0, (Crystal.ViewportSize.X/2 - mainFrame.Size.X.Offset/2), 0, (Crystal.ViewportSize.Y/2 - mainFrame.Size.Y.Offset/2))
-end
-
+Crystal.Colors = { Primary = Color3.fromRGB(100, 200, 255), Secondary = Color3.fromRGB(180, 100, 255), Background = Color3.fromRGB(10, 10, 20), BackgroundSecondary = Color3.fromRGB(15, 20, 35), BackgroundTertiary = Color3.fromRGB(20, 25, 40), Text = Color3.fromRGB(255, 255, 255), TextSecondary = Color3.fromRGB(180, 180, 180), Border = Color3.fromRGB(80, 60, 120), Accent = Color3.fromRGB(200, 170, 255) }
 Crystal.ShowLoading = function()
-    local LoadingGui = Instance.new("ScreenGui")
-    LoadingGui.Name = "CrystalLoading"
-    LoadingGui.IgnoreGuiInset = true
-    LoadingGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-    LoadingGui.DisplayOrder = 999999
-    LoadingGui.ResetOnSpawn = false
-    LoadingGui.Parent = CoreGui
+local LoadingGui = Instance.new("ScreenGui")
+LoadingGui.Name = "CrystalLoading"
+LoadingGui.IgnoreGuiInset = true
+LoadingGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+LoadingGui.DisplayOrder = 999999
+LoadingGui.ResetOnSpawn = false
+LoadingGui.Parent = Crystal.CoreGui
+local Background = Instance.new("Frame")
+Background.Size = UDim2.new(1, 0, 1, 0)
+Background.BackgroundColor3 = Crystal.Colors.Background
+Background.BackgroundTransparency = 0.2
+Background.BorderSizePixel = 0
+Background.ZIndex = 10
+Background.Parent = LoadingGui
 
-    local Background = Instance.new("Frame")
-    Background.Size = UDim2.new(1, 0, 1, 0)
-    Background.BackgroundColor3 = Crystal.Colors.Background
-    Background.BackgroundTransparency = 0.2
-    Background.BorderSizePixel = 0
-    Background.ZIndex = 10
-    Background.Parent = LoadingGui
+local BlurEffect = Instance.new("BlurEffect")
+BlurEffect.Size = 0
+BlurEffect.Parent = game.Lighting
 
-    local BlurEffect = Instance.new("BlurEffect")
-    BlurEffect.Size = 0
-    BlurEffect.Parent = game.Lighting
+local Container = Instance.new("Frame")
+Container.Size = UDim2.new(0, 400, 0, 400)
+Container.AnchorPoint = Vector2.new(0.5, 0.5)
+Container.Position = UDim2.new(0.5, 0, 0.5, 0)
+Container.BackgroundTransparency = 1
+Container.ZIndex = 20
+Container.Parent = LoadingGui
 
-    local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(0, 400, 0, 400)
-    Container.AnchorPoint = Vector2.new(0.5, 0.5)
-    Container.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Container.BackgroundTransparency = 1
-    Container.ZIndex = 20
-    Container.Parent = LoadingGui
+local Circle = Instance.new("Frame")
+Circle.Size = UDim2.new(0, 180, 0, 180)
+Circle.AnchorPoint = Vector2.new(0.5, 0.5)
+Circle.Position = UDim2.new(0.5, 0, 0.5, 0)
+Circle.BackgroundColor3 = Crystal.Colors.BackgroundSecondary
+Circle.BackgroundTransparency = 0.1
+Circle.ZIndex = 21
+Circle.Parent = Container
 
-    local Circle = Instance.new("Frame")
-    Circle.Size = UDim2.new(0, 180, 0, 180)
-    Circle.AnchorPoint = Vector2.new(0.5, 0.5)
-    Circle.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Circle.BackgroundColor3 = Crystal.Colors.BackgroundSecondary
-    Circle.BackgroundTransparency = 0.1
-    Circle.ZIndex = 21
-    Circle.Parent = Container
+local CircleCorner = Instance.new("UICorner")
+CircleCorner.CornerRadius = UDim.new(1, 0)
+CircleCorner.Parent = Circle
 
-    local CircleCorner = Instance.new("UICorner")
-    CircleCorner.CornerRadius = UDim.new(1, 0)
-    CircleCorner.Parent = Circle
+local CircleStroke = Instance.new("UIStroke")
+CircleStroke.Thickness = 12
+CircleStroke.Color = Crystal.Colors.Text
+CircleStroke.Transparency = 0
+CircleStroke.Parent = Circle
 
-    local CircleStroke = Instance.new("UIStroke")
-    CircleStroke.Thickness = 12
-    CircleStroke.Color = Crystal.Colors.Text
-    CircleStroke.Transparency = 0
-    CircleStroke.Parent = Circle
+local CircleGradient = Instance.new("UIGradient")
+CircleGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Crystal.Colors.Primary),
+    ColorSequenceKeypoint.new(0.5, Crystal.Colors.Secondary),
+    ColorSequenceKeypoint.new(1, Crystal.Colors.Primary)
+})
+CircleGradient.Transparency = NumberSequence.new({
+    NumberSequenceKeypoint.new(0, 0),
+    NumberSequenceKeypoint.new(0.4, 0),
+    NumberSequenceKeypoint.new(0.7, 0.6),
+    NumberSequenceKeypoint.new(1, 1)
+})
+CircleGradient.Rotation = 0
+CircleGradient.Parent = CircleStroke
 
-    local CircleGradient = Instance.new("UIGradient")
-    CircleGradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Crystal.Colors.Primary),
-        ColorSequenceKeypoint.new(0.5, Crystal.Colors.Secondary),
-        ColorSequenceKeypoint.new(1, Crystal.Colors.Primary)
-    })
-    CircleGradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 0),
-        NumberSequenceKeypoint.new(0.4, 0),
-        NumberSequenceKeypoint.new(0.7, 0.6),
-        NumberSequenceKeypoint.new(1, 1)
-    })
-    CircleGradient.Rotation = 0
-    CircleGradient.Parent = CircleStroke
+local Logo = Instance.new("ImageLabel")
+Logo.Size = UDim2.new(0, 100, 0, 100)
+Logo.AnchorPoint = Vector2.new(0.5, 0.5)
+Logo.Position = UDim2.new(0.5, 0, 0.5, 0)
+Logo.BackgroundTransparency = 1
+Logo.Image = "rbxassetid://126956292082716"
+Logo.ImageColor3 = Crystal.Colors.Text
+Logo.ScaleType = Enum.ScaleType.Fit
+Logo.ImageTransparency = 0
+Logo.ZIndex = 22
+Logo.Parent = Circle
 
-    local Logo = Instance.new("ImageLabel")
-    Logo.Size = UDim2.new(0, 100, 0, 100)
-    Logo.AnchorPoint = Vector2.new(0.5, 0.5)
-    Logo.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Logo.BackgroundTransparency = 1
-    Logo.Image = "rbxassetid://126956292082716"
-    Logo.ImageColor3 = Crystal.Colors.Text
-    Logo.ScaleType = Enum.ScaleType.Fit
-    Logo.ImageTransparency = 0
-    Logo.ZIndex = 22
-    Logo.Parent = Circle
+local ProgressBarBg = Instance.new("Frame")
+ProgressBarBg.Size = UDim2.new(0, 350, 0, 18)
+ProgressBarBg.Position = UDim2.new(0.5, 0, 0.82, 0)
+ProgressBarBg.AnchorPoint = Vector2.new(0.5, 0.5)
+ProgressBarBg.BackgroundColor3 = Crystal.Colors.BackgroundTertiary
+ProgressBarBg.BackgroundTransparency = 0.3
+ProgressBarBg.BorderSizePixel = 0
+ProgressBarBg.ZIndex = 21
+ProgressBarBg.Parent = Container
 
-    local ProgressBarBg = Instance.new("Frame")
-    ProgressBarBg.Size = UDim2.new(0, 350, 0, 18)
-    ProgressBarBg.Position = UDim2.new(0.5, 0, 0.82, 0)
-    ProgressBarBg.AnchorPoint = Vector2.new(0.5, 0.5)
-    ProgressBarBg.BackgroundColor3 = Crystal.Colors.BackgroundTertiary
-    ProgressBarBg.BackgroundTransparency = 0.3
-    ProgressBarBg.BorderSizePixel = 0
-    ProgressBarBg.ZIndex = 21
-    ProgressBarBg.Parent = Container
+local ProgressBarBgCorner = Instance.new("UICorner")
+ProgressBarBgCorner.CornerRadius = UDim.new(0.5, 0)
+ProgressBarBgCorner.Parent = ProgressBarBg
 
-    local ProgressBarBgCorner = Instance.new("UICorner")
-    ProgressBarBgCorner.CornerRadius = UDim.new(0.5, 0)
-    ProgressBarBgCorner.Parent = ProgressBarBg
+local ProgressBar = Instance.new("Frame")
+ProgressBar.Size = UDim2.new(0, 0, 1, -4)
+ProgressBar.Position = UDim2.new(0, 2, 0.5, 0)
+ProgressBar.AnchorPoint = Vector2.new(0, 0.5)
+ProgressBar.BackgroundColor3 = Crystal.Colors.Primary
+ProgressBar.BorderSizePixel = 0
+ProgressBar.ZIndex = 22
+ProgressBar.Parent = ProgressBarBg
 
-    local ProgressBar = Instance.new("Frame")
-    ProgressBar.Size = UDim2.new(0, 0, 1, -4)
-    ProgressBar.Position = UDim2.new(0, 2, 0.5, 0)
-    ProgressBar.AnchorPoint = Vector2.new(0, 0.5)
-    ProgressBar.BackgroundColor3 = Crystal.Colors.Primary
-    ProgressBar.BorderSizePixel = 0
-    ProgressBar.ZIndex = 22
-    ProgressBar.Parent = ProgressBarBg
+local ProgressBarCorner = Instance.new("UICorner")
+ProgressBarCorner.CornerRadius = UDim.new(0.5, 0)
+ProgressBarCorner.Parent = ProgressBar
 
-    local ProgressBarCorner = Instance.new("UICorner")
-    ProgressBarCorner.CornerRadius = UDim.new(0.5, 0)
-    ProgressBarCorner.Parent = ProgressBar
+Crystal.TweenService:Create(BlurEffect, TweenInfo.new(0.3), {Size = 15}):Play()
 
-    TweenService:Create(BlurEffect, TweenInfo.new(0.3), {Size = 15}):Play()
+local startTime = tick()
+local rotation = 0
 
-    local startTime = tick()
-    local rotation = 0
-
-    task.spawn(function()
-        while tick() - startTime < 3 do
-            local elapsed = tick() - startTime
-            local progress = math.min(elapsed / 3, 1)
-            
-            rotation = (rotation + 4) % 360
-            CircleGradient.Rotation = rotation
-            
-            local barWidth = (350 - 4) * progress
-            TweenService:Create(ProgressBar, TweenInfo.new(0.1), {
-                Size = UDim2.new(0, barWidth, 1, -4)
-            }):Play()
-            
-            RunService.RenderStepped:Wait()
-        end
+task.spawn(function()
+    while tick() - startTime < 10 do
+        local elapsed = tick() - startTime
+        local progress = math.min(elapsed / 10, 1)
         
-        local fadeInfo = TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+        rotation = (rotation + 4) % 360
+        CircleGradient.Rotation = rotation
         
-        TweenService:Create(Background, fadeInfo, {BackgroundTransparency = 1}):Play()
-        TweenService:Create(BlurEffect, fadeInfo, {Size = 0}):Play()
-        TweenService:Create(Circle, fadeInfo, {BackgroundTransparency = 1}):Play()
-        TweenService:Create(CircleStroke, fadeInfo, {Transparency = 1}):Play()
-        TweenService:Create(Logo, fadeInfo, {ImageTransparency = 1}):Play()
-        TweenService:Create(ProgressBarBg, fadeInfo, {BackgroundTransparency = 1}):Play()
-        TweenService:Create(ProgressBar, fadeInfo, {BackgroundTransparency = 1}):Play()
+        local barWidth = (350 - 4) * progress
+        Crystal.TweenService:Create(ProgressBar, TweenInfo.new(0.1), {
+            Size = UDim2.new(0, barWidth, 1, -4)
+        }):Play()
         
-        task.wait(0.5)
-        BlurEffect:Destroy()
-        LoadingGui:Destroy()
-    end)
+        game:GetService("RunService").RenderStepped:Wait()
+    end
+    
+    local fadeInfo = TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+    
+    Crystal.TweenService:Create(Background, fadeInfo, {BackgroundTransparency = 1}):Play()
+    Crystal.TweenService:Create(BlurEffect, fadeInfo, {Size = 0}):Play()
+    Crystal.TweenService:Create(Circle, fadeInfo, {BackgroundTransparency = 1}):Play()
+    Crystal.TweenService:Create(CircleStroke, fadeInfo, {Transparency = 1}):Play()
+    Crystal.TweenService:Create(Logo, fadeInfo, {ImageTransparency = 1}):Play()
+    Crystal.TweenService:Create(ProgressBarBg, fadeInfo, {BackgroundTransparency = 1}):Play()
+    Crystal.TweenService:Create(ProgressBar, fadeInfo, {BackgroundTransparency = 1}):Play()
+    
+    task.wait(0.5)
+    BlurEffect:Destroy()
+    LoadingGui:Destroy()
+end)
 
-    return LoadingGui
+return LoadingGui
 end
+
+
 Crystal.Window = function(self, WindowConfig)
-Crystal.ShowLoading()
     WindowConfig = WindowConfig or {}
     WindowConfig.Title = WindowConfig.Title or "Crystal Hub"
     WindowConfig.Description = WindowConfig.Description or ""
