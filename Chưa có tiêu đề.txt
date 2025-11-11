@@ -166,12 +166,7 @@ Crystal.Window = function(self, WindowConfig)
     WindowConfig = WindowConfig or {}
     WindowConfig.Title = WindowConfig.Title or "Crystal Hub"
     WindowConfig.Description = WindowConfig.Description or ""
-    WindowConfig.User = WindowConfig.User
-    WindowConfig.IconUser = WindowConfig.IconUser or ""
-    WindowConfig.UseAcrylic = WindowConfig.UseAcrylic or false
-    WindowConfig.Size = WindowConfig.Size or UDim2.new(0, 450, 0, 320)
-    WindowConfig.DiscordStatus = WindowConfig.DiscordStatus or "love you hipp"
-    WindowConfig.DiscordDescription = WindowConfig.DiscordDescription or ""
+    WindowConfig.Size = WindowConfig.Size or UDim2.new(0, 600, 0, 400)
     WindowConfig.KeyCode = WindowConfig.KeyCode or Enum.KeyCode.RightControl
 
     local CrystalHub = {}
@@ -192,17 +187,30 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.HideImage = Instance.new("ImageLabel")
     CrystalHub.DecideFrame = Instance.new("Frame")
     CrystalHub.DecideCorner = Instance.new("UICorner")
-    CrystalHub.TabBar = Instance.new("Frame")
-    CrystalHub.TabListLayout = Instance.new("UIListLayout")
-    CrystalHub.TabBarCorner = Instance.new("UICorner")
-    CrystalHub.TabBarStroke = Instance.new("UIStroke")
-    CrystalHub.StatusSection = Instance.new("Frame")
+    
+    -- Player Info
+    CrystalHub.PlayerInfo = Instance.new("Frame")
+    CrystalHub.InfoCorner = Instance.new("UICorner")
+    CrystalHub.PlayerName = Instance.new("TextLabel")
+    CrystalHub.PlayerDescription = Instance.new("TextLabel")
+    CrystalHub.AvatarFrame = Instance.new("Frame")
+    CrystalHub.AvatarImage = Instance.new("ImageLabel")
+    CrystalHub.AvatarCorner = Instance.new("UICorner")
+    CrystalHub.AvatarFrameCorner = Instance.new("UICorner")
+    CrystalHub.AvatarStroke = Instance.new("UIStroke")
+    CrystalHub.StatusIndicator = Instance.new("Frame")
     CrystalHub.StatusCorner = Instance.new("UICorner")
     CrystalHub.StatusStroke = Instance.new("UIStroke")
-    CrystalHub.Layers = Instance.new("Frame")
-    CrystalHub.LayersFolder = Instance.new("Folder")
+    
+    -- Horizontal Tab Container (NEW)
+    CrystalHub.TabContainer = Instance.new("Frame")
+    CrystalHub.TabScrollFrame = Instance.new("ScrollingFrame")
+    CrystalHub.TabListLayout = Instance.new("UIListLayout")
+    
     CrystalHub.MainCorner = Instance.new("UICorner")
     CrystalHub.MainStroke = Instance.new("UIStroke")
+    CrystalHub.Layers = Instance.new("Frame")
+    CrystalHub.LayersFolder = Instance.new("Folder")
     CrystalHub.CloseCorner = Instance.new("UICorner")
 
     CrystalHub.Window.Name = "Crystal hub"
@@ -445,55 +453,148 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.DecideCorner.CornerRadius = UDim.new(0, 100)
     CrystalHub.DecideCorner.Parent = CrystalHub.DecideFrame
 
-    CrystalHub.TabBar.Name = "TabBar"
-    CrystalHub.TabBar.Parent = CrystalHub.MainFrame
-    CrystalHub.TabBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    CrystalHub.TabBar.BackgroundTransparency = 0.950
-    CrystalHub.TabBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    CrystalHub.TabBar.BorderSizePixel = 0
-    CrystalHub.TabBar.Position = UDim2.new(0, 0, 0, 40)
-    CrystalHub.TabBar.Size = UDim2.new(1, 0, 0, 35)
-    CrystalHub.TabBar.ZIndex = 1
+    -- Player Info Section (Top Left)
+    CrystalHub.PlayerInfo.Name = "Info"
+    CrystalHub.PlayerInfo.Parent = CrystalHub.MainFrame
+    CrystalHub.PlayerInfo.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    CrystalHub.PlayerInfo.BackgroundTransparency = 1.000
+    CrystalHub.PlayerInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerInfo.BorderSizePixel = 0
+    CrystalHub.PlayerInfo.Position = UDim2.new(0, 10, 0, 48)
+    CrystalHub.PlayerInfo.Size = UDim2.new(0, 140, 0, 48)
 
-    CrystalHub.TabBarCorner.CornerRadius = UDim.new(0, 6)
-    CrystalHub.TabBarCorner.Parent = CrystalHub.TabBar
+    Crystal.Mouseto(CrystalHub.PlayerInfo, function()
+        CrystalHub.PlayerInfo.BackgroundTransparency = 0.950
+        Crystal.TweenObject({CrystalHub.AvatarStroke, 0.3, "Transparency", 0.400})
+    end, function()
+        CrystalHub.PlayerInfo.BackgroundTransparency = 1.000
+        Crystal.TweenObject({CrystalHub.AvatarStroke, 0.3, "Transparency", 0.700})
+    end)
 
-    CrystalHub.TabBarStroke.Parent = CrystalHub.TabBar
-    CrystalHub.TabBarStroke.Color = Color3.fromRGB(80, 60, 120)
-    CrystalHub.TabBarStroke.Thickness = 1
+    CrystalHub.InfoCorner.CornerRadius = UDim.new(0, 6)
+    CrystalHub.InfoCorner.Parent = CrystalHub.PlayerInfo
 
-    CrystalHub.TabListLayout.Parent = CrystalHub.TabBar
+    CrystalHub.PlayerName.Name = "NamePlayer"
+    CrystalHub.PlayerName.Parent = CrystalHub.PlayerInfo
+    CrystalHub.PlayerName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerName.BackgroundTransparency = 0.999
+    CrystalHub.PlayerName.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerName.BorderSizePixel = 0
+    CrystalHub.PlayerName.Position = UDim2.new(0, 46, 0, 10)
+    CrystalHub.PlayerName.Size = UDim2.new(1, -50, 0, 12)
+    CrystalHub.PlayerName.Font = Enum.Font.GothamBold
+    CrystalHub.PlayerName.Text = tostring(Crystal.Player.DisplayName)
+    CrystalHub.PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerName.TextSize = 12.000
+    CrystalHub.PlayerName.TextWrapped = true
+    CrystalHub.PlayerName.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.PlayerDescription.Name = "DescriptionPlayer"
+    CrystalHub.PlayerDescription.Parent = CrystalHub.PlayerInfo
+    CrystalHub.PlayerDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.PlayerDescription.BackgroundTransparency = 0.999
+    CrystalHub.PlayerDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.PlayerDescription.BorderSizePixel = 0
+    CrystalHub.PlayerDescription.Position = UDim2.new(0, 46, 0, 24)
+    CrystalHub.PlayerDescription.Size = UDim2.new(1, -50, 0, 9)
+    CrystalHub.PlayerDescription.Font = Enum.Font.GothamBold
+    CrystalHub.PlayerDescription.Text = tostring(Crystal.Player.UserId)
+    CrystalHub.PlayerDescription.TextColor3 = Color3.fromRGB(120, 120, 120)
+    CrystalHub.PlayerDescription.TextSize = 8.000
+    CrystalHub.PlayerDescription.TextTransparency = 0.400
+    CrystalHub.PlayerDescription.TextWrapped = true
+    CrystalHub.PlayerDescription.TextXAlignment = Enum.TextXAlignment.Left
+
+    CrystalHub.AvatarFrame.Name = "LogoFrame"
+    CrystalHub.AvatarFrame.Parent = CrystalHub.PlayerInfo
+    CrystalHub.AvatarFrame.AnchorPoint = Vector2.new(0, 0.5)
+    CrystalHub.AvatarFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    CrystalHub.AvatarFrame.BackgroundTransparency = 0.850
+    CrystalHub.AvatarFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.AvatarFrame.BorderSizePixel = 0
+    CrystalHub.AvatarFrame.Position = UDim2.new(0, 4, 0.5, 0)
+    CrystalHub.AvatarFrame.Size = UDim2.new(0, 38, 0, 38)
+
+    CrystalHub.AvatarImage.Name = "LogoPlayer"
+    CrystalHub.AvatarImage.Parent = CrystalHub.AvatarFrame
+    CrystalHub.AvatarImage.AnchorPoint = Vector2.new(0.5, 0.5)
+    CrystalHub.AvatarImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.AvatarImage.BackgroundTransparency = 0.999
+    CrystalHub.AvatarImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CrystalHub.AvatarImage.BorderSizePixel = 0
+    CrystalHub.AvatarImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CrystalHub.AvatarImage.Size = UDim2.new(1, -2, 1, -2)
+    CrystalHub.AvatarImage.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..Crystal.Player.UserId.."&width=420&height=420&format=png"
+
+    CrystalHub.AvatarCorner.CornerRadius = UDim.new(0, 1000)
+    CrystalHub.AvatarCorner.Parent = CrystalHub.AvatarImage
+
+    CrystalHub.AvatarFrameCorner.CornerRadius = UDim.new(0, 1000)
+    CrystalHub.AvatarFrameCorner.Parent = CrystalHub.AvatarFrame
+
+    CrystalHub.AvatarStroke.Parent = CrystalHub.AvatarFrame
+    CrystalHub.AvatarStroke.Color = Color3.fromRGB(200, 170, 255)
+    CrystalHub.AvatarStroke.Transparency = 0.700
+    CrystalHub.AvatarStroke.Thickness = 2.000
+
+    CrystalHub.StatusIndicator.Name = "StatusIndicator"
+    CrystalHub.StatusIndicator.Parent = CrystalHub.AvatarFrame
+    CrystalHub.StatusIndicator.AnchorPoint = Vector2.new(1, 1)
+    CrystalHub.StatusIndicator.BackgroundColor3 = Color3.fromRGB(67, 181, 129)
+    CrystalHub.StatusIndicator.BorderSizePixel = 0
+    CrystalHub.StatusIndicator.Position = UDim2.new(1, -1, 1, -1)
+    CrystalHub.StatusIndicator.Size = UDim2.new(0, 11, 0, 11)
+    CrystalHub.StatusIndicator.ZIndex = 5
+
+    CrystalHub.StatusCorner.CornerRadius = UDim.new(1, 0)
+    CrystalHub.StatusCorner.Parent = CrystalHub.StatusIndicator
+
+    CrystalHub.StatusStroke.Parent = CrystalHub.StatusIndicator
+    CrystalHub.StatusStroke.Color = Color3.fromRGB(20, 20, 20)
+    CrystalHub.StatusStroke.Thickness = 2.000
+
+    -- HORIZONTAL TAB CONTAINER (NEW SYSTEM)
+    CrystalHub.TabContainer.Name = "TabContainer"
+    CrystalHub.TabContainer.Parent = CrystalHub.MainFrame
+    CrystalHub.TabContainer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.TabContainer.BackgroundTransparency = 0.999
+    CrystalHub.TabContainer.BorderSizePixel = 0
+    CrystalHub.TabContainer.Position = UDim2.new(0, 10, 0, 104)
+    CrystalHub.TabContainer.Size = UDim2.new(0, 140, 0, 38)
+
+    CrystalHub.TabScrollFrame.Name = "TabScrollFrame"
+    CrystalHub.TabScrollFrame.Parent = CrystalHub.TabContainer
+    CrystalHub.TabScrollFrame.Active = true
+    CrystalHub.TabScrollFrame.BackgroundTransparency = 0.999
+    CrystalHub.TabScrollFrame.BorderSizePixel = 0
+    CrystalHub.TabScrollFrame.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.TabScrollFrame.ScrollBarImageColor3 = Color3.fromRGB(200, 170, 255)
+    CrystalHub.TabScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+    CrystalHub.TabScrollFrame.ScrollBarImageTransparency = 0.700
+    CrystalHub.TabScrollFrame.ScrollBarThickness = 3
+    CrystalHub.TabScrollFrame.ScrollingDirection = Enum.ScrollingDirection.X
+    CrystalHub.TabScrollFrame.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
+
+    CrystalHub.TabListLayout.Parent = CrystalHub.TabScrollFrame
     CrystalHub.TabListLayout.FillDirection = Enum.FillDirection.Horizontal
     CrystalHub.TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     CrystalHub.TabListLayout.Padding = UDim.new(0, 5)
-    CrystalHub.TabListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
-    CrystalHub.StatusSection.Name = "StatusSection"
-    CrystalHub.StatusSection.Parent = CrystalHub.MainFrame
-    CrystalHub.StatusSection.BackgroundColor3 = Color3.fromRGB(15, 20, 35)
-    CrystalHub.StatusSection.BackgroundTransparency = 0
-    CrystalHub.StatusSection.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    CrystalHub.StatusSection.BorderSizePixel = 0
-    CrystalHub.StatusSection.Position = UDim2.new(0, 10, 0, 75)
-    CrystalHub.StatusSection.Size = UDim2.new(0, 140, 1, -85)
-    CrystalHub.StatusSection.ZIndex = 2
+    Crystal.Stepped:Connect(function()
+        CrystalHub.TabScrollFrame.CanvasSize = UDim2.new(0, CrystalHub.TabListLayout.AbsoluteContentSize.X + 10, 0, 0)
+    end)
 
-    CrystalHub.StatusCorner.CornerRadius = UDim.new(0, 6)
-    CrystalHub.StatusCorner.Parent = CrystalHub.StatusSection
-
-    CrystalHub.StatusStroke.Parent = CrystalHub.StatusSection
-    CrystalHub.StatusStroke.Color = Color3.fromRGB(80, 60, 120)
-    CrystalHub.StatusStroke.Thickness = 1
-
+    -- Content/Layers Area
     CrystalHub.Layers.Name = "Layers"
     CrystalHub.Layers.Parent = CrystalHub.MainFrame
     CrystalHub.Layers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.Layers.BackgroundTransparency = 0.999
     CrystalHub.Layers.BorderColor3 = Color3.fromRGB(0, 0, 0)
     CrystalHub.Layers.BorderSizePixel = 0
-    CrystalHub.Layers.Position = UDim2.new(0, 160, 0, 75)
-    CrystalHub.Layers.Size = UDim2.new(1, -170, 1, -85)
+    CrystalHub.Layers.Position = UDim2.new(0, 158, 0, 48)
+    CrystalHub.Layers.Size = UDim2.new(1, -168, 1, -58)
     CrystalHub.Layers.ZIndex = 3
+    CrystalHub.Layers.ClipsDescendants = true
 
     CrystalHub.LayersFolder.Name = "LayersFolder"
     CrystalHub.LayersFolder.Parent = CrystalHub.Layers
@@ -512,7 +613,6 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.TopDescription.Position = UDim2.new(0, CrystalHub.TopTitle.TextBounds.X + 19, 0, 12)
 
     Crystal.MakeDraggable(CrystalHub.MainFrame, CrystalHub.TopBar)
-
     Crystal.CustomSize(CrystalHub.MainFrame)
 
     Crystal.UserInputService.InputBegan:Connect(function(input)
@@ -523,83 +623,7 @@ Crystal.Window = function(self, WindowConfig)
 
     local TabSystem = {}
     local TabCount = 0
-
-    local function SParagraph(config)
-        config = config or {}
-        config.Title = config.Title or "Untitled"
-        config.Content = config.Content or ""
-        config.IconLabel = config.IconLabel or ""
-        config.SizeIcon = config.SizeIcon or 16
-
-        local ParagraphFrame = Instance.new("Frame")
-        local ParagraphCorner = Instance.new("UICorner")
-        local ParagraphTitle = Instance.new("TextLabel")
-        local ParagraphContent = Instance.new("TextLabel")
-        local ParagraphIcon = Instance.new("ImageLabel")
-        local ParagraphLayout = Instance.new("UIListLayout")
-        local ParagraphPadding = Instance.new("UIPadding")
-
-        ParagraphFrame.Name = "Paragraph"
-        ParagraphFrame.Parent = CrystalHub.StatusSection
-        ParagraphFrame.BackgroundColor3 = Color3.fromRGB(20, 25, 40)
-        ParagraphFrame.BackgroundTransparency = 0.1
-        ParagraphFrame.BorderSizePixel = 0
-        ParagraphFrame.Size = UDim2.new(1, -10, UDim.new(0, 0), 0)
-        ParagraphFrame.LayoutOrder = #CrystalHub.StatusSection:GetChildren()
-
-        ParagraphCorner.CornerRadius = UDim.new(0, 6)
-        ParagraphCorner.Parent = ParagraphFrame
-
-        ParagraphLayout.Parent = ParagraphFrame
-        ParagraphLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        ParagraphLayout.Padding = UDim.new(0, 5)
-
-        ParagraphPadding.Parent = ParagraphFrame
-        ParagraphPadding.PaddingLeft = UDim.new(0, 10)
-        ParagraphPadding.PaddingTop = UDim.new(0, 10)
-        ParagraphPadding.PaddingRight = UDim.new(0, 10)
-        ParagraphPadding.PaddingBottom = UDim.new(0, 10)
-
-        ParagraphIcon.Name = "Icon"
-        ParagraphIcon.Parent = ParagraphFrame
-        ParagraphIcon.BackgroundTransparency = 1
-        ParagraphIcon.Size = UDim2.new(0, config.SizeIcon, 0, config.SizeIcon)
-        ParagraphIcon.Image = config.IconLabel
-        ParagraphIcon.ImageColor3 = Color3.fromRGB(200, 170, 255)
-        ParagraphIcon.ImageTransparency = 0.3
-
-        ParagraphTitle.Name = "Title"
-        ParagraphTitle.Parent = ParagraphFrame
-        ParagraphTitle.BackgroundTransparency = 1
-        ParagraphTitle.Size = UDim2.new(1, 0, 0, 16)
-        ParagraphTitle.Font = Enum.Font.GothamBold
-        ParagraphTitle.Text = config.Title
-        ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-        ParagraphTitle.TextSize = 12
-        ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
-
-        ParagraphContent.Name = "Content"
-        ParagraphContent.Parent = ParagraphFrame
-        ParagraphContent.BackgroundTransparency = 1
-        ParagraphContent.Size = UDim2.new(1, 0, 0, 0)
-        ParagraphContent.Font = Enum.Font.Gotham
-        ParagraphContent.Text = config.Content
-        ParagraphContent.TextColor3 = Color3.fromRGB(180, 180, 180)
-        ParagraphContent.TextSize = 10
-        ParagraphContent.TextWrapped = true
-        ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
-
-        local function UpdateSize()
-            local titleBounds = ParagraphTitle.TextBounds
-            local contentBounds = ParagraphContent.TextBounds
-            ParagraphFrame.Size = UDim2.new(1, -20, 0, titleBounds.Y + contentBounds.Y + 30)
-        end
-        UpdateSize()
-        ParagraphTitle:GetPropertyChangedSignal("TextBounds"):Connect(UpdateSize)
-        ParagraphContent:GetPropertyChangedSignal("TextBounds"):Connect(UpdateSize)
-
-        return ParagraphFrame
-    end
+    local CurrentTab = nil
 
     function TabSystem:AddTab(TabConfig)
         TabConfig = TabConfig or {}
@@ -610,27 +634,28 @@ Crystal.Window = function(self, WindowConfig)
         local TabCorner = Instance.new("UICorner")
         local TabImage = Instance.new("ImageLabel")
         local TabButton = Instance.new("TextButton")
-        local TabName = Instance.new("TextLabel")
+        local TabIndicator = Instance.new("Frame")
+        local IndicatorCorner = Instance.new("UICorner")
         local ScrollLayers = Instance.new("ScrollingFrame")
         local ScrollLayersLayout = Instance.new("UIListLayout")
 
         Tab.Name = "Tab"
-        Tab.Parent = CrystalHub.TabBar
+        Tab.Parent = CrystalHub.TabScrollFrame
         Tab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         Tab.BackgroundTransparency = 0.999
         Tab.BorderSizePixel = 0
-        Tab.Size = UDim2.new(0, 100, 1, 0)
+        Tab.Size = UDim2.new(0, 38, 0, 38)
 
-        TabCorner.CornerRadius = UDim.new(0, 6)
+        TabCorner.CornerRadius = UDim.new(0, 8)
         TabCorner.Parent = Tab
 
         TabImage.Name = "TabImage"
         TabImage.Parent = Tab
-        TabImage.AnchorPoint = Vector2.new(0, 0.5)
+        TabImage.AnchorPoint = Vector2.new(0.5, 0.5)
         TabImage.BackgroundTransparency = 0.999
         TabImage.BorderSizePixel = 0
-        TabImage.Position = UDim2.new(0, 5, 0.5, 0)
-        TabImage.Size = UDim2.new(0, 16, 0, 16)
+        TabImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+        TabImage.Size = UDim2.new(0, 20, 0, 20)
         TabImage.Image = TabConfig.Icon
         TabImage.ImageTransparency = 0.600
         TabImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
@@ -643,19 +668,16 @@ Crystal.Window = function(self, WindowConfig)
         TabButton.Text = ""
         TabButton.Font = Enum.Font.GothamBold
 
-        TabName.Name = "TabName"
-        TabName.Parent = Tab
-        TabName.AnchorPoint = Vector2.new(0, 0.5)
-        TabName.BackgroundTransparency = 0.999
-        TabName.BorderSizePixel = 0
-        TabName.Position = UDim2.new(0, 25, 0.5, 0)
-        TabName.Size = UDim2.new(1, -30, 0, 12)
-        TabName.Font = Enum.Font.GothamBold
-        TabName.Text = TabConfig.Title
-        TabName.TextColor3 = Color3.fromRGB(230, 230, 230)
-        TabName.TextSize = 11
-        TabName.TextTransparency = 0.600
-        TabName.TextXAlignment = Enum.TextXAlignment.Left
+        TabIndicator.Name = "TabIndicator"
+        TabIndicator.Parent = Tab
+        TabIndicator.AnchorPoint = Vector2.new(0.5, 1)
+        TabIndicator.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
+        TabIndicator.BorderSizePixel = 0
+        TabIndicator.Position = UDim2.new(0.5, 0, 1, -2)
+        TabIndicator.Size = UDim2.new(0, 0, 0, 3)
+
+        IndicatorCorner.CornerRadius = UDim.new(0, 100)
+        IndicatorCorner.Parent = TabIndicator
 
         ScrollLayers.Name = "ScrollLayers"
         ScrollLayers.Parent = CrystalHub.LayersFolder
@@ -678,70 +700,131 @@ Crystal.Window = function(self, WindowConfig)
         ScrollLayersLayout.Padding = UDim.new(0, 5)
 
         if TabCount == 0 then
-            local ChoosingFrame = Instance.new("Frame")
-            local ChoosingCorner = Instance.new("UICorner")
-            local ChoosingStroke = Instance.new("UIStroke")
-
-            ChoosingFrame.Name = "ChoosingFrame"
-            ChoosingFrame.Parent = Tab
-            ChoosingFrame.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
-            ChoosingFrame.BorderSizePixel = 0
-            ChoosingFrame.Position = UDim2.new(0, 0, 1, 0)
-            ChoosingFrame.Size = UDim2.new(1, 0, 0, 3)
-
-            ChoosingCorner.CornerRadius = UDim.new(0, 0)
-            ChoosingCorner.Parent = ChoosingFrame
-
-            ChoosingStroke.Parent = ChoosingFrame
-            ChoosingStroke.Color = Color3.fromRGB(200, 170, 255)
-            ChoosingStroke.Thickness = 0.800
-
             LayersPageLayout:JumpToIndex(0)
+            Crystal.TweenObject({TabIndicator, 0.4, "Size", UDim2.new(0.8, 0, 0, 3)})
             TabImage.ImageTransparency = 0
             Tab.BackgroundTransparency = 0.950
-            TabName.TextTransparency = 0
+            CurrentTab = Tab
         end
 
-        if LayersPageLayout.CurrentPage ~= ScrollLayers then
-            Crystal.Mouseto(Tab, function()
-                Tab.BackgroundTransparency = 0.940
-            end, function()
+        Crystal.Mouseto(Tab, function()
+            if CurrentTab ~= Tab then
+                Tab.BackgroundTransparency = 0.970
+            end
+        end, function()
+            if CurrentTab ~= Tab then
                 Tab.BackgroundTransparency = 0.999
-            end)
-        end
+            end
+        end)
 
         TabButton.Activated:Connect(function()
-            local RealChooseFrame
-            for _, v in next, Tab.Parent:GetChildren() do
-                for r, frame in next, v:GetChildren() do
-                    if frame.Name == "ChoosingFrame" then
-                        RealChooseFrame = frame
-                        break
+            if CurrentTab ~= Tab then
+                -- Reset old tab
+                if CurrentTab then
+                    for _, v in pairs(CrystalHub.TabScrollFrame:GetChildren()) do
+                        if v:IsA("Frame") then
+                            Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.999})
+                            Crystal.TweenObject({v.TabImage, 0.4, "ImageTransparency", 0.600})
+                            Crystal.TweenObject({v.TabIndicator, 0.4, "Size", UDim2.new(0, 0, 0, 3)})
+                        end
                     end
                 end
-            end
 
-            if RealChooseFrame ~= nil and LayersPageLayout.CurrentPage ~= ScrollLayers then
-                for r, v in next, Tab.Parent:GetChildren() do
-                    if v.ClassName ~= "UIListLayout" and v.ClassName ~= "UICorner" and v.ClassName ~= "UIStroke" then
-                        Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.999})
-                        Crystal.TweenObject({v.TabImage, 0.4, "ImageTransparency", 0.600})
-                        Crystal.TweenObject({v.TabName, 0.4, "TextTransparency", 0.600})
-                    end
-                end
-                
+                -- Set new tab
+                CurrentTab = Tab
                 Crystal.TweenObject({Tab, 0.4, "BackgroundTransparency", 0.950})
                 Crystal.TweenObject({TabImage, 0.4, "ImageTransparency", 0})
-                Crystal.TweenObject({TabName, 0.4, "TextTransparency", 0})
-                LayersPageLayout:JumpToIndex(TabCount)
+                Crystal.TweenObject({TabIndicator, 0.4, "Size", UDim2.new(0.8, 0, 0, 3)})
+                LayersPageLayout:JumpTo(ScrollLayers)
             end
-        end)     
+        end)
+
+        -- Add Paragraph function to Tab
+        local ElementSystem = {}
+        
+        function ElementSystem:AddParagraph(ParagraphConfig)
+            ParagraphConfig = ParagraphConfig or {}
+            ParagraphConfig.Title = ParagraphConfig.Title or "Paragraph"
+            ParagraphConfig.Content = ParagraphConfig.Content or ""
+            ParagraphConfig.IconLabel = ParagraphConfig.IconLabel or ""
+            ParagraphConfig.SizeIcon = ParagraphConfig.SizeIcon or 20
+
+            local Paragraph = Instance.new("Frame")
+            local ParagraphCorner = Instance.new("UICorner")
+            local ParagraphIcon = Instance.new("ImageLabel")
+            local ParagraphTitle = Instance.new("TextLabel")
+            local ParagraphContent = Instance.new("TextLabel")
+
+            Paragraph.Name = ParagraphConfig.Title
+            Paragraph.Parent = ScrollLayers
+            Paragraph.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            Paragraph.BackgroundTransparency = 0.920
+            Paragraph.BorderSizePixel = 0
+            Paragraph.Size = UDim2.new(1, 0, 0, 80)
+            Paragraph.AutomaticSize = Enum.AutomaticSize.Y
+
+            ParagraphCorner.CornerRadius = UDim.new(0, 8)
+            ParagraphCorner.Parent = Paragraph
+
+            if ParagraphConfig.IconLabel ~= "" then
+                ParagraphIcon.Name = "ParagraphIcon"
+                ParagraphIcon.Parent = Paragraph
+                ParagraphIcon.BackgroundTransparency = 1
+                ParagraphIcon.Position = UDim2.new(0, 12, 0, 12)
+                ParagraphIcon.Size = UDim2.new(0, ParagraphConfig.SizeIcon, 0, ParagraphConfig.SizeIcon)
+                ParagraphIcon.Image = ParagraphConfig.IconLabel
+                ParagraphIcon.ImageColor3 = Color3.fromRGB(200, 170, 255)
+                ParagraphIcon.ImageTransparency = 0.3
+            end
+
+            ParagraphTitle.Name = "ParagraphTitle"
+            ParagraphTitle.Parent = Paragraph
+            ParagraphTitle.BackgroundTransparency = 1
+            ParagraphTitle.Position = ParagraphConfig.IconLabel ~= "" and UDim2.new(0, ParagraphConfig.SizeIcon + 20, 0, 10) or UDim2.new(0, 12, 0, 10)
+            ParagraphTitle.Size = UDim2.new(1, -(ParagraphConfig.IconLabel ~= "" and (ParagraphConfig.SizeIcon + 28) or 20), 0, 16)
+            ParagraphTitle.Font = Enum.Font.GothamBold
+            ParagraphTitle.Text = ParagraphConfig.Title
+            ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            ParagraphTitle.TextSize = 13
+            ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
+            ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Top
+
+            ParagraphContent.Name = "ParagraphContent"
+            ParagraphContent.Parent = Paragraph
+            ParagraphContent.BackgroundTransparency = 1
+            ParagraphContent.Position = ParagraphConfig.IconLabel ~= "" and UDim2.new(0, ParagraphConfig.SizeIcon + 20, 0, 30) or UDim2.new(0, 12, 0, 30)
+            ParagraphContent.Size = UDim2.new(1, -(ParagraphConfig.IconLabel ~= "" and (ParagraphConfig.SizeIcon + 28) or 20), 1, -40)
+            ParagraphContent.Font = Enum.Font.Gotham
+            ParagraphContent.Text = ParagraphConfig.Content
+            ParagraphContent.TextColor3 = Color3.fromRGB(180, 180, 180)
+            ParagraphContent.TextSize = 11
+            ParagraphContent.TextWrapped = true
+            ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
+            ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
+            ParagraphContent.AutomaticSize = Enum.AutomaticSize.Y
+
+            local function UpdateSize()
+                Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 50)
+            end
+
+            ParagraphContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateSize)
+            UpdateSize()
+
+            return {
+                SetTitle = function(newTitle)
+                    ParagraphTitle.Text = newTitle
+                end,
+                SetContent = function(newContent)
+                    ParagraphContent.Text = newContent
+                end
+            }
+        end
 
         TabCount = TabCount + 1
-        return ScrollLayers
+        return ElementSystem
     end
 
-    return CrystalHub, TabSystem, SParagraph
+    return TabSystem
 end
 
 return Crystal
