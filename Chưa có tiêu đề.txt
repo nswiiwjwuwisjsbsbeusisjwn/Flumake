@@ -202,10 +202,18 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.StatusCorner = Instance.new("UICorner")
     CrystalHub.StatusStroke = Instance.new("UIStroke")
     
-    -- Horizontal Tab Container (NEW)
+    -- Horizontal Tab Container
     CrystalHub.TabContainer = Instance.new("Frame")
     CrystalHub.TabScrollFrame = Instance.new("ScrollingFrame")
     CrystalHub.TabListLayout = Instance.new("UIListLayout")
+    
+    -- Paragraph Container (Below Tabs)
+    CrystalHub.ParagraphContainer = Instance.new("Frame")
+    CrystalHub.ParagraphScroll = Instance.new("ScrollingFrame")
+    CrystalHub.ParagraphLayout = Instance.new("UIListLayout")
+    
+    -- Divider between tabs and paragraphs
+    CrystalHub.Divider = Instance.new("Frame")
     
     CrystalHub.MainCorner = Instance.new("UICorner")
     CrystalHub.MainStroke = Instance.new("UIStroke")
@@ -553,14 +561,14 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.StatusStroke.Color = Color3.fromRGB(20, 20, 20)
     CrystalHub.StatusStroke.Thickness = 2.000
 
-    -- HORIZONTAL TAB CONTAINER (NEW SYSTEM)
+    -- HORIZONTAL TAB CONTAINER
     CrystalHub.TabContainer.Name = "TabContainer"
     CrystalHub.TabContainer.Parent = CrystalHub.MainFrame
     CrystalHub.TabContainer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     CrystalHub.TabContainer.BackgroundTransparency = 0.999
     CrystalHub.TabContainer.BorderSizePixel = 0
     CrystalHub.TabContainer.Position = UDim2.new(0, 10, 0, 104)
-    CrystalHub.TabContainer.Size = UDim2.new(0, 140, 0, 38)
+    CrystalHub.TabContainer.Size = UDim2.new(0, 140, 0, 40)
 
     CrystalHub.TabScrollFrame.Name = "TabScrollFrame"
     CrystalHub.TabScrollFrame.Parent = CrystalHub.TabContainer
@@ -573,15 +581,51 @@ Crystal.Window = function(self, WindowConfig)
     CrystalHub.TabScrollFrame.ScrollBarImageTransparency = 0.700
     CrystalHub.TabScrollFrame.ScrollBarThickness = 3
     CrystalHub.TabScrollFrame.ScrollingDirection = Enum.ScrollingDirection.X
-    CrystalHub.TabScrollFrame.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
 
     CrystalHub.TabListLayout.Parent = CrystalHub.TabScrollFrame
     CrystalHub.TabListLayout.FillDirection = Enum.FillDirection.Horizontal
     CrystalHub.TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    CrystalHub.TabListLayout.Padding = UDim.new(0, 5)
+    CrystalHub.TabListLayout.Padding = UDim.new(0, 6)
 
     Crystal.Stepped:Connect(function()
         CrystalHub.TabScrollFrame.CanvasSize = UDim2.new(0, CrystalHub.TabListLayout.AbsoluteContentSize.X + 10, 0, 0)
+    end)
+
+    -- DIVIDER between Tabs and Paragraphs
+    CrystalHub.Divider.Name = "Divider"
+    CrystalHub.Divider.Parent = CrystalHub.MainFrame
+    CrystalHub.Divider.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
+    CrystalHub.Divider.BackgroundTransparency = 0.800
+    CrystalHub.Divider.BorderSizePixel = 0
+    CrystalHub.Divider.Position = UDim2.new(0, 10, 0, 150)
+    CrystalHub.Divider.Size = UDim2.new(0, 140, 0, 1)
+
+    -- PARAGRAPH CONTAINER (Below Tabs)
+    CrystalHub.ParagraphContainer.Name = "ParagraphContainer"
+    CrystalHub.ParagraphContainer.Parent = CrystalHub.MainFrame
+    CrystalHub.ParagraphContainer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CrystalHub.ParagraphContainer.BackgroundTransparency = 0.999
+    CrystalHub.ParagraphContainer.BorderSizePixel = 0
+    CrystalHub.ParagraphContainer.Position = UDim2.new(0, 10, 0, 158)
+    CrystalHub.ParagraphContainer.Size = UDim2.new(0, 140, 1, -168)
+
+    CrystalHub.ParagraphScroll.Name = "ParagraphScroll"
+    CrystalHub.ParagraphScroll.Parent = CrystalHub.ParagraphContainer
+    CrystalHub.ParagraphScroll.Active = true
+    CrystalHub.ParagraphScroll.BackgroundTransparency = 0.999
+    CrystalHub.ParagraphScroll.BorderSizePixel = 0
+    CrystalHub.ParagraphScroll.Size = UDim2.new(1, 0, 1, 0)
+    CrystalHub.ParagraphScroll.ScrollBarImageColor3 = Color3.fromRGB(200, 170, 255)
+    CrystalHub.ParagraphScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    CrystalHub.ParagraphScroll.ScrollBarImageTransparency = 0.700
+    CrystalHub.ParagraphScroll.ScrollBarThickness = 3
+
+    CrystalHub.ParagraphLayout.Parent = CrystalHub.ParagraphScroll
+    CrystalHub.ParagraphLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    CrystalHub.ParagraphLayout.Padding = UDim.new(0, 8)
+
+    Crystal.Stepped:Connect(function()
+        CrystalHub.ParagraphScroll.CanvasSize = UDim2.new(0, 0, 0, CrystalHub.ParagraphLayout.AbsoluteContentSize.Y + 10)
     end)
 
     -- Content/Layers Area
@@ -621,18 +665,99 @@ Crystal.Window = function(self, WindowConfig)
         end
     end)
 
-    local TabSystem = {}
+    local WindowSystem = {}
     local TabCount = 0
     local CurrentTab = nil
 
-    function TabSystem:AddTab(TabConfig)
+    -- ADD PARAGRAPH FUNCTION (Outside of Tabs)
+    function WindowSystem:CParagraph(ParagraphConfig)
+        ParagraphConfig = ParagraphConfig or {}
+        ParagraphConfig.Title = ParagraphConfig.Title or "Paragraph"
+        ParagraphConfig.Content = ParagraphConfig.Content or ""
+        ParagraphConfig.IconLabel = ParagraphConfig.IconLabel or ""
+        ParagraphConfig.SizeIcon = ParagraphConfig.SizeIcon or 18
+
+        local Paragraph = Instance.new("Frame")
+        local ParagraphCorner = Instance.new("UICorner")
+        local ParagraphIcon = Instance.new("ImageLabel")
+        local ParagraphTitle = Instance.new("TextLabel")
+        local ParagraphContent = Instance.new("TextLabel")
+
+        Paragraph.Name = ParagraphConfig.Title
+        Paragraph.Parent = CrystalHub.ParagraphScroll
+        Paragraph.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        Paragraph.BackgroundTransparency = 0.920
+        Paragraph.BorderSizePixel = 0
+        Paragraph.Size = UDim2.new(1, 0, 0, 70)
+        Paragraph.AutomaticSize = Enum.AutomaticSize.Y
+
+        ParagraphCorner.CornerRadius = UDim.new(0, 6)
+        ParagraphCorner.Parent = Paragraph
+
+        if ParagraphConfig.IconLabel ~= "" then
+            ParagraphIcon.Name = "ParagraphIcon"
+            ParagraphIcon.Parent = Paragraph
+            ParagraphIcon.BackgroundTransparency = 1
+            ParagraphIcon.Position = UDim2.new(0, 8, 0, 8)
+            ParagraphIcon.Size = UDim2.new(0, ParagraphConfig.SizeIcon, 0, ParagraphConfig.SizeIcon)
+            ParagraphIcon.Image = ParagraphConfig.IconLabel
+            ParagraphIcon.ImageColor3 = Color3.fromRGB(200, 170, 255)
+            ParagraphIcon.ImageTransparency = 0.3
+        end
+
+        ParagraphTitle.Name = "ParagraphTitle"
+        ParagraphTitle.Parent = Paragraph
+        ParagraphTitle.BackgroundTransparency = 1
+        ParagraphTitle.Position = ParagraphConfig.IconLabel ~= "" and UDim2.new(0, ParagraphConfig.SizeIcon + 14, 0, 6) or UDim2.new(0, 8, 0, 6)
+        ParagraphTitle.Size = UDim2.new(1, -(ParagraphConfig.IconLabel ~= "" and (ParagraphConfig.SizeIcon + 20) or 14), 0, 14)
+        ParagraphTitle.Font = Enum.Font.GothamBold
+        ParagraphTitle.Text = ParagraphConfig.Title
+        ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ParagraphTitle.TextSize = 11
+        ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
+        ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Top
+
+        ParagraphContent.Name = "ParagraphContent"
+        ParagraphContent.Parent = Paragraph
+        ParagraphContent.BackgroundTransparency = 1
+        ParagraphContent.Position = ParagraphConfig.IconLabel ~= "" and UDim2.new(0, ParagraphConfig.SizeIcon + 14, 0, 22) or UDim2.new(0, 8, 0, 22)
+        ParagraphContent.Size = UDim2.new(1, -(ParagraphConfig.IconLabel ~= "" and (ParagraphConfig.SizeIcon + 20) or 14), 1, -28)
+        ParagraphContent.Font = Enum.Font.Gotham
+        ParagraphContent.Text = ParagraphConfig.Content
+        ParagraphContent.TextColor3 = Color3.fromRGB(160, 160, 160)
+        ParagraphContent.TextSize = 9
+        ParagraphContent.TextWrapped = true
+        ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
+        ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
+        ParagraphContent.AutomaticSize = Enum.AutomaticSize.Y
+
+        local function UpdateSize()
+            Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 34)
+        end
+
+        ParagraphContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateSize)
+        UpdateSize()
+
+        return {
+            SetTitle = function(newTitle)
+                ParagraphTitle.Text = newTitle
+            end,
+            SetContent = function(newContent)
+                ParagraphContent.Text = newContent
+            end
+        }
+    end
+
+    -- ADD TAB FUNCTION
+    function WindowSystem:AddTab(TabConfig)
         TabConfig = TabConfig or {}
         TabConfig.Title = TabConfig.Title or "Tab"
         TabConfig.Icon = TabConfig.Icon or ""
 
         local Tab = Instance.new("Frame")
         local TabCorner = Instance.new("UICorner")
-        local TabImage = Instance.new("ImageLabel")
+        local TabIcon = Instance.new("ImageLabel")
+        local TabLabel = Instance.new("TextLabel")
         local TabButton = Instance.new("TextButton")
         local TabIndicator = Instance.new("Frame")
         local IndicatorCorner = Instance.new("UICorner")
@@ -644,25 +769,35 @@ Crystal.Window = function(self, WindowConfig)
         Tab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         Tab.BackgroundTransparency = 0.999
         Tab.BorderSizePixel = 0
-        Tab.Size = UDim2.new(0, 38, 0, 38)
+        Tab.Size = UDim2.new(0, 60, 0, 40)
 
-        TabCorner.CornerRadius = UDim.new(0, 8)
+        TabCorner.CornerRadius = UDim.new(0, 6)
         TabCorner.Parent = Tab
 
-        TabImage.Name = "TabImage"
-        TabImage.Parent = Tab
-        TabImage.AnchorPoint = Vector2.new(0.5, 0.5)
-        TabImage.BackgroundTransparency = 0.999
-        TabImage.BorderSizePixel = 0
-        TabImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-        TabImage.Size = UDim2.new(0, 20, 0, 20)
-        TabImage.Image = TabConfig.Icon
-        TabImage.ImageTransparency = 0.600
-        TabImage.ImageColor3 = Color3.fromRGB(230, 230, 230)
+        TabIcon.Name = "TabIcon"
+        TabIcon.Parent = Tab
+        TabIcon.BackgroundTransparency = 1
+        TabIcon.Position = UDim2.new(0, 6, 0, 6)
+        TabIcon.Size = UDim2.new(0, 16, 0, 16)
+        TabIcon.Image = TabConfig.Icon
+        TabIcon.ImageTransparency = 0.600
+        TabIcon.ImageColor3 = Color3.fromRGB(230, 230, 230)
+
+        TabLabel.Name = "TabLabel"
+        TabLabel.Parent = Tab
+        TabLabel.BackgroundTransparency = 1
+        TabLabel.Position = UDim2.new(0, 26, 0, 5)
+        TabLabel.Size = UDim2.new(1, -30, 0, 18)
+        TabLabel.Font = Enum.Font.GothamBold
+        TabLabel.Text = TabConfig.Title
+        TabLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
+        TabLabel.TextSize = 10
+        TabLabel.TextTransparency = 0.600
+        TabLabel.TextXAlignment = Enum.TextXAlignment.Left
 
         TabButton.Name = "TabButton"
         TabButton.Parent = Tab
-        TabButton.BackgroundTransparency = 0.999
+        TabButton.BackgroundTransparency = 1
         TabButton.BorderSizePixel = 0
         TabButton.Size = UDim2.new(1, 0, 1, 0)
         TabButton.Text = ""
@@ -674,7 +809,7 @@ Crystal.Window = function(self, WindowConfig)
         TabIndicator.BackgroundColor3 = Color3.fromRGB(200, 170, 255)
         TabIndicator.BorderSizePixel = 0
         TabIndicator.Position = UDim2.new(0.5, 0, 1, -2)
-        TabIndicator.Size = UDim2.new(0, 0, 0, 3)
+        TabIndicator.Size = UDim2.new(0, 0, 0, 2.5)
 
         IndicatorCorner.CornerRadius = UDim.new(0, 100)
         IndicatorCorner.Parent = TabIndicator
@@ -699,10 +834,15 @@ Crystal.Window = function(self, WindowConfig)
         ScrollLayersLayout.SortOrder = Enum.SortOrder.LayoutOrder
         ScrollLayersLayout.Padding = UDim.new(0, 5)
 
+        -- Auto-calculate Tab width based on text
+        local textWidth = game:GetService("TextService"):GetTextSize(TabConfig.Title, 10, Enum.Font.GothamBold, Vector2.new(200, 18)).X
+        Tab.Size = UDim2.new(0, math.max(textWidth + 38, 60), 0, 40)
+
         if TabCount == 0 then
             LayersPageLayout:JumpToIndex(0)
-            Crystal.TweenObject({TabIndicator, 0.4, "Size", UDim2.new(0.8, 0, 0, 3)})
-            TabImage.ImageTransparency = 0
+            Crystal.TweenObject({TabIndicator, 0.4, "Size", UDim2.new(0.8, 0, 0, 2.5)})
+            TabIcon.ImageTransparency = 0
+            TabLabel.TextTransparency = 0
             Tab.BackgroundTransparency = 0.950
             CurrentTab = Tab
         end
@@ -719,112 +859,42 @@ Crystal.Window = function(self, WindowConfig)
 
         TabButton.Activated:Connect(function()
             if CurrentTab ~= Tab then
-                -- Reset old tab
-                if CurrentTab then
-                    for _, v in pairs(CrystalHub.TabScrollFrame:GetChildren()) do
-                        if v:IsA("Frame") then
-                            Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.999})
-                            Crystal.TweenObject({v.TabImage, 0.4, "ImageTransparency", 0.600})
-                            Crystal.TweenObject({v.TabIndicator, 0.4, "Size", UDim2.new(0, 0, 0, 3)})
+                -- Reset all tabs
+                for _, v in pairs(CrystalHub.TabScrollFrame:GetChildren()) do
+                    if v:IsA("Frame") then
+                        Crystal.TweenObject({v, 0.4, "BackgroundTransparency", 0.999})
+                        if v:FindFirstChild("TabIcon") then
+                            Crystal.TweenObject({v.TabIcon, 0.4, "ImageTransparency", 0.600})
+                        end
+                        if v:FindFirstChild("TabLabel") then
+                            Crystal.TweenObject({v.TabLabel, 0.4, "TextTransparency", 0.600})
+                        end
+                        if v:FindFirstChild("TabIndicator") then
+                            Crystal.TweenObject({v.TabIndicator, 0.4, "Size", UDim2.new(0, 0, 0, 2.5)})
                         end
                     end
                 end
 
-                -- Set new tab
+                -- Set new tab as active
                 CurrentTab = Tab
                 Crystal.TweenObject({Tab, 0.4, "BackgroundTransparency", 0.950})
-                Crystal.TweenObject({TabImage, 0.4, "ImageTransparency", 0})
-                Crystal.TweenObject({TabIndicator, 0.4, "Size", UDim2.new(0.8, 0, 0, 3)})
+                Crystal.TweenObject({TabIcon, 0.4, "ImageTransparency", 0})
+                Crystal.TweenObject({TabLabel, 0.4, "TextTransparency", 0})
+                Crystal.TweenObject({TabIndicator, 0.4, "Size", UDim2.new(0.8, 0, 0, 2.5)})
                 LayersPageLayout:JumpTo(ScrollLayers)
             end
         end)
 
-        -- Add Paragraph function to Tab
+        TabCount = TabCount + 1
+        
         local ElementSystem = {}
         
-        function ElementSystem:AddParagraph(ParagraphConfig)
-            ParagraphConfig = ParagraphConfig or {}
-            ParagraphConfig.Title = ParagraphConfig.Title or "Paragraph"
-            ParagraphConfig.Content = ParagraphConfig.Content or ""
-            ParagraphConfig.IconLabel = ParagraphConfig.IconLabel or ""
-            ParagraphConfig.SizeIcon = ParagraphConfig.SizeIcon or 20
-
-            local Paragraph = Instance.new("Frame")
-            local ParagraphCorner = Instance.new("UICorner")
-            local ParagraphIcon = Instance.new("ImageLabel")
-            local ParagraphTitle = Instance.new("TextLabel")
-            local ParagraphContent = Instance.new("TextLabel")
-
-            Paragraph.Name = ParagraphConfig.Title
-            Paragraph.Parent = ScrollLayers
-            Paragraph.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            Paragraph.BackgroundTransparency = 0.920
-            Paragraph.BorderSizePixel = 0
-            Paragraph.Size = UDim2.new(1, 0, 0, 80)
-            Paragraph.AutomaticSize = Enum.AutomaticSize.Y
-
-            ParagraphCorner.CornerRadius = UDim.new(0, 8)
-            ParagraphCorner.Parent = Paragraph
-
-            if ParagraphConfig.IconLabel ~= "" then
-                ParagraphIcon.Name = "ParagraphIcon"
-                ParagraphIcon.Parent = Paragraph
-                ParagraphIcon.BackgroundTransparency = 1
-                ParagraphIcon.Position = UDim2.new(0, 12, 0, 12)
-                ParagraphIcon.Size = UDim2.new(0, ParagraphConfig.SizeIcon, 0, ParagraphConfig.SizeIcon)
-                ParagraphIcon.Image = ParagraphConfig.IconLabel
-                ParagraphIcon.ImageColor3 = Color3.fromRGB(200, 170, 255)
-                ParagraphIcon.ImageTransparency = 0.3
-            end
-
-            ParagraphTitle.Name = "ParagraphTitle"
-            ParagraphTitle.Parent = Paragraph
-            ParagraphTitle.BackgroundTransparency = 1
-            ParagraphTitle.Position = ParagraphConfig.IconLabel ~= "" and UDim2.new(0, ParagraphConfig.SizeIcon + 20, 0, 10) or UDim2.new(0, 12, 0, 10)
-            ParagraphTitle.Size = UDim2.new(1, -(ParagraphConfig.IconLabel ~= "" and (ParagraphConfig.SizeIcon + 28) or 20), 0, 16)
-            ParagraphTitle.Font = Enum.Font.GothamBold
-            ParagraphTitle.Text = ParagraphConfig.Title
-            ParagraphTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            ParagraphTitle.TextSize = 13
-            ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
-            ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Top
-
-            ParagraphContent.Name = "ParagraphContent"
-            ParagraphContent.Parent = Paragraph
-            ParagraphContent.BackgroundTransparency = 1
-            ParagraphContent.Position = ParagraphConfig.IconLabel ~= "" and UDim2.new(0, ParagraphConfig.SizeIcon + 20, 0, 30) or UDim2.new(0, 12, 0, 30)
-            ParagraphContent.Size = UDim2.new(1, -(ParagraphConfig.IconLabel ~= "" and (ParagraphConfig.SizeIcon + 28) or 20), 1, -40)
-            ParagraphContent.Font = Enum.Font.Gotham
-            ParagraphContent.Text = ParagraphConfig.Content
-            ParagraphContent.TextColor3 = Color3.fromRGB(180, 180, 180)
-            ParagraphContent.TextSize = 11
-            ParagraphContent.TextWrapped = true
-            ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
-            ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
-            ParagraphContent.AutomaticSize = Enum.AutomaticSize.Y
-
-            local function UpdateSize()
-                Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 50)
-            end
-
-            ParagraphContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateSize)
-            UpdateSize()
-
-            return {
-                SetTitle = function(newTitle)
-                    ParagraphTitle.Text = newTitle
-                end,
-                SetContent = function(newContent)
-                    ParagraphContent.Text = newContent
-                end
-            }
-        end
-
-        TabCount = TabCount + 1
+        -- Elements can be added here (Button, Toggle, etc.)
+        
         return ElementSystem
     end
 
-    return TabSystem
+    return WindowSystem
 end
 
 return Crystal
