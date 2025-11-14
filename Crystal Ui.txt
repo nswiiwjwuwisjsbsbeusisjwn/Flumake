@@ -37,7 +37,6 @@ Crystal.Types = {
     }
 }
 
--- Utility Functions
 Crystal.TweenObject = function(config)
     config.Object = config.Object or config[1]
     config.Time = config.Time or config[2]
@@ -1567,9 +1566,11 @@ CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
 
             LayersPageLayout:JumpToIndex(0)
             BackButton.Text = TabName.Text
+
             TabImage.ImageTransparency = 0
             Tab.BackgroundTransparency = 0.950
             TabName.TextTransparency = 0
+
             BackButton.LayoutOrder = 0
         end
 
@@ -1600,18 +1601,18 @@ CrystalHub.TopTitle.TextXAlignment = Enum.TextXAlignment.Left
                         Crystal.TweenObject({v.TabName, 0.4, "TextTransparency", 0.600})
                     end
                 end
-                
+
                 Crystal.TweenObject({Tab, 0.4, "BackgroundTransparency", 0.950})
                 Crystal.TweenObject({TabImage, 0.4, "ImageTransparency", 0})
                 Crystal.TweenObject({TabName, 0.4, "TextTransparency", 0})
+
                 Crystal.TweenObject({RealChooseFrame, 0.4, "Position", UDim2.new(0, 2, 0, 11 + (34 * ScrollLayers.LayoutOrder))})
+
                 BackButton.Text = TabName.Text
                 JumpTo(ScrollLayers.LayoutOrder, TabName.Text)
             end
         end)     
-        
         local TabObject = {}
-        
 function TabObject:AddButton(ButtonConfig)
     ButtonConfig = ButtonConfig or {}
     ButtonConfig.Title = ButtonConfig.Title or "Button"
@@ -1686,7 +1687,7 @@ function TabObject:AddButton(ButtonConfig)
         Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.800})
         task.wait(0.1)
         Crystal.TweenObject({Button, 0.1, "BackgroundTransparency", 0.900})
-        
+
         pcall(function()
             ButtonConfig.Callback()
         end)
@@ -1716,7 +1717,6 @@ function TabObject:AddDropdown(ConfigDropdown)
     local OptionSelecting = Instance.new("TextLabel")
     local OptionImg = Instance.new("ImageLabel")
     local DropdownButton = Instance.new("TextButton")
-    
     local DropMore = Instance.new("Frame")
     local DropButton = Instance.new("TextButton")
     local DropdownSelectReal = Instance.new("Frame")
@@ -1724,14 +1724,12 @@ function TabObject:AddDropdown(ConfigDropdown)
     local DropdownFolder = Instance.new("Folder")
     local UICorner_41 = Instance.new("UICorner")
     local UIStroke_16 = Instance.new("UIStroke")
-    
     local SearchFrame = Instance.new("Frame")
     local SearchCorner = Instance.new("UICorner")
     local SearchBox = Instance.new("TextBox")
     local SearchIcon = Instance.new("ImageLabel")
     local SearchDivider = Instance.new("Frame")
     local SearchDividerCorner = Instance.new("UICorner")
-    
     local ScrollSelect = Instance.new("ScrollingFrame")
     local UIListLayout_6 = Instance.new("UIListLayout")
 
@@ -1996,11 +1994,9 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
         local searchText = SearchBox.Text:lower():gsub(" ", "")
-        
         for _, v in next, ScrollSelect:GetChildren() do
             if v:IsA("Frame") and v.Name == "Option" then
                 local optionText = v.OptionSelecting.Text:lower():gsub(" ", "")
-                
                 if searchText == "" or string.find(optionText, searchText) then
                     v.Visible = true
                 else
@@ -2020,6 +2016,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         local contentHeight = math.max(DropdownContent.TextBounds.Y + 10, 30)
         Dropdown.Size = UDim2.new(1, -8, 0, contentHeight + 18)
         DropdownContent.Size = UDim2.new(1, -180, 0, contentHeight + 10)
+
         ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_6.AbsoluteContentSize.Y + 15)
     end)
 
@@ -2029,19 +2026,19 @@ function TabObject:AddDropdown(ConfigDropdown)
     end
 
     local isOpen = false
-    
+
     Crystal.Click(DropdownButton, function()
         if isOpen then return end
         isOpen = true
         DropMore.Visible = true
         SearchBox.Text = ""
-        
+
         for _, v in next, CrystalHub.LayersFolder:GetDescendants() do
             if v.ClassName == "TextButton" and v ~= DropdownButton then
                 v.Active = false
             end
         end
-        
+
         Crystal.TweenObject({DropdownSelectReal, 0.3, "Position", UDim2.new(1, -17, 0, 7)})
         Crystal.TweenObject({OptionImg, 0.2, "Rotation", -90})
     end)
@@ -2049,15 +2046,16 @@ function TabObject:AddDropdown(ConfigDropdown)
     Crystal.Click(DropButton, function()
         if not isOpen then return end
         isOpen = false
-        
+
         for _, v in next, CrystalHub.LayersFolder:GetDescendants() do
             if v.ClassName == "TextButton" then
                 v.Active = true
             end
         end
-        
+
         Crystal.TweenObject({DropdownSelectReal, 0.3, "Position", UDim2.new(1.42, -17, 0, 7)})
         Crystal.TweenObject({OptionImg, 0.2, "Rotation", 90})
+
         task.wait(0.3)
         DropMore.Visible = false
     end)
@@ -2065,7 +2063,7 @@ function TabObject:AddDropdown(ConfigDropdown)
     function DropFunc:Set(Value)
         if ConfigDropdown.Multi then
             DropFunc.Value = type(Value) == "table" and Value or {Value}
-            
+
             for _, v in next, ScrollSelect:GetChildren() do
                 if v.ClassName ~= "UIListLayout" then
                     local isSelected = false
@@ -2075,7 +2073,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                             break
                         end
                     end
-                    
+
                     if isSelected then
                         v.ChooseFrame.UIStroke.Enabled = true
                         Crystal.TweenObject({v, 0.3, "BackgroundTransparency", 0.850})
@@ -2089,17 +2087,17 @@ function TabObject:AddDropdown(ConfigDropdown)
                     end
                 end
             end
-            
+
             if #DropFunc.Value == 0 then
                 OptionSelecting.Text = ""
             else
                 OptionSelecting.Text = table.concat(DropFunc.Value, ", ")
             end
-            
+
             ConfigDropdown.Callback(DropFunc.Value)
         else
             DropFunc.Value = type(Value) == "table" and Value[1] or Value
-            
+
             for _, v in next, ScrollSelect:GetChildren() do
                 if v.ClassName ~= "UIListLayout" then
                     if v.OptionSelecting.Text == DropFunc.Value then
@@ -2115,18 +2113,19 @@ function TabObject:AddDropdown(ConfigDropdown)
                     end
                 end
             end
-            
+
             OptionSelecting.Text = DropFunc.Value or ""
-            
+
             ConfigDropdown.Callback(DropFunc.Value)
         end
     end
 
     local OptionCounts = 0
+
     function DropFunc:AddValue(NameValue, IconValue)
         local hasIcon = IconValue and IconValue ~= ""
         local iconSize = hasIcon and (ConfigDropdown.SizeIcon or 32) or 0
-        
+
         local Option = Instance.new("Frame")
         local UICorner_37 = Instance.new("UICorner")
         local OptionSelecting_2 = Instance.new("TextLabel")
@@ -2151,7 +2150,7 @@ function TabObject:AddDropdown(ConfigDropdown)
         if hasIcon then
             local OptionIcon = Instance.new("ImageLabel")
             local OptionIconCorner = Instance.new("UICorner")
-            
+
             OptionIcon.Name = "OptionIcon"
             OptionIcon.Parent = Option
             OptionIcon.AnchorPoint = Vector2.new(0, 0.5)
@@ -2218,6 +2217,7 @@ function TabObject:AddDropdown(ConfigDropdown)
             if Option.BackgroundTransparency >= 0.999 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 0.900})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(230, 230, 230)})
+
                 if hasIcon then
                     local icon = Option:FindFirstChild("OptionIcon")
                     if icon then
@@ -2229,6 +2229,7 @@ function TabObject:AddDropdown(ConfigDropdown)
             if Option.BackgroundTransparency >= 0.900 then
                 Crystal.TweenObject({Option, 0.2, "BackgroundTransparency", 1})
                 Crystal.TweenObject({OptionSelecting_2, 0.2, "TextColor3", Color3.fromRGB(200, 200, 200)})
+
                 if hasIcon then
                     local icon = Option:FindFirstChild("OptionIcon")
                     if icon then
@@ -2248,28 +2249,29 @@ function TabObject:AddDropdown(ConfigDropdown)
                         break
                     end
                 end
-                
+
                 if not isCurrentlySelected then
                     table.insert(DropFunc.Value, OptionSelecting_2.Text)
                 end
-                
+
                 DropFunc:Set(DropFunc.Value)
             else
                 DropFunc.Value = OptionSelecting_2.Text
                 DropFunc:Set(DropFunc.Value)
-                
+
                 Crystal.Click(DropButton, function()
                     if not isOpen then return end
                     isOpen = false
-                    
+
                     for _, v in next, CrystalHub.LayersFolder:GetDescendants() do
                         if v.ClassName == "TextButton" then
                             v.Active = true
                         end
                     end
-                    
+
                     Crystal.TweenObject({DropdownSelectReal, 0.3, "Position", UDim2.new(1.42, -17, 0, 7)})
                     Crystal.TweenObject({OptionImg, 0.2, "Rotation", 90})
+
                     task.wait(0.3)
                     DropMore.Visible = false
                 end)
@@ -2285,6 +2287,7 @@ function TabObject:AddDropdown(ConfigDropdown)
                 v:Destroy()
             end
         end
+
         DropFunc.Value = ConfigDropdown.Multi and {} or ""
         DropFunc.List = {}
         OptionCounts = 0
@@ -2308,6 +2311,7 @@ function TabObject:AddDropdown(ConfigDropdown)
 
     return DropFunc
 end
+
 function TabObject:AddInput(ConfigInput)
     ConfigInput = ConfigInput or {}
     ConfigInput.Title = ConfigInput.Title or "Input"
@@ -2446,13 +2450,11 @@ function TabObject:AddInput(ConfigInput)
     InputBox.TextSize = 11.000
     InputBox.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Numeric input validation
     if ConfigInput.Numeric then
         InputBox.Text = tostring(ConfigInput.Default)
         InputBox.PlaceholderText = "Enter number..."
     end
 
-    -- Focus events
     InputBox.Focused:Connect(function()
         Crystal.TweenObject({InputDecide, 0.3, "BackgroundTransparency", 0})
         Crystal.TweenObject({UIStroke_9, 0.3, "Transparency", 0})
@@ -2461,7 +2463,7 @@ function TabObject:AddInput(ConfigInput)
     InputBox.FocusLost:Connect(function(enterPressed)
         Crystal.TweenObject({InputDecide, 0.3, "BackgroundTransparency", 0.950})
         Crystal.TweenObject({UIStroke_9, 0.3, "Transparency", 0.950})
-        
+
         if ConfigInput.Finished then
             if enterPressed then
                 local value = InputBox.Text
@@ -2483,18 +2485,19 @@ function TabObject:AddInput(ConfigInput)
         InputBox:GetPropertyChangedSignal("Text"):Connect(function()
             local text = InputBox.Text
             if text == "" then return end
-            
             local cleaned = string.gsub(text, "[^%d%.%-]", "")
+
             if cleaned ~= text then
                 InputBox.Text = cleaned
             end
-            
+
             local dotCount = 0
             for i = 1, #cleaned do
                 if string.sub(cleaned, i, i) == "." then
                     dotCount = dotCount + 1
                 end
             end
+
             if dotCount > 1 then
                 local lastDot = string.find(cleaned, "%.", 1, true)
                 InputBox.Text = string.sub(cleaned, 1, lastDot) .. string.gsub(string.sub(cleaned, lastDot + 1), "%.", "")
@@ -2523,6 +2526,7 @@ function TabObject:AddInput(ConfigInput)
 
     function InputFunc:SetValue(Value)
         InputBox.Text = tostring(Value)
+
         if ConfigInput.Numeric then
             ConfigInput.Callback(tonumber(Value) or 0)
         else
@@ -2571,6 +2575,7 @@ function TabObject:AddKeybind(ConfigKeybind)
 
     local waitingForKey = false
     local isToggled = false
+
     local KeybindFunc = {
         Value = ConfigKeybind.Default,
         Toggled = false
@@ -3317,7 +3322,6 @@ function TabObject:AddSlider(ConfigSlider)
     SliderImage.Image = ConfigSlider.IconSlider
     SliderImage.ImageColor3 = Color3.fromRGB(180, 180, 180)
 
-    -- Value Input Box
     SliderInputFrame.Name = "SliderInputFrame"
     SliderInputFrame.Parent = Slider
     SliderInputFrame.AnchorPoint = Vector2.new(1, 0)
@@ -3356,7 +3360,6 @@ function TabObject:AddSlider(ConfigSlider)
     SliderNumber.TextSize = 11
     SliderNumber.Visible = true
 
-    -- Slider Track (Black with Cyan Border)
     SliderFrame.Name = "SliderFrame"
     SliderFrame.Parent = Slider
     SliderFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
@@ -3373,7 +3376,6 @@ function TabObject:AddSlider(ConfigSlider)
     UIStroke_24.Thickness = 1
     UIStroke_24.Transparency = 0.5
 
-    -- Slider Fill (Cyan)
     SliderDrag.Name = "SliderDrag"
     SliderDrag.Parent = SliderFrame
     SliderDrag.AnchorPoint = Vector2.new(0, 0.5)
@@ -3386,7 +3388,6 @@ function TabObject:AddSlider(ConfigSlider)
     UICorner_25.CornerRadius = UDim.new(0, 2)
     UICorner_25.Parent = SliderDrag
 
-    -- Slider Handle (White with Cyan Border)
     SliderCircle.Name = "SliderCircle"
     SliderCircle.Parent = SliderDrag
     SliderCircle.AnchorPoint = Vector2.new(1, 0.5)
@@ -3403,7 +3404,6 @@ function TabObject:AddSlider(ConfigSlider)
     UIStroke_10.Color = Color3.fromRGB(200, 170, 255)
     UIStroke_10.Thickness = 2
 
-    -- Drag Area
     SliderFrDrag.Name = "SliderFrDrag"
     SliderFrDrag.Parent = SliderFrame
     SliderFrDrag.BackgroundTransparency = 1
@@ -3412,14 +3412,12 @@ function TabObject:AddSlider(ConfigSlider)
     SliderFrDrag.Size = UDim2.new(1, 0, 0, 34)
     SliderFrDrag.ZIndex = 4
 
-    -- Adjust layout if no description
     if SliderContent.Text == "" then
         SliderTitle.Size = UDim2.new(1, -150, 0, 22)
         SliderTitle.Position = UDim2.new(0, 40, 0, 8)
         SliderImage.Position = UDim2.new(0, 12, 0, 19)
     end
 
-    -- Dynamic sizing
     Crystal.Stepped:Connect(function()
         local contentHeight = math.max(SliderContent.TextBounds.Y, 10)
         local totalHeight = 50 + contentHeight
@@ -3431,13 +3429,11 @@ function TabObject:AddSlider(ConfigSlider)
     local dragging = false
     local hovering = false
 
-    -- Rounding function
     local function Round(Number, Factor)
         local Result = math.floor(Number / Factor + 0.5) * Factor
         return Result
     end
 
-    -- Set slider value
     function SliderFunc:Set(Value)
         Value = math.clamp(Round(Value, ConfigSlider.Increment), ConfigSlider.Min, ConfigSlider.Max)
         SliderFunc.Values = Value
@@ -3453,7 +3449,6 @@ function TabObject:AddSlider(ConfigSlider)
         end)
     end
 
-    -- Hover effects for handle
     Crystal.Mouseto(SliderFrDrag, function()
         hovering = true
         Crystal.TweenObject({SliderCircle, 0.2, "Size", UDim2.new(0, 14, 0, 14)})
@@ -3468,7 +3463,6 @@ function TabObject:AddSlider(ConfigSlider)
         end
     end)
 
-    -- Drag functionality
     SliderFrDrag.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
@@ -3509,7 +3503,6 @@ function TabObject:AddSlider(ConfigSlider)
         end
     end)
 
-    -- Text input functionality
     SliderInput.Focused:Connect(function()
         SliderNumber.Visible = false
         SliderInput.Visible = true
@@ -3553,7 +3546,6 @@ function TabObject:AddSlider(ConfigSlider)
         end
     end)
 
-    -- Keyboard shortcuts
     SliderFrDrag.InputBegan:Connect(function(input)
         if input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.A then
             SliderFunc:Set(SliderFunc.Values - ConfigSlider.Increment)
@@ -3562,7 +3554,6 @@ function TabObject:AddSlider(ConfigSlider)
         end
     end)
 
-    -- Mouse wheel support
     SliderFrDrag.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseWheel then
             if input.Position.Z > 0 then
@@ -3573,11 +3564,9 @@ function TabObject:AddSlider(ConfigSlider)
         end
     end)
 
-    -- Initialize
     SliderInput.Visible = false
     SliderFunc:Set(ConfigSlider.Default)
 
-    -- Additional methods
     function SliderFunc:SetMin(min)
         ConfigSlider.Min = min
         SliderFunc.Min = min
