@@ -29,6 +29,7 @@ a.Paragraph = function(b)
     c.BackgroundTransparency = 1
     c.Position = b["Position"] or UDim2.new(0, 0, 0, 0)
     c.Size = b["Size"] or UDim2.new(1, 0, 0, 35)
+    c.AutomaticSize = Enum.AutomaticSize.Y
     
     if b["IconLabel"] and b["IconLabel"] ~= "" then
         d.Name = "Icon"
@@ -53,6 +54,8 @@ a.Paragraph = function(b)
     e.TextSize = b["TitleSize"] or 16
     e.TextXAlignment = Enum.TextXAlignment.Left
     e.TextYAlignment = Enum.TextYAlignment.Center
+    e.TextWrapped = true
+    e.TextScaled = false
     
     f.Name = "Value"
     f.Parent = c
@@ -64,7 +67,21 @@ a.Paragraph = function(b)
     f.TextColor3 = b["ValueColor"] or Color3.fromRGB(100, 220, 255)
     f.TextSize = b["ValueSize"] or 20
     f.TextXAlignment = Enum.TextXAlignment.Right
-    f.TextYAlignment = Enum.TextYAlignment.Center
+    f.TextYAlignment = Enum.TextYAlignment.Top
+    f.TextWrapped = true
+    f.TextScaled = false
+    f.AutomaticSize = Enum.AutomaticSize.Y
+    
+    local h = Instance.new("UISizeConstraint")
+    h.Parent = f
+    h.MinSize = Vector2.new(0, 35)
+    
+    f:GetPropertyChangedSignal("TextBounds"):Connect(function()
+        local i = f.TextBounds.Y
+        if i > 35 then
+            c.Size = UDim2.new(1, 0, 0, i + 10)
+        end
+    end)
     
     return {["Frame"] = c, ["Icon"] = d, ["Title"] = e, ["Value"] = f}
 end
