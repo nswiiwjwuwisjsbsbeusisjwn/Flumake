@@ -46,42 +46,45 @@ a.Paragraph = function(b)
     e.Name = "Title"
     e.Parent = c
     e.BackgroundTransparency = 1
-    e.Position = UDim2.new(0, g, 0, 0)
-    e.Size = UDim2.new(0, 80, 1, 0)
+    e.Position = UDim2.new(0, g, 0, 5)
+    e.Size = UDim2.new(0, 60, 0, 25)
     e.Font = b["TitleFont"] or Enum.Font.GothamBold
     e.Text = b["Content"] or ""
     e.TextColor3 = b["TitleColor"] or Color3.fromRGB(200, 200, 200)
-    e.TextSize = b["TitleSize"] or 16
+    e.TextSize = b["TitleSize"] or 14
     e.TextXAlignment = Enum.TextXAlignment.Left
-    e.TextYAlignment = Enum.TextYAlignment.Center
-    e.TextWrapped = true
+    e.TextYAlignment = Enum.TextYAlignment.Top
+    e.TextWrapped = false
     e.TextScaled = false
+    
+    local titleConstraint = Instance.new("UITextSizeConstraint")
+    titleConstraint.Parent = e
+    titleConstraint.MaxTextSize = b["TitleSize"] or 14
+    titleConstraint.MinTextSize = 10
     
     f.Name = "Value"
     f.Parent = c
     f.BackgroundTransparency = 1
-    f.Position = UDim2.new(0, g + 80, 0, 0)
-    f.Size = UDim2.new(1, -(g + 85), 1, 0)
+    f.Position = UDim2.new(0, g + 65, 0, 5)
+    f.Size = UDim2.new(1, -(g + 70), 0, 0)
     f.Font = b["ValueFont"] or Enum.Font.Arcade
     f.Text = b["Value"] or "0"
     f.TextColor3 = b["ValueColor"] or Color3.fromRGB(100, 220, 255)
-    f.TextSize = b["ValueSize"] or 20
+    f.TextSize = b["ValueSize"] or 13
     f.TextXAlignment = Enum.TextXAlignment.Right
     f.TextYAlignment = Enum.TextYAlignment.Top
     f.TextWrapped = true
     f.TextScaled = false
     f.AutomaticSize = Enum.AutomaticSize.Y
     
-    local h = Instance.new("UISizeConstraint")
-    h.Parent = f
-    h.MinSize = Vector2.new(0, 35)
+    local valueConstraint = Instance.new("UITextSizeConstraint")
+    valueConstraint.Parent = f
+    valueConstraint.MaxTextSize = b["ValueSize"] or 13
+    valueConstraint.MinTextSize = 10
     
-    f:GetPropertyChangedSignal("TextBounds"):Connect(function()
-        local i = f.TextBounds.Y
-        if i > 35 then
-            c.Size = UDim2.new(1, 0, 0, i + 10)
-        end
-    end)
+    local h = Instance.new("UISizeConstraint")
+    h.Parent = c
+    h.MinSize = Vector2.new(0, 35)
     
     return {["Frame"] = c, ["Icon"] = d, ["Title"] = e, ["Value"] = f}
 end
